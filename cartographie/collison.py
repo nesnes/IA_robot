@@ -3,7 +3,7 @@ import math
 import numpy
 
 from cartographie.ligne import Ligne
-
+from cartographie.cercle import Cercle
 from cartographie.rectangle import Rectangle
 
 
@@ -18,22 +18,14 @@ class Collision:
         return getattr(self,"collision"+forme1.__class__.__name__+forme2.__class__.__name__)(forme1,forme2)
 
     def contenuDans(self,x,y,forme):
-        return getattr(self,"contient"+forme.__class__.__name__)(x,y,forme)
-
-    def contientRectangle(self,x,y,rectangle):
-        contient = False
-        if rectangle.x1<=x and rectangle.x2>=x   and   rectangle.y1<=y and rectangle.y2>=y:
-            contient = True
-        return contient
-
-    def contientLigne(self,x,y,ligne):
-        return False
-
-    def contientCercle(self,x,y,cercle):
-        dist = cercle.distanceAvec(Ligne("",x,y,x,y,""))
-        if(dist <= cercle.rayon):
-            return True
-        return False
+        if isinstance(forme, Ligne):
+            return False
+        if isinstance(forme, Cercle):
+            return forme.distanceAvec(Ligne("", x, y, x, y)) <= forme.rayon
+        if isinstance(forme, Rectangle):
+            return forme.x1 <= x and forme.x2 >= x and forme.y1 <= y and forme.y2 >= y
+        ligne = Ligne("", x, y, forme.x, forme.y)
+        return not self.collisionEntre(ligne, forme)
 
     def collisionLigneLigne(self,ligne1,ligne2):
 
@@ -73,11 +65,11 @@ class Collision:
         return False
 
     def collisionLigneRectangle(self,ligne,rectangle):
-        return  self.collisionRectangleLigne(rectangle,ligne)
+        return self.collisionRectangleLigne(rectangle, ligne)
 
     def collisionRectangleRectangle(self,rectangle1,rectangle2):
-        rect1 = self
-        rect2 = forme
+        rect1 = rectangle1
+        rect2 = rectangle2
         OutsideBottom = rect1.y2 < rect2.y1
         OutsideTop = rect1.y1 > rect2.y2
         OutsideLeft = rect1.x1 > rect2.x2
@@ -140,3 +132,81 @@ class Collision:
 
     def collisionRectangleCercle(self,rectangle,cercle):
         return self.collisionCercleRectangle(cercle,rectangle)
+
+    def collisionPolygoneLigne(self, polygone, ligne):
+        count=0
+        firstPoint = polygone.pointList[0]
+        lastPoint = polygone.pointList[0]
+        for point in polygone.pointList:
+            count+=1
+            if count == 1:
+                continue
+            currentLine = Ligne("", float(point["x"]), float(point["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
+            if self.collisionLigneLigne(currentLine, ligne):
+                return True
+            lastPoint = point
+        currentLine = Ligne("", float(firstPoint["x"]), float(firstPoint["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
+        if self.collisionLigneLigne(currentLine, ligne):
+            return True
+        return False
+
+    def collisionLignePolygone(self, ligne, polygone):
+        return self.collisionPolygoneLigne(polygone, ligne)
+
+    def collisionPolygonePolygone(self, polgone1, polygone2):
+        count = 0
+        firstPoint = polgone1.pointList[0]
+        lastPoint = polgone1.pointList[0]
+        for point in polgone1.pointList:
+            count += 1
+            if count == 1:
+                continue
+            currentLine = Ligne("", float(point["x"]), float(point["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
+            if self.collisionPolgoneLigne(polygone2, currentLine):
+                return True
+            lastPoint = point
+        currentLine = Ligne("", float(firstPoint["x"]), float(firstPoint["y"]), float(lastPoint["x"]),
+                            float(lastPoint["y"]))
+        if self.collisionPolgoneLigne(polygone2, currentLine):
+            return True
+        return False
+
+    def collisionPolygoneRectangle(self, polygone, rectangle):
+        count=0
+        firstPoint = polygone.pointList[0]
+        lastPoint = polygone.pointList[0]
+        for point in polygone.pointList:
+            count+=1
+            if count == 1:
+                continue
+            currentLine = Ligne("", float(point["x"]), float(point["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
+            if self.collisionLigneRectangle(currentLine, rectangle):
+                return True
+            lastPoint = point
+        currentLine = Ligne("", float(firstPoint["x"]), float(firstPoint["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
+        if self.collisionLigneRectangle(currentLine, rectangle):
+            return True
+        return False
+
+    def collisionRectanglePolygone(self, rectangle, polygone):
+        return self.collisionPolygoneRectangle(polygone, rectangle)
+
+    def collisionPolygoneCercle(self, polygone, cercle):
+        count=0
+        firstPoint = polygone.pointList[0]
+        lastPoint = polygone.pointList[0]
+        for point in polygone.pointList:
+            count+=1
+            if count == 1:
+                continue
+            currentLine = Ligne("", float(point["x"]), float(point["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
+            if self.collisionLigneCercle(currentLine, cercle):
+                return True
+            lastPoint = point
+        currentLine = Ligne("", float(firstPoint["x"]), float(firstPoint["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
+        if self.collisionLigneCercle(currentLine, cercle):
+            return True
+        return False
+
+    def collisionCerclePolygone(self, cercle, polygone):
+        return self.collisionPolygoneCercle(polygone, cercle)

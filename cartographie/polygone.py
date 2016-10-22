@@ -10,8 +10,8 @@ class Polygone(Forme):
 
     def addPoint(self, x, y):
         self.pointList.append({"x": x, "y": y})
-        self.x += x/float(len(self.pointList)+1)
-        self.y += y/float(len(self.pointList)+1)
+        self.x = (x + self.x * float(len(self.pointList)-1)) / float(len(self.pointList))
+        self.y = (y + self.y * float(len(self.pointList)-1)) / float(len(self.pointList))
 
     def setCouleur(self, newCouleur):
         couleur = newCouleur
@@ -19,3 +19,4 @@ class Polygone(Forme):
     def dessiner(self, fenetre):
         if len(self.pointList) > 1 :
             fenetre.drawPoly(self.nom, self.pointList, self.couleur)
+            fenetre.drawCircle("", self.x, self.y, 10, "red")

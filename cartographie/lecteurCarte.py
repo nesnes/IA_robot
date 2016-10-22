@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-
+import math
 from cartographie.cercle import Cercle
 from cartographie.polygone import Polygone
 from cartographie.rectangle import Rectangle
@@ -90,13 +90,12 @@ class LecteurCarte:
         elif isinstance(forme, Polygone):
             polygone = Polygone("", "red")
             for point in forme.pointList:
-                x = point["x"] - forme.x
-                y = point["y"] - forme.y
-                for value in x,y:
-                    if value > 0:
-                        value += self.distanceEvitement
-                    else:
-                        value -= self.distanceEvitement
+                x = float(point["x"]) - forme.x
+                y = float(point["y"]) - forme.y
+                dist = math.sqrt(pow(x, 2) + pow(y, 2))
+                newDist = dist + self.distanceEvitement
+                x = (newDist / dist) * x
+                y = (newDist / dist) * y
                 x += forme.x
                 y += forme.y
                 polygone.addPoint(x, y)

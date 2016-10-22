@@ -46,13 +46,11 @@
     </zoneAcces>
     <forme>
       <polygone>
-        <point x="200" y="200"/>
-        <point x="200" y="300"/>
-        <point x="300" y="250"/>
+        <point x="210" y="340"/>
+        <point x="1200" y="100"/>
+        <point x="520" y="1010"/>
       </polygone>
     </forme>
-    <zoneEvitement>
-    </zoneEvitement>
   </PointInteret>
 
 

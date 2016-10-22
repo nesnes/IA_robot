@@ -63,8 +63,8 @@ class Fenetre:
         maxX=0
         minX=self.largeur
         for point in points:
-            x = float(point["x"])
-            y = float(point["y"])
+            x = (self.offset + float(point["x"]))*self.ratio
+            y = (self.offset + float(point["y"]))*self.ratio
             pointList.append(Point(x, y))
             center["x"] += x
             center["y"] += y
