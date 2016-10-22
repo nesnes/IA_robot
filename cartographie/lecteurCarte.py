@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 
 from cartographie.cercle import Cercle
-
+from cartographie.polygone import Polygone
 from cartographie.rectangle import Rectangle
 from zoneAcces import ZoneAcces
 from cartographie.zoneEvitement import ZoneEvitement
@@ -18,6 +18,12 @@ class LecteurCarte:
 
     def getTaille(self):
         return [self.tree.getroot().get("largeur"),self.tree.getroot().get("hauteur")]
+
+    def getFond(self):
+        if "fond" in self.tree.getroot().attrib:
+            return self.tree.getroot().get("fond")
+        else:
+            return ""
 
     def lire(self):
         root = self.tree.getroot()
@@ -65,6 +71,11 @@ class LecteurCarte:
             x2=int(forme.get("x2"))
             y2=int(forme.get("y2"))
             return Rectangle(nom,x1,y1,x2,y2,couleur)
+        elif forme.tag == "polygone":
+            polygone = Polygone(nom, couleur)
+            for point in forme:
+                polygone.addPoint(float(point.get("x")), float(point.get("y")))
+            return polygone
 
     def createZoneEvitement(self,forme):
         if isinstance(forme, Cercle):
@@ -76,3 +87,17 @@ class LecteurCarte:
             y1 = forme.y1 - self.distanceEvitement
             y2 = forme.y2 + self.distanceEvitement
             return ZoneEvitement(Rectangle("",x1,y1,x2,y2,"red"))
+        elif isinstance(forme, Polygone):
+            polygone = Polygone("", "red")
+            for point in forme.pointList:
+                x = point["x"] - forme.x
+                y = point["y"] - forme.y
+                for value in x,y:
+                    if value > 0:
+                        value += self.distanceEvitement
+                    else:
+                        value -= self.distanceEvitement
+                x += forme.x
+                y += forme.y
+                polygone.addPoint(x, y)
+            return ZoneEvitement(polygone)

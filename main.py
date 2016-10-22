@@ -21,8 +21,8 @@ def main():
         robotConnected = False
 
     largeurRobot = 150.0 # son rayon en mm, pour eviter de cogner contre des elements de la table
-    fichierCarte = "cartes/carte_2016.xml"
-    fichierObjectif = "objectifs/2016/objectifsMatch1.xml"
+    fichierCarte = "cartes/carte_2017.xml"
+    fichierObjectif = "objectifs/2017/objectifsMatch.xml"
     #fichierObjectif = "intelligence/objectifsCoquillages3.xml"
     fenetre = None
     robot = None

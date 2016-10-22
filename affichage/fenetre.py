@@ -57,9 +57,37 @@ class Fenetre:
             titre.setSize(int(taille))
             titre.draw(self.win)
 
-    def drawImage(self,path):
-        fond = Image(Point(self.largeur*self.ratio/2,self.hauteur*self.ratio/2),path)
-        #setWidth(self.largeur*self.ratio)
+    def drawPoly(self, nom, points, color):
+        pointList = []
+        center = {"x": 0.0, "y": 0.0}
+        maxX=0
+        minX=self.largeur
+        for point in points:
+            x = float(point["x"])
+            y = float(point["y"])
+            pointList.append(Point(x, y))
+            center["x"] += x
+            center["y"] += y
+            if maxX < x :
+                maxX = x
+            if minX > x :
+                minX = x
+        center["x"] /= float(len(pointList))
+        center["y"] /= float(len(pointList))
+        poly = Polygon(pointList)
+        poly.setFill(color)
+        poly.draw(self.win)
+        if len(nom) > 1:
+            taille=((maxX - minX)*self.ratio)*2/len(nom)
+            if taille < 5:taille=5
+            if taille > 36:taille=36
+            titre = Text(Point((center["x"]-len(nom)/taille)*self.ratio, center["y"]*self.ratio), nom)
+            titre.setSize(int(taille))
+            titre.draw(self.win)
+
+    def drawImage(self, path):
+        fond = Image(Point((self.largeur/2)*self.ratio, (self.hauteur/2)*self.ratio), path)
+        #fond.setWidth(self.largeur*self.ratio)
         fond.draw(self.win)
 
 

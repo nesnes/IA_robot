@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<carte largeur="3000" hauteur="2000" fond="cartes/fond2017.gif">
+
+  <!--=============================BORDS DE LA TABLE======================-->
+  <PointInteret nom="BordHaut" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="3022" y2="0"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordBas" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="2000" x2="3022" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordGauche" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="0" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordDroit" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="3000" y1="-22" x2="3022" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Sable========================-->
+
+  <PointInteret nom="Sable violet millieu" type="sableCentre" valeur="12" action="pousserSableDepart" temp="3"  couleur="violet">
+    <zoneAcces angle="0">
+        <cercle x="470" y="900" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <polygone>
+        <point x="200" y="200"/>
+        <point x="200" y="300"/>
+        <point x="300" y="250"/>
+      </polygone>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+</carte>
