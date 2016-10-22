@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart">
+        </action>
+    </objectif>
+    
+    <objectif nom="Init robot" points="0" temp="5">
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="1"/>
+            <param nom="angle" type="int" value="0"/>
+        </action>
+        
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="10"/>
+        </action>
+        
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="6"/>
+        </action>
+        
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="10"/>
+        </action>
+        
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="3"/>
+            <param nom="angle" type="int" value="105"/>
+        </action>
+        
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="0"/>
+        </action>
+    </objectif>
+     
+	<objectif nom="PousserBlocSable" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="48"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+    
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="sableCentre"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="1"/>
+        </action> 
+
+        <action methode="avancer">
+            <param nom="distance" type="int" value="400"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="sableCentre"/>
+        </action>
+		
+		<action methode="reculer">
+			<param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+		
+		<action methode="setPelle">
+            <param nom="deployee" type="int" value="0"/>
+        </action>
+		
+    </objectif>
+
+	<objectif nom="pecherPoissons" points="0" temp="5">
+	
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="bac"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+               
+        <action methode="avancer" couleur = "green">
+            <param nom="distance" type="int" value="180"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>        
+
+        <action methode="reculer" couleur="violet">
+            <param nom="distance" type="int" value="125"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action> 
+     
+		<action methode="setServomoteur"> <!--Grille sort du rangement (mouvement horizontal) -->
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="160"/>
+        </action>
+ 
+        <action methode="attendreMilliseconde"> 
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+        
+        <action methode="setServomoteur"> <!--Grille sort du rangement (mouvement horizontal) -->
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="175"/>
+        </action>
+ 
+        <action methode="attendreMilliseconde"> 
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+        
+        <action methode="setServomoteur"> <!--Grille sort du rangement (mouvement horizontal) -->
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="185"/>
+        </action>
+
+        <action methode="attendreMilliseconde"> 
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+              
+        <action methode="deplacerServoProgressivementDescenteGrille"> <!--Grille plonge progressivement dans le bac à poissons (mouvement vertical) -->
+           
+        </action>
+ 
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action>   
+        
+        <action methode="reculer" couleur="violet">
+            <param nom="distance" type="int" value="300"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>             
+        
+        <action methode="reculer" couleur="green">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action>
+                
+        <action methode="deplacerServoProgressivementMonteGrille"> <!--Grille remonte progressivement du bac à poissons en position stockage (mouvement vertical) -->            
+        </action>
+
+        <action methode="reculer" couleur="violet">
+            <param nom="distance" type="int" value="400"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>             
+
+        <action methode="avancer" couleur="green">
+            <param nom="distance" type="int" value="370"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+ 
+        <action methode="oscillerGrillePoissons">
+            <param nom="idServo" type="int" value="1"/>
+            <param nom="angle1" type="int" value="290"/>
+            <param nom="angle2" type="int" value="300"/>
+            <param nom="duree" type="int" value="100"/>
+            <param nom="nombre" type="int" value="5"/>
+        </action>        
+
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+        
+        <action methode="rangerGrille">
+        </action>             
+        
+    </objectif>	   
+  
+	<objectif nom="Coquillages" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="angle" type="int" value="90"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+
+
+        
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="coquillage2"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+      <!--attraper coquillage -->  
+
+		<action methode="retirerElementCarte">
+            <param nom="type" type="string" value="coquillage2"/>
+        </action>     
+
+        <action methode="avancer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+      <!--poser coquillage -->
+             
+		<action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="coquillage1"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+      <!--attraper coquillage -->  
+        
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="coquillage1"/>
+        </action>    
+        
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="depart"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>      
+
+        <action methode="avancer">
+            <param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        
+      <!--poser coquillage -->
+      
+    </objectif>
+  
+	<objectif nom="demarrageSecours" points="0" temp="5">
+		<action methode="demarrageSecours">
+        </action>
+	</objectif>
+</listeObjectif>

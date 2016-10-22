@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart">
+        </action>
+    </objectif>
+
+	<objectif nom="Funny Action" points="0" temp="5">
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="3"/>
+            <param nom="angle" type="int" value="15"/>
+        </action>
+    </objectif>  
+
+    <objectif nom="Init robot" points="0" temp="5">
+        <!--<action methode="setServomoteur">
+            <param nom="idServo" type="int" value="1"/>
+            <param nom="angle" type="int" value="0"/>
+        </action>
+        
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="10"/>
+        </action>
+        
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="6"/>
+        </action>
+        
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="10"/>
+        </action>-->
+        
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="3"/>
+            <param nom="angle" type="int" value="105"/>
+        </action>
+        
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="0"/>
+        </action>
+
+        <action methode="aveugler">
+        </action>
+
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="2000"/>
+        </action>
+
+    </objectif>
+     
+	<objectif nom="PousserBlocSable" points="0" temp="5">
+ 
+        <action methode="seDeplacerXY" couleur="violet">
+            <param nom="x" type="int" value="250"/>
+            <param nom="y" type="int" value="950"/>
+            <param nom="angle" type="int" value="0"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+
+        <action methode="seDeplacerXY" couleur="green">
+            <param nom="x" type="int" value="2750"/>
+            <param nom="y" type="int" value="950"/>
+            <param nom="angle" type="int" value="180"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="1"/>
+        </action> 
+
+        <action methode="seDeplacerDistanceAngle" couleur="violet">
+            <param nom="distance" type="int" value="175"/>
+            <param nom="angle" type="float" value="-90"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="green">
+            <param nom="distance" type="int" value="175"/>
+            <param nom="angle" type="float" value="90"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="violet">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="angle" type="float" value="110"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="green">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="angle" type="float" value="-110"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+        
+        <action methode="avancer">
+            <param nom="distance" type="int" value="700"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        
+        <action methode="reculer">
+            <param nom="distance" type="int" value="150"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+        
+        <action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="sableCentre"/>
+        </action>
+        
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="0"/>
+        </action>
+		
+    </objectif>
+
+    <objectif nom="CoquillagesMid" points="0" temp="5">
+
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="coquillageZone"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="violet">
+            <param nom="distance" type="int" value="390"/>
+            <param nom="angle" type="float" value="-45"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="green">
+            <param nom="distance" type="int" value="390"/>
+            <param nom="angle" type="float" value="45"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="violet">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="float" value="135"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="green">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="float" value="-135"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="1"/>
+        </action>
+
+        <action methode="avancer">
+            <param nom="distance" type="int" value="600"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="violet">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="float" value="45"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="green">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="float" value="-45"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="avancer">
+            <param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="violet">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="float" value="45"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="seDeplacerDistanceAngle" couleur="green">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="float" value="-45"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+	</objectif>
+
+	<objectif nom="demarrageSecours" points="0" temp="5">
+		<action methode="demarrageSecours">
+        </action>
+	</objectif>
+</listeObjectif>

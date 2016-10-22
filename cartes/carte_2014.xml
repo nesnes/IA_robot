@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<carte largeur="3000" hauteur="2000">
+    <!--Torche1-->
+  <PointInteret nom="Torche1" valeur="3" action="CapturerTorche" temp="7"  couleur="red">
+    <zoneAcces>
+      <cercle x="900" y="1100" rayon="130"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="900" y="1100" rayon="80"/>
+    </forme>
+    <zoneEvitement>
+        <cercle x="900" y="1100" rayon="170"/>
+    </zoneEvitement>
+  </PointInteret>
+    <!--Torche2-->
+  <PointInteret nom="Torche2" valeur="3" action="CapturerTorche" temp="7"  couleur="yellow">
+    <zoneAcces>
+      <cercle x="2100" y="1100" rayon="130"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="2100" y="1100" rayon="80"/>
+    </forme>
+    <zoneEvitement>
+        <cercle x="2100" y="1100" rayon="170"/>
+    </zoneEvitement>
+  </PointInteret>
+    <!--FeuHG-->
+  <PointInteret nom="FeuHG" valeur="3" action="CapturerFeu" temp="7"  couleur="red">
+    <zoneAcces>
+      <rectangle x1="800" y1="530" x2="1000" y2="670"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="882" y1="530" x2="918" y2="670"/>
+    </forme>
+    <zoneEvitement>
+        <rectangle x1="750" y1="480" x2="1050" y2="720"/>
+    </zoneEvitement>
+  </PointInteret>
+    <!--FeuBG-->
+  <PointInteret nom="FeuBG" valeur="3" action="CapturerFeu" temp="7"  couleur="red">
+    <zoneAcces>
+      <rectangle x1="800" y1="1530" x2="1000" y2="1670"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="882" y1="1530" x2="918" y2="1670"/>
+    </forme>
+    <zoneEvitement>
+        <rectangle x1="750" y1="1480" x2="1050" y2="1720"/>
+    </zoneEvitement>
+  </PointInteret>
+    <!--FeuMG-->
+  <PointInteret nom="FeuMG" valeur="3" action="CapturerFeu" temp="7"  couleur="red">
+    <zoneAcces>
+      <rectangle x1="330" y1="1000" x2="470" y2="1200"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="330" y1="1082" x2="470" y2="1112"/>
+    </forme>
+    <zoneEvitement>
+        <rectangle x1="280" y1="950" x2="520" y2="1250"/>
+    </zoneEvitement>
+  </PointInteret>
+    <!--FeuHD-->
+  <PointInteret nom="FeuHD" valeur="3" action="CapturerFeu" temp="7"  couleur="yellow">
+    <zoneAcces>
+      <rectangle x1="2000" y1="530" x2="2200" y2="670"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2082" y1="530" x2="2118" y2="670"/>
+    </forme>
+    <zoneEvitement>
+        <rectangle x1="1950" y1="480" x2="2250" y2="720"/>
+    </zoneEvitement>
+  </PointInteret>
+    <!--FeuBD-->
+  <PointInteret nom="FeuBD" valeur="3" action="CapturerFeu" temp="7"  couleur="yellow">
+    <zoneAcces>
+      <rectangle x1="2000" y1="1530" x2="2200" y2="1670"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2082" y1="1530" x2="2118" y2="1670"/>
+    </forme>
+    <zoneEvitement>
+        <rectangle x1="1950" y1="1480" x2="2250" y2="1720"/>
+    </zoneEvitement>
+  </PointInteret>
+    <!--FeuMD-->
+  <PointInteret nom="FeuMD" valeur="3" action="CapturerFeu" temp="7"  couleur="yellow">
+    <zoneAcces>
+      <rectangle x1="2530" y1="1000" x2="2670" y2="1200"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2530" y1="1082" x2="2670" y2="1112"/>
+    </forme>
+    <zoneEvitement>
+        <rectangle x1="2480" y1="950" x2="2720" y2="1250"/>
+    </zoneEvitement>
+  </PointInteret>
+</carte>

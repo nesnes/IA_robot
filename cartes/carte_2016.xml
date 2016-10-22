@@ -1,0 +1,492 @@
+<?xml version="1.0"?>
+<carte largeur="3000" hauteur="2000">
+
+  <!--=============================BORDS DE LA TABLE======================-->
+  <PointInteret nom="BordHaut" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="3022" y2="0"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordBas" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="2000" x2="3022" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordGauche" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="0" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordDroit" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="3000" y1="-22" x2="3022" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Sable========================-->
+
+  <PointInteret nom="Sable violet millieu" type="sableCentre" valeur="12" action="pousserSableDepart" temp="3"  couleur="violet">
+    <zoneAcces angle="0">
+        <cercle x="470" y="900" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="592" y1="842" x2="708" y2="958"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Sable vert millieu" type="sableCentre" valeur="12" action="pousserSableDepart" temp="3"  couleur="green">
+    <zoneAcces angle="180">
+        <cercle x="2530" y="900" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2292" y1="842" x2="2408" y2="958"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Sable violet haut" type="sableBord" valeur="12" action="recupererSableBordure" temp="10"  couleur="violet">
+    <zoneAcces angle="-90">
+        <cercle x="880" y="250" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="822" y1="0" x2="938" y2="116"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+  <PointInteret nom="Sable vert haut" type="sableBord" valeur="12" action="recupererSableBordure" temp="10"  couleur="green">
+    <zoneAcces angle="-90">
+        <cercle x="2120" y="250" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2062" y1="0" x2="2178" y2="116"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Chateaux Sable arriere" type="chateauSable" valeur="0" action="" temp=""  couleur="orange">
+    <zoneAcces angle="-90">
+        <cercle x="1500" y="300" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="1239" y1="0" x2="1761" y2="58"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Chateaux Sable millieu" type="chateauSable" valeur="0" action="" temp=""  couleur="orange">
+    <zoneAcces angle="-90">
+        <cercle x="1500" y="300" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="1413" y1="58" x2="1587" y2="116"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Chateaux Sable avant" type="chateauSable" valeur="0" action="" temp=""  couleur="orange">
+    <zoneAcces angle="-90">
+        <cercle x="1500" y="300" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="1471" y1="116" x2="1529" y2="174"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+
+
+  <!--====================================ZONE DE DEPART======================-->
+
+
+  <PointInteret nom="Depart violet" type="depart" valeur="0" action="" temp=""  couleur="violet">
+    <zoneAcces angle="-90">
+        <cercle x="150" y="850" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="0" y1="600" x2="300" y2="1100"/>
+    </forme>
+    <zoneEvitement>
+
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Depart vert" type="depart" valeur="0" action="" temp=""  couleur="green">
+    <zoneAcces angle="-90">
+        <cercle x="2850" y="850" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2700" y1="600" x2="3000" y2="1100"/>
+    </forme>
+    <zoneEvitement>
+
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+
+  <!--====================================BORDURES=================================-->
+
+  <PointInteret nom="Bordure haut gauche" type="bordure" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <rectangle x1="800" y1="0" x2="822" y2="200"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+ <PointInteret nom="Bordure haut droit" type="bordure" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <rectangle x1="2178" y1="0" x2="2200" y2="200"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+ <PointInteret nom="Bordure milieu horizontal" type="bordure" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <rectangle x1="900" y1="750" x2="2100" y2="772"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Bordure milieu vertical" type="bordure" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <rectangle x1="1476" y1="750" x2="1524" y2="1350"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+  <!--====================================CABANNE=================================-->
+
+  <PointInteret nom="Cabanne violet 2" type="cabanneB" valeur="10" action="fermerCabanne" temp=""  couleur="violet">
+    <zoneAcces angle="-90">
+        <cercle x="300" y="250" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="250" y1="0" x2="350" y2="70"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Cabanne violet 1" type="cabanneA" valeur="10" action="fermerCabanne" temp=""  couleur="violet">
+    <zoneAcces angle="-90">
+        <cercle x="600" y="250" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="550" y1="0" x2="650" y2="70"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+ <PointInteret nom="Cabanne vert 1" type="cabanneA" valeur="10" action="fermerCabanne" temp=""  couleur="green">
+    <zoneAcces angle="-90">
+        <cercle x="2400" y="250" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2350" y1="0" x2="2450" y2="70"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+ <PointInteret nom="Cabanne vert 2" type="cabanneB" valeur="10" action="fermerCabanne" temp=""  couleur="green">
+    <zoneAcces angle="-90">
+        <cercle x="2700" y="250" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2650" y1="0" x2="2750" y2="70"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+
+  <!--====================================ESTRADE=================================-->
+
+  <PointInteret nom="Estrade violet" type="estrade" valeur="0" action="" temp=""  couleur="violet">
+    <zoneAcces angle="135">
+        <cercle x="460" y="1700" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="0" y="2000" rayon="250"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>t
+
+  <PointInteret nom="Estrade violet superieur" type="estradeSup" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="0" y="2000" rayon="150"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Estrade vert" type="estrade" valeur="0" action="" temp=""  couleur="green">
+    <zoneAcces angle="45">
+        <cercle x="2540" y="1700" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="3000" y="2000" rayon="250"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Estrade vert superieur" type="estradeSup" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="3000" y="2000" rayon="150"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+  <!--====================================BAC A POISSON=================================-->
+
+  <PointInteret nom="Bac violet" type="bac" valeur="20" action="pecherPoisson" temp="15"  couleur="violet">
+     <zoneAcces angle="-90">
+        <cercle x="400" y="1600" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="498" y1="2022" x2="908" y2="2232"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Bac vert" type="bac" valeur="20" action="pecherPoisson" temp="15"  couleur="green">
+    <zoneAcces angle="-90">
+        <cercle x="2502" y="1600" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2092" y1="2022" x2="2502" y2="2232"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="filet" type="filet" valeur="0" action="" temp=""  couleur="green">
+    <forme>
+      <rectangle x1="1500" y1="1978" x2="2072" y2="2232"/>
+    </forme>
+    <zoneAcces angle="180">
+        <cercle x="1786" y="1800" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="filet" type="filet" valeur="0" action="" temp=""  couleur="violet">
+    <forme>
+      <rectangle x1="928" y1="1978" x2="1500" y2="2232"/>
+    </forme>
+    <zoneAcces angle="180">
+        <cercle x="1214" y="1800" rayon="20" />
+    </zoneAcces>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+<!--====================================Coquillage=================================-->
+
+  <PointInteret nom="coquillage1" type="coquillage1" valeur="0" action="" temp=""  couleur="violet">
+    <forme>
+      <cercle x="200" y="1250" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="200" y="1250" rayon="138"/>
+    </zoneEvitement>
+    <zoneAcces angle="-90">
+        <cercle x="200" y="1300" rayon="20" />
+    </zoneAcces>
+  </PointInteret>
+
+  <PointInteret nom="coquillage2" type="coquillage2" valeur="0" action="" temp=""  couleur="violet">
+    <forme>
+      <cercle x="200" y="1550" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="200" y="1550" rayon="138"/>
+    </zoneEvitement>
+    <zoneAcces angle="-90">
+        <cercle x="200" y="1600" rayon="20" />
+    </zoneAcces>
+  </PointInteret>
+
+  <PointInteret nom="coquillage3" type="coquillageZone" valeur="0" action="" temp=""  couleur="violet">
+    <forme>
+      <cercle x="700" y="1250" rayon="38"/>
+    </forme>
+    <zoneAcces angle="90">
+      <cercle x="700" y="1000" rayon="20" />
+    </zoneAcces>
+    <zoneEvitement>
+    	<cercle x="700" y="1250" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage4" type="coquillage4" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="700" y="1550" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="700" y="1550" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage5" type="coquillage5" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="900" y="1450" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="900" y="1450" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage6" type="coquillage6" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="1200" y="1650" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="1200" y="1650" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage7" type="coquillage7" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="1500" y="1550" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="1500" y="1550" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage8" type="coquillage8" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="1500" y="1850" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="1500" y="1850" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage9" type="coquillage9" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="1800" y="1650" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="1800" y="1650" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage10" type="coquillage10" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="2100" y="1450" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="2100" y="1450" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage11" type="coquillageZone" valeur="0" action="" temp=""  couleur="green">
+    <forme>
+      <cercle x="2300" y="1250" rayon="38"/>
+    </forme>
+    <zoneAcces angle="90">
+      <cercle x="2300" y="1000" rayon="20" />
+    </zoneAcces>
+    <zoneEvitement>
+    	<cercle x="2300" y="1250" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage12" type="coquillage12" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="2300" y="1550" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="2300" y="1550" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage13" type="coquillage1" valeur="0" action="" temp=""  couleur="green">
+    <forme>
+      <cercle x="2800" y="1250" rayon="38"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="2800" y="1300" rayon="20" />
+    </zoneAcces>
+    <zoneEvitement>
+    	<cercle x="2800" y="1250" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage14" type="coquillage2" valeur="0" action="" temp=""  couleur="green">
+    <forme>
+      <cercle x="2800" y="1550" rayon="38"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="2800" y="1600" rayon="20" />
+    </zoneAcces>
+    <zoneEvitement>
+    	<cercle x="2800" y="1550" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage15PecheViolet" type="coquillage15" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="700" y="1850" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="700" y="1850" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="coquillage16PecheGreen" type="coquillage16" valeur="0" action="" temp=""  couleur="orange">
+    <forme>
+      <cercle x="2300" y="1850" rayon="38"/>
+    </forme>
+    <zoneEvitement>
+    	<cercle x="2300" y="1850" rayon="138"/>
+    </zoneEvitement>
+  </PointInteret>
+
+</carte>

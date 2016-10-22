@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+    <objectif nom="Funny Action" points="0" temp="5">
+        <action methode="funnyAction">
+        </action>
+    </objectif>
+
+    <objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart">
+        </action>
+    </objectif>
+
+
+    <objectif nom="Init robot" points="0" temp="5">
+        <action methode="deplacerAscenseur"><!-- Ascensseur en bas -->
+            <param nom="angle" type="int" value="20"/>
+       </action>
+
+        <action methode="deplacerBrasBalayageID"><!-- retraction balyage -->
+            <param nom="angle" type="int" value="0"/>
+        </action>
+
+        <action methode="deplacerPinceAscenseur"><!-- Pince ouverte -->
+            <param nom="angle" type="int" value="180"/>
+        </action>
+
+      <action methode="deplacerBrasBalle"><!-- bras balle -->
+            <param nom="angle" type="int" value="100"/>
+        </action>
+    </objectif>
+
+
+    <objectif nom="Poissons" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="angle" type="int" value="90"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="bac"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <!--DeplierBras-->
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <!--RepierBras-->
+        <action methode="seDeplacerXY" couleur="violet">
+            <param nom="x" type="float" value="1050"/>
+            <param nom="y" type="float" value="1850"/>
+            <param nom="angle" type="float" value="180"/>
+        </action>
+
+        <action methode="seDeplacerXY" couleur="green">
+            <param nom="x" type="float" value="1850"/>
+            <param nom="y" type="float" value="1850"/>
+            <param nom="angle" type="float" value="180"/>
+        </action>
+
+    </objectif>
+
+    <objectif nom="PousserBlocSable" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="48"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="sableCentre"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="sableCentre"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+    </objectif>
+
+    <objectif nom="FermerCabanneA" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="48"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="cabanneA"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+    </objectif>
+
+    <objectif nom="FermerCabanneB" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="48"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="cabanneB"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+    </objectif>
+
+
+</listeObjectif>

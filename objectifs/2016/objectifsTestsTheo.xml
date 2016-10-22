@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart">
+        </action>
+    </objectif>
+    
+    <objectif nom="Init robot" points="0" temp="5">
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="1"/>
+            <param nom="angle" type="int" value="0"/>
+        </action>
+        
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="10"/>
+        </action>
+        
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="6"/>
+        </action>
+        
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="10"/>
+        </action>
+        
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="3"/>
+            <param nom="angle" type="int" value="105"/>
+        </action>
+    </objectif>
+	
+	<objectif nom="actionner grille " points="0" temp="5">
+	
+		<action methode="setServomoteur"> <!--Grille sort du rangement (mouvement horizontal) -->
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="160"/>
+        </action>
+ 
+        <action methode="attendreMilliseconde"> 
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+        
+        <action methode="setServomoteur"> <!--Grille sort du rangement (mouvement horizontal) -->
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="175"/>
+        </action>
+ 
+        <action methode="attendreMilliseconde"> 
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+        
+        <action methode="setServomoteur"> <!--Grille sort du rangement (mouvement horizontal) -->
+            <param nom="idServo" type="int" value="2"/>
+            <param nom="angle" type="int" value="185"/>
+        </action>
+
+        <action methode="attendreMilliseconde"> 
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+              
+        <action methode="deplacerServoProgressivementDescenteGrille"> <!--Grille plonge progressivement dans le bac à poissons (mouvement vertical) -->
+           
+        </action>
+ 
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action>   
+        
+   <!--     <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>             
+-->
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action>
+                
+        <action methode="deplacerServoProgressivementMonteGrille"> <!--Grille remonte progressivement du bac à poissons en position stockage (mouvement vertical) -->            
+        </action>
+
+   <!--     <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>             
+-->
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action>
+
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="1000"/>
+        </action>  
+ 
+        <action methode="oscillerGrillePoissons">
+            <param nom="idServo" type="int" value="1"/>
+            <param nom="angle1" type="int" value="290"/>
+            <param nom="angle2" type="int" value="300"/>
+            <param nom="duree" type="int" value="100"/>
+            <param nom="nombre" type="int" value="5"/>
+        </action>        
+
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+        
+        <action methode="rangerGrille">
+        </action>             
+        
+    </objectif>	   
+
+	<objectif nom="Tester Pelle" points="0" temp="5">
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="1"/>
+        </action>
+
+        <action methode="attendreMilliseconde"> <!--deplacement -->
+            <param nom="duree" type="int" value="500"/>
+        </action> 
+        
+        <action methode="setPelle">
+            <param nom="deployee" type="int" value="0"/>
+        </action>
+
+    </objectif>    
+    
+
+    
+    
+	<!-- stockage poisson angle 240, deplacement, oscillation au dessus filet, retour stockage -->
+	<objectif nom="Funny Action" points="0" temp="5">
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="3"/>
+            <param nom="angle" type="int" value="15"/>
+        </action>
+    </objectif>
+
+	
+
+</listeObjectif>

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="PousserCabaneA" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="48"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="cabanneA"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        
+        <action methode="avancer">
+            <param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        		
+		<action methode="reculer">
+			<param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+			
+    </objectif>
+
+  	<objectif nom="PousserCabaneB" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="48"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="cabanneB"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        
+        <action methode="avancer">
+            <param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        		
+		<action methode="reculer">
+			<param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+			
+    </objectif> 
+    
+      	<objectif nom="RecupererSable" points="0" temp="5">
+       <!--<action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="48"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+       </action>-->
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="sableBord"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        
+        <action methode="avancer">
+            <param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+       <!--prendre sable  	-->		 	
+		<action methode="seDeplacerXY">
+			<param nom="x" type="float" value="420"/>
+			<param nom="y" type="float" value="1200"/>
+			<param nom="angle" type="float" value="0"/>
+		</action>
+		<action methode="seDeplacerXY">
+			<param nom="x" type="float" value="1200"/>
+			<param nom="y" type="float" value="1200"/>
+			<param nom="angle" type="float" value="0"/>
+		</action>
+       <!--poser sable  	-->			
+    </objectif> 
+    
+</listeObjectif>
