@@ -88,7 +88,7 @@ class Fenetre:
             taille=((maxX - minX)*self.ratio)*2/len(nom)
             if taille < 5:taille=5
             if taille > 36:taille=36
-            titre = Text(Point((center["x"]-len(nom)/taille)*self.ratio, center["y"]*self.ratio), nom)
+            titre = Text(Point(center["x"]-(len(nom)/taille)*self.ratio, center["y"]), nom)
             titre.setSize(int(taille))
             titre.draw(self.win)
 

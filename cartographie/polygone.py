@@ -19,4 +19,3 @@ class Polygone(Forme):
     def dessiner(self, fenetre):
         if len(self.pointList) > 1 :
             fenetre.drawPoly(self.nom, self.pointList, self.couleur)
-            fenetre.drawCircle("", self.x, self.y, 10, "red")
