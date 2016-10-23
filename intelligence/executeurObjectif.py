@@ -25,13 +25,13 @@ def waitForFunnyAction(executeurObjectif):
 
 class ExecuteurObjectif:
 
-    def __init__(self,robot,ojectifs,carte):
+    def __init__(self,robot,ojectifs,carte, chercheurChemin):
         self.robot = robot
         self.fichierObjectifs = ojectifs
         self.fichierCarte = carte
         self.matchDuration = 90
 
-        chercher = ChercheurChemin()
+        chercher = chercheurChemin
         lecteurObjectif = LecteurObjectif(self.fichierObjectifs)
         carte = LecteurCarte(self.fichierCarte, robot.largeur)
 

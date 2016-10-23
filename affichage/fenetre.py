@@ -10,6 +10,13 @@ class Fenetre:
         self.ratio = float(ratio)
         self.win = GraphWin('Carte', int(self.largeur*self.ratio), int(self.hauteur*self.ratio)) # give title and dimensions
         self.win.setBackground('white')
+        self.disableRedraw()
+
+    def disableRedraw(self):
+        self.win.autoflush=False
+
+    def enableRedraw(self):
+        self.win.autoflush=True
 
     def drawCircle(self,nom,x,y,rayon,color):
         x +=  self.offset

@@ -27,7 +27,6 @@ def main():
     fenetre = None
     robot = None
 
-    chercher = ChercheurChemin() # initialisation du PathFinder
     carte = LecteurCarte(fichierCarte, largeurRobot) # creation du lecteur de carte
     listePointInteret = carte.lire()   # chargement de la carte
 
@@ -37,6 +36,10 @@ def main():
         affichage = AfficheurCarte(fichierCarte,listePointInteret,0.25, 300)
         fenetre = affichage.fenetre
         affichage.afficherCarte() # affichage de la carte
+
+    chercher = ChercheurChemin(carte.getTaille(), listePointInteret, fenetre) # initialisation du PathFinder
+    #chercher.graph.dessiner(fenetre)
+    fenetre.win.redraw()
 
     if(robotConnected):
         if screen:
@@ -49,7 +52,9 @@ def main():
             pass
     else:
     	robot = Robot('',largeurRobot,chercher,listePointInteret,fenetre)
-    IA = ExecuteurObjectif(robot,fichierObjectif,fichierCarte) #creation de l'IA
+
+
+    IA = ExecuteurObjectif(robot,fichierObjectif,fichierCarte, chercher) #creation de l'IA
 
 
     #if(robotConnected):
@@ -67,7 +72,7 @@ def main():
             y2=(click2.getY())/fenetre.ratio-fenetre.offset
             print "(",x1,y1,")","(",x2,y2,")"
             listMouvement = chercher.trouverChemin(x1,y1,x2,y2,listePointInteret,fenetre)
-            if listMouvement == None:
+            if listMouvement == None or len(listMouvement) == 0:
                 print "WARNING Path Not Found"
             else:
                 for ligne in listMouvement:
