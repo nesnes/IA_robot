@@ -3,6 +3,7 @@ import math
 from cartographie.cercle import Cercle
 from cartographie.polygone import Polygone
 from cartographie.rectangle import Rectangle
+from cartographie.ligne import Ligne
 from zoneAcces import ZoneAcces
 from cartographie.zoneEvitement import ZoneEvitement
 from cartographie.pointInteret import PointInteret
@@ -88,15 +89,65 @@ class LecteurCarte:
             y2 = forme.y2 + self.distanceEvitement
             return ZoneEvitement(Rectangle("",x1,y1,x2,y2,"red"))
         elif isinstance(forme, Polygone):
-            polygone = Polygone("", "red")
-            for point in forme.pointList:
-                x = float(point["x"]) - forme.x
-                y = float(point["y"]) - forme.y
-                dist = math.sqrt(pow(x, 2) + pow(y, 2))
-                newDist = dist + self.distanceEvitement
-                x = (newDist / dist) * x
-                y = (newDist / dist) * y
-                x += forme.x
-                y += forme.y
-                polygone.addPoint(x, y)
-            return ZoneEvitement(polygone)
+            return self.createEvitementPolygone(forme)
+
+    def createEvitementPolygone(self, forme):
+        polygone = Polygone("", "red")
+        newPoints=[]
+        for i in range(0, len(forme.pointList)):
+            if i>0:
+                lastPoint = forme.pointList[i-1]
+            else:
+                lastPoint = forme.pointList[len(forme.pointList)-1]
+            point = forme.pointList[i]
+            lx = float(lastPoint["x"])
+            ly = float(lastPoint["y"])
+            x = float(point["x"])
+            y = float(point["y"])
+            dx = x-lx
+            dy = y-ly
+            dist = math.sqrt(pow(dx, 2) + pow(dy, 2))
+            newDist = self.distanceEvitement
+            if(dx>0 and dy<0):
+                dy *= -1
+            elif(dx>0 and dy>0):
+                dx *= -1
+            elif(dx<0 and dy<0):
+                dx *= -1
+            elif(dx<0 and dy>0):
+                dy *= -1
+            ax = (newDist / dist) * -dx + lx
+            ay = (newDist / dist) * -dy + ly
+            bx = (newDist / dist) * -dx + x
+            by = (newDist / dist) * -dy + y
+            newPoints.append([ax, ay])
+            newPoints.append([bx, by])
+        for i in range(0, len(newPoints), 2):
+            if i>0:
+                lastPoint = newPoints[i-1]
+            else:
+                lastPoint = newPoints[len(newPoints)-1]
+            polyPoint = forme.pointList[i/2-1]
+            px = float(polyPoint["x"])
+            py = float(polyPoint["y"])
+            point = newPoints[i]
+            lx = float(lastPoint[0])
+            ly = float(lastPoint[1])
+            x = float(point[0])
+            y = float(point[1])
+            precision=3
+            polygone.addPoint(lx, ly)
+            for p in range(1, precision+2):
+                f1=1.0/float(precision+2)*(p)
+                f2=1 - f1
+                cx = (lx*f2 + x*f1) - px
+                cy = (ly*f2 + y*f1) - py
+                dist = math.sqrt(pow(cx, 2) + pow(cy, 2))
+                newDist = self.distanceEvitement
+                cx = (newDist / dist) * cx
+                cy = (newDist / dist) * cy
+                cx += px
+                cy += py
+                polygone.addPoint(cx, cy)
+            polygone.addPoint(x, y)
+        return ZoneEvitement(polygone)

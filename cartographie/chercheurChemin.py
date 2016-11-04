@@ -15,7 +15,7 @@ class ChercheurChemin:
         self.listePointInteret = listePointInteret
         self.graph = Graph()
         self.fenetre = fenetre
-        self.step = 60
+        self.step = 40
         self.createGraph(self.listePointInteret)
 
     def createGraph(self, listePointInteret):
