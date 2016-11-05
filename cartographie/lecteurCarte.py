@@ -93,7 +93,9 @@ class LecteurCarte:
 
     def createEvitementPolygone(self, forme):
         polygone = Polygone("", "red")
+        precision = 5
         newPoints=[]
+        #Creation des contour: eloignement des cotes
         for i in range(0, len(forme.pointList)):
             if i>0:
                 lastPoint = forme.pointList[i-1]
@@ -109,19 +111,20 @@ class LecteurCarte:
             dist = math.sqrt(pow(dx, 2) + pow(dy, 2))
             newDist = self.distanceEvitement
             if(dx>0 and dy<0):
-                dy *= -1
+                dx *= -1
             elif(dx>0 and dy>0):
                 dx *= -1
             elif(dx<0 and dy<0):
                 dx *= -1
             elif(dx<0 and dy>0):
-                dy *= -1
-            ax = (newDist / dist) * -dx + lx
-            ay = (newDist / dist) * -dy + ly
-            bx = (newDist / dist) * -dx + x
-            by = (newDist / dist) * -dy + y
+                dx *= -1
+            ax = lx + (newDist / dist) * dy
+            ay = ly + (newDist / dist) * dx
+            bx = x + (newDist / dist) * dy
+            by = y + (newDist / dist) * dx
             newPoints.append([ax, ay])
             newPoints.append([bx, by])
+        #Creation des contours des coins
         for i in range(0, len(newPoints), 2):
             if i>0:
                 lastPoint = newPoints[i-1]
@@ -135,10 +138,9 @@ class LecteurCarte:
             ly = float(lastPoint[1])
             x = float(point[0])
             y = float(point[1])
-            precision=3
             polygone.addPoint(lx, ly)
-            for p in range(1, precision+2):
-                f1=1.0/float(precision+2)*(p)
+            for p in range(1, precision+1):
+                f1=(1.0/float(precision+1))*(p)
                 f2=1 - f1
                 cx = (lx*f2 + x*f1) - px
                 cy = (ly*f2 + y*f1) - py
