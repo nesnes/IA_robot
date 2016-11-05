@@ -110,14 +110,7 @@ class LecteurCarte:
             dy = y-ly
             dist = math.sqrt(pow(dx, 2) + pow(dy, 2))
             newDist = self.distanceEvitement
-            if(dx>0 and dy<0):
-                dx *= -1
-            elif(dx>0 and dy>0):
-                dx *= -1
-            elif(dx<0 and dy<0):
-                dx *= -1
-            elif(dx<0 and dy>0):
-                dx *= -1
+            dx *= -1
             ax = lx + (newDist / dist) * dy
             ay = ly + (newDist / dist) * dx
             bx = x + (newDist / dist) * dy
