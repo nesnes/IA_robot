@@ -74,7 +74,7 @@ def main():
                 for ligne in listMouvement:
                     ligne.setCouleur("green")
                     ligne.dessiner(fenetre)
-
+            fenetre.win.redraw()
     time.sleep(5)
 
 main()

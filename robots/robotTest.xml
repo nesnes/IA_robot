@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<robot nom="RobotTest" rayon="150" port="/dev/ttyACM0">
+<robot nom="RobotTest" rayon="153" port="/dev/ttyACM0">
 
-    <position nom="PositionDepartA" couleur="blue" x="100" y="200" angle="90"/>
-    <position nom="PositionDepartB" couleur="yellow" x="1900" y="200" angle="90"/>
+    <position nom="PositionDepartA" couleur="blue" x="850" y="200" angle="0"/>
+    <position nom="PositionDepartB" couleur="yellow" x="2150" y="200" angle="180"/>
 
     <equipement nom="reserveModuleGauche" type="variable" valeur="0" max="5"/>
     <equipement nom="reserveModuleDroite" type="variable" valeur="0" max="5"/>

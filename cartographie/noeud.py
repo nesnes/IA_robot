@@ -9,6 +9,7 @@ class Noeud:
         self.listVoisin = []
         self.visite=False
         self.pere = None
+        self.colisionObject = []
 
     def addVoisin(self, voisin):
         if not voisin in self.listVoisin:
@@ -26,5 +27,7 @@ class Noeud:
 
     def dessiner(self, fenetre, color="black"):
         size = 5
+        if(color == "black" and len(self.colisionObject) != 0):
+            color = "purple"
         fenetre.drawLine("", self.x-size, self.y-size, self.x+size, self.y+size, color)
         fenetre.drawLine("", self.x+size, self.y-size, self.x-size, self.y+size, color)

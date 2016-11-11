@@ -29,12 +29,12 @@ class Robot:
         if self.communication.portserie == '':
             self.startTime = time.time()
             self.couleur = self.listPosition[0].couleur
-            print("Le robot est "+self.couleur)
             self.x = self.listPosition[0].x
             self.y = self.listPosition[0].y
             self.angle = self.listPosition[0].angle #0 degres =3 heures
             self.startX = self.x
             self.startY = self.y
+            print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
             return True
         rcv = self.communication.recevoir()
         print rcv
@@ -55,11 +55,12 @@ class Robot:
             self.x = self.listPosition[0].x
             self.y = self.listPosition[0].y
             self.angle = self.listPosition[0].angle #0=3h
+
         else:
             self.x = self.listPosition[1].x
             self.y = self.listPosition[1].y
             self.angle = self.listPosition[1].angle #180=9h
-
+        #self.retirerElementCarte("depart", self.couleur)
         print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
         self.startTime = time.time()
         self.startX = self.x
@@ -95,12 +96,6 @@ class Robot:
             print "ERREUR: La methode",action.methode,"n'existe pas!!!"
             return False
 
-    def demarrageSecours(self): #blind the robot if he didn't move for the first 10 seconds
-        if( (abs(self.x-self.startX) <= 100) and (abs(self.y-self.startY) <= 100) and (self.getRunningTime() > 10) ):
-            self.aveugler()
-            print "### BIG WARNING ###: demarrageSecours a ete active, verifier les seuils des capteurs de distance."
-        return True
-
     def positionAtteinte(self,x,y,x1,y1,erreur):
         if( (abs(x-x1) <= erreur) and (abs(y-y1) <= erreur) ):
             return True
@@ -120,7 +115,7 @@ class Robot:
             res = 360 + res
         return res
 
-    def seDeplacerXY(self,x,y,angle, vitesse=1):
+    def seDeplacerXY(self,x,y,angle, vitesse=1.0):
         print "\t \t Deplacement: x:",x," y:",y," angle:",angle
         chemin = self.chercher.trouverChemin(self.x,self.y,x,y,self.listPointInteret)
         if chemin == None:
