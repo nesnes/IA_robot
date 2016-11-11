@@ -17,12 +17,6 @@ class Robot:
         self.listPosition = []
         self.listTelemetre = []
         self.couleur=""
-        self.ascenseurID = 6 #AX12 with id 6
-        self.pinceAscenseurID = 4 #AX12 with id 4
-        self.brasBalleID = 3 #AX12 with id 3
-        self.chargeurPopCornID = 1 #AX12 with id 1
-        self.brasBalayageID = 5 #AX12 with id 5
-        self.porteGobletDroitID = 2 #AX12 with id 2
         self.startTime = time.time()
 
     def initialiser(self, chercher, listPointInteret, fenetre=None):
@@ -158,7 +152,7 @@ class Robot:
             ligne = Ligne("",xprev,yprev,self.x,self.y,"blue")
             ligne.dessiner(self.fenetre)
 
-    def seDeplacerDistanceAngle(self,distance,angle,vitesse=1, retry=1, recalage = 0):
+    def seDeplacerDistanceAngle(self,distance,angle,vitesse=1.0, retry=1, recalage = 0):
         print "\t \tDeplacement: distance:",str(distance)," angle:",str(angle)
         if self.communication.portserie != '':
             self.communication.envoyer("M;"+str(distance)+";"+str(angle)+";"+str(vitesse)+";1\r\n")
@@ -238,13 +232,14 @@ class Robot:
             couleur = self.couleur
         #recherche de l'objet
         for obj in self.listPointInteret:
-            if obj.type == type and (obj.couleur == couleur or obj.couleur =="orange"):
+            if obj.type == type and (obj.couleur == couleur or obj.couleur not in [self.listPosition[0].couleur, self.listPosition[1].couleur]):
                 element = obj
                 break
         if element == None:
             print "Element non trouve!!!!"
             return False
         self.listPointInteret.remove(element)
+        self.chercher.createGraph(self.listPointInteret)
         return True
 
     def avancer(self,distance,vitesse=0.5):
