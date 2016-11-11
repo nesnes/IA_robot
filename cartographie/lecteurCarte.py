@@ -3,7 +3,6 @@ import math
 from cartographie.cercle import Cercle
 from cartographie.polygone import Polygone
 from cartographie.rectangle import Rectangle
-from cartographie.ligne import Ligne
 from zoneAcces import ZoneAcces
 from cartographie.zoneEvitement import ZoneEvitement
 from cartographie.pointInteret import PointInteret

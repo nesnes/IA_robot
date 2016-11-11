@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot nom="RobotTest" rayon="150" port="/dev/ttyACM0">
+
+    <position nom="PositionDepartA" couleur="blue" x="100" y="200" angle="90"/>
+    <position nom="PositionDepartB" couleur="yellow" x="1900" y="200" angle="90"/>
+
+    <equipement nom="reserveModuleGauche" type="variable" valeur="0" max="5"/>
+    <equipement nom="reserveModuleDroite" type="variable" valeur="0" max="5"/>
+
+    <equipement nom="telemetreArriere" type="telemetre" id="0" x="0" y="-500" angle="0"/>
+    <equipement nom="telemetreAvant" type="telemetre" id="1" x="0" y="500" angle="180"/>
+
+</robot>

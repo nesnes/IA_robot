@@ -2,29 +2,21 @@ import time
 import math
 from intelligence.communicationRobot import CommunicationRobot
 from cartographie.ligne import Ligne
-
-#Define the colors of the year, must be in english for a proper display color
-COULEUR_A="violet"
-COULEUR_B="green"
-
-#Starting position of the robot for each colors
-COULEUR_A_X=150
-COULEUR_A_Y=950
-COULEUR_A_ANGLE=0
-
-COULEUR_B_X=2850
-COULEUR_B_Y=950
-COULEUR_B_ANGLE=180
+from intelligence.position import Position
 
 class Robot:
 
-    def __init__(self,port,largeur,chercher,listPointInteret, fenetre=None):
-        self.communication = CommunicationRobot(port)
-        self.fenetre = fenetre
+    def __init__(self,port,largeur):
+        self.communication = None
+        self.port = port
+        self.fenetre = None
         self.largeur = largeur
-        self.chercher = chercher
-        self.listPointInteret = listPointInteret
-        self.couleur=COULEUR_A
+        self.chercher = None
+        self.listPointInteret = None
+        self.listVariables = []
+        self.listPosition = []
+        self.listTelemetre = []
+        self.couleur=""
         self.ascenseurID = 6 #AX12 with id 6
         self.pinceAscenseurID = 4 #AX12 with id 4
         self.brasBalleID = 3 #AX12 with id 3
@@ -33,14 +25,20 @@ class Robot:
         self.porteGobletDroitID = 2 #AX12 with id 2
         self.startTime = time.time()
 
+    def initialiser(self, chercher, listPointInteret, fenetre=None):
+        self.communication = CommunicationRobot(self.port)
+        self.fenetre = fenetre
+        self.chercher = chercher
+        self.listPointInteret = listPointInteret
+
     def attendreDepart(self):
         if self.communication.portserie == '':
             self.startTime = time.time()
-            self.couleur=COULEUR_B
+            self.couleur = self.listPosition[0].couleur
             print("Le robot est "+self.couleur)
-            self.x=COULEUR_B_X
-            self.y=COULEUR_B_Y
-            self.angle=COULEUR_B_ANGLE #0 degres =3 heures
+            self.x = self.listPosition[0].x
+            self.y = self.listPosition[0].y
+            self.angle = self.listPosition[0].angle #0 degres =3 heures
             self.startX = self.x
             self.startY = self.y
             return True
@@ -51,22 +49,22 @@ class Robot:
             rcv = self.communication.recevoir()
             print rcv
             #check if we recieved the color
-            if(rcv.__contains__("VERT")):
-                self.couleur=COULEUR_A
+            if(rcv.__contains__("COLOR A")):
+                self.couleur=self.listPosition[0].couleur
                 print("Le robot est "+self.couleur)
-            if(rcv.__contains__("JAUNE")):
-                self.couleur=COULEUR_B
+            if(rcv.__contains__("COLOR B")):
+                self.couleur=self.listPosition[1].couleur
                 print("Le robot est "+self.couleur)
 
         #Set the initial positions
-        if(self.couleur==COULEUR_A):
-            self.x=COULEUR_A_X
-            self.y=COULEUR_A_Y
-            self.angle=COULEUR_A_ANGLE #0=3h
+        if(self.couleur==self.listPosition[0].couleur):
+            self.x = self.listPosition[0].x
+            self.y = self.listPosition[0].y
+            self.angle = self.listPosition[0].angle #0=3h
         else:
-            self.x=COULEUR_B_X
-            self.y=COULEUR_B_Y
-            self.angle=COULEUR_B_ANGLE #180=9h
+            self.x = self.listPosition[1].x
+            self.y = self.listPosition[1].y
+            self.angle = self.listPosition[1].angle #180=9h
 
         print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
         self.startTime = time.time()

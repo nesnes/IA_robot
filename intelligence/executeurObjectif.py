@@ -8,15 +8,19 @@ import signal
 import sys
 
 stopThread=False
-
 def signal_handler(signal, frame):
+    global stopThread
     stopThread=True
+    print("Exit requested, stopping IA...")
+    time.sleep(0.5)
+    print("Done.")
     exit()
 
 def waitForFunnyAction(executeurObjectif):
+    global stopThread
     print "Funny Action thread running"
     while executeurObjectif.robot.getRunningTime() <= executeurObjectif.matchDuration and not stopThread:
-        time.sleep(750/1000)
+        time.sleep(0.5)
     if(stopThread):
         return
     for objectif in executeurObjectif.listeObjectifs:

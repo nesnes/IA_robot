@@ -1,12 +1,8 @@
 import time
-
-
-
-from cartographie.collison import Collision
 from cartographie.lecteurCarte import LecteurCarte
 from cartographie.chercheurChemin import ChercheurChemin
-from intelligence.lecteurObjectif import LecteurObjectif
 from intelligence.robot import Robot
+from intelligence.lecteurRobot import LecteurRobot
 from intelligence.executeurObjectif import ExecuteurObjectif
 
 #X;SERVO;ANGINIT;ANGFIN;TEMPSSecondesFloat
@@ -20,16 +16,20 @@ def main():
         screen = True
         robotConnected = False
 
-    largeurRobot = 150.0 # son rayon en mm, pour eviter de cogner contre des elements de la table
     fichierCarte = "cartes/carte_2017.xml"
     fichierObjectif = "objectifs/2017/objectifsMatch.xml"
-    #fichierObjectif = "intelligence/objectifsCoquillages3.xml"
-    fenetre = None
-    robot = None
+    fichierRobot = "robots/robotTest.xml"
 
-    carte = LecteurCarte(fichierCarte, largeurRobot) # creation du lecteur de carte
+    fenetre = None
+
+    # creation du robot
+    lecteurRobot = LecteurRobot(fichierRobot)
+    robot = lecteurRobot.lire()
+    # creation du lecteur de carte
+    carte = LecteurCarte(fichierCarte, robot.largeur)
     listePointInteret = carte.lire()   # chargement de la carte
 
+    # creation de l'afficihage de la carte
     if(screen):
         from affichage.afficheurCarte import AfficheurCarte
         from affichage.fenetre import Fenetre
@@ -37,22 +37,18 @@ def main():
         fenetre = affichage.fenetre
         affichage.afficherCarte() # affichage de la carte
 
-    chercher = ChercheurChemin(carte.getTaille(), listePointInteret, fenetre) # initialisation du PathFinder
+    # creation du pathfinding
+    chercher = ChercheurChemin(carte.getTaille(), listePointInteret, fenetre)
     #chercher.graph.dessiner(fenetre)
+
     fenetre.win.redraw()
 
     if(robotConnected):
         if screen:
-            robot = Robot('/dev/ttyACM0',largeurRobot,chercher,listePointInteret,fenetre)
-        else:
-            #robot = Robot('/dev/ttyACM0',largeurRobot,chercher,listePointInteret)
-            #robot = Robot('/dev/ttyAMA0',largeurRobot,chercher,listePointInteret) #connection au robot
-            #robot = Robot('/dev/tty.usbmodem1422',largeurRobot,chercher,listePointInteret)
-            robot = Robot('/dev/ttyACM0',largeurRobot,chercher,listePointInteret)
-            pass
+            robot.port = '/dev/tty.usbmodem1422'
     else:
-    	robot = Robot('',largeurRobot,chercher,listePointInteret,fenetre)
-
+        robot.port = ''
+    robot.initialiser(chercher, listePointInteret, fenetre)
 
     IA = ExecuteurObjectif(robot,fichierObjectif,fichierCarte, chercher) #creation de l'IA
 

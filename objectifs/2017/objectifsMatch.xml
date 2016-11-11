@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart">
+        </action>
+    </objectif>
+
+	<objectif nom="Funny Action" points="0" temp="5">
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="3"/>
+            <param nom="angle" type="int" value="15"/>
+        </action>
+    </objectif>  
+
+    <objectif nom="Init robot" points="0" temp="5">
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="2000"/>
+        </action>
+    </objectif>
+     
+	<objectif nom="Objectif1" points="0" temp="5">
+        <action methode="seDeplacerXY" couleur="green">
+            <param nom="x" type="int" value="2750"/>
+            <param nom="y" type="int" value="950"/>
+            <param nom="angle" type="int" value="180"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+            <onError>
+                <action methode="reculer">
+                    <param nom="distance" type="int" value="150"/>
+                    <param nom="vitesse" type="float" value="0.4"/>
+                </action>
+                <action methode="avancer">
+                    <param nom="distance" type="int" value="150"/>
+                    <param nom="vitesse" type="float" value="0.4"/>
+                </action>
+            </onError>
+        </action>
+    </objectif>
+
+	<objectif nom="demarrageSecours" points="0" temp="5">
+		<action methode="demarrageSecours">
+        </action>
+	</objectif>
+</listeObjectif>
