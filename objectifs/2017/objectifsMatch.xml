@@ -2,10 +2,9 @@
 <listeObjectif>
 
 	<objectif nom="Attente du GO" points="0" temp="5">
-        <action methode="attendreDepart">
-        </action>
+        <action methode="attendreDepart"/>
         <action methode="attendreMilliseconde">
-            <param nom="duree" type="int" value="2000"/>
+            <param nom="duree" type="int" value="1000"/>
         </action>
     </objectif>
 
@@ -15,28 +14,120 @@
             <param nom="angle" type="int" value="15"/>
         </action>
     </objectif>
-     
-	<objectif nom="Objectif1" points="0" temp="5">
+
+    <objectif nom="DeposeElement" points="20" temp="5">
+        <conditions>
+            <or>
+                <and>
+                    <variable nom="reserveModuleGauche" condition="max"/>
+                    <variable nom="reserveModuleDroite" condition="max"/>
+                </and>
+                <and>
+                    <or>
+                        <variable nom="reserveModuleGauche" condition="notZero"/>
+                        <variable nom="reserveModuleDroite" condition="notZero"/>
+                    </or>
+                    <tempsRestant condition="&lt;" value="20" /> <!-- In the 20 last seconds -->
+                </and>
+            </or>
+        </conditions>
         <action methode="seDeplacerXY">
             <param nom="x" type="int" value="1500"/>
-            <param nom="y" type="int" value="800"/>
+            <param nom="y" type="int" value="400"/>
             <param nom="angle" type="int" value="0"/>
             <param nom="vitesse" type="float" value="0.6"/>
             <onError>
                 <action methode="reculer">
-                    <param nom="distance" type="int" value="150"/>
-                    <param nom="vitesse" type="float" value="0.4"/>
-                </action>
-                <action methode="avancer">
-                    <param nom="distance" type="int" value="550"/>
+                    <param nom="distance" type="int" value="100"/>
                     <param nom="vitesse" type="float" value="0.4"/>
                 </action>
             </onError>
-        </action><action methode="seDeplacerXY" couleur="blue">
-            <param nom="x" type="int" value="1500"/>
-            <param nom="y" type="int" value="1000"/>
-            <param nom="angle" type="int" value="180"/>
-            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+        <action methode="deposerModule" />
+    </objectif>
+     
+	<objectif nom="RecolteModuleBase" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="reserveModuleGauche" condition="notMax"/>
+                <variable nom="reserveModuleDroite" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="moduleHautBase"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterModule" />
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="moduleHautBase"/>
+        </action>
+    </objectif>
+
+	<objectif nom="RecolteModuleHautCoin" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="reserveModuleGauche" condition="notMax"/>
+                <variable nom="reserveModuleDroite" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="moduleHautCoin"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterModule" />
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="moduleHautCoin"/>
+        </action>
+    </objectif>
+
+	<objectif nom="RecolteModuleMillieuCote" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="reserveModuleGauche" condition="notMax"/>
+                <variable nom="reserveModuleDroite" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="moduleMillieuCote"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterModule" />
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="moduleMillieuCote"/>
+        </action>
+    </objectif>
+
+	<objectif nom="RecolteModuleBaseLunaire" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="reserveModuleGauche" condition="notMax"/>
+                <variable nom="reserveModuleDroite" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="moduleBaseLunaire"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterModule" />
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="moduleBaseLunaire"/>
+        </action>
+    </objectif>
+
+	<objectif nom="RecolteModuleBasCentre" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="reserveModuleGauche" condition="notMax"/>
+                <variable nom="reserveModuleDroite" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="moduleBasCentre"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterModule" />
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="moduleBasCentre"/>
         </action>
     </objectif>
 </listeObjectif>

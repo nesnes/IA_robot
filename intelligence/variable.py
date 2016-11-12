@@ -19,6 +19,8 @@ class Variable:
 
     def incrementer(self,):
         self.valeur += 1
+        print(self.nom + " = " + str(self.valeur))
 
     def decrementer(self,):
         self.valeur -= 1
+        print(self.nom + " = " + str(self.valeur))

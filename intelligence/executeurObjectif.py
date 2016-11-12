@@ -19,28 +19,50 @@ def signal_handler(signal, frame):
 def waitForFunnyAction(executeurObjectif):
     global stopThread
     print "Funny Action thread running"
+    objectifFunnyAction = None
+    for objectif in executeurObjectif.listeObjectifs:
+        if objectif.nom == "Funny Action":
+            objectifFunnyAction = objectif
+    if objectifFunnyAction == None:
+        print("WARNING, no Funny Action found in objectif list. The objectif name must be \"Funny Action\"")
+        return
     while executeurObjectif.robot.getRunningTime() <= executeurObjectif.matchDuration and not stopThread:
         time.sleep(0.5)
     if(stopThread):
         return
-    for objectif in executeurObjectif.listeObjectifs:
-        if objectif.nom == "Funny Action":
-            objectif.executer(executeurObjectif.robot)
+    print("Starting Funny Action...")
+    objectifFunnyAction.executer(executeurObjectif.robot)
 
 class ExecuteurObjectif:
 
-    def __init__(self,robot,ojectifs,carte, chercheurChemin):
+    def __init__(self,robot,ojectifs,carte, chercheurChemin, fenetre=None):
         self.robot = robot
         self.fichierObjectifs = ojectifs
         self.fichierCarte = carte
         self.matchDuration = 90
+        self.fenetre = fenetre
 
         chercher = chercheurChemin
-        lecteurObjectif = LecteurObjectif(self.fichierObjectifs)
+        lecteurObjectif = LecteurObjectif(self.fichierObjectifs, robot, self.matchDuration)
         carte = LecteurCarte(self.fichierCarte, robot.largeur)
 
         self.listePointInteret  = carte.lire()
         self.listeObjectifs = lecteurObjectif.lire()
+
+    def selectionnerObjectif(self, listObjectif):
+        listPossible = []
+        for objectif in listObjectif:
+            if objectif.nom == "Attente du GO":
+                if not objectif.isFini():
+                    return objectif
+            elif objectif.isPossible():
+                listPossible.append(objectif)
+        listPossibleOrdered = sorted(listPossible, key=lambda objetcif: objectif.estimateValue())
+        for objectif in listPossibleOrdered:
+            if objectif.nom == "Funny Action":
+                continue
+            return objectif
+        return None
 
     def executerObjectifs(self):
     	#thread de funny Action
@@ -48,68 +70,41 @@ class ExecuteurObjectif:
     	self.funnyThread = Thread(target=waitForFunnyAction, args=(self,))
     	self.funnyThread.start()
     
-        #Mode automate, execution dans l'ordre
+        #Mode intellingent, execution selon estimation temp/point
         listeObjectifEchoue = []
-        i=0
-        while i < len(self.listeObjectifs) and self.robot.getRunningTime() < self.matchDuration:     #on parcours chaque objectifs
-            objectif = self.listeObjectifs[i]
-            if objectif.nom == "Funny Action":
-                i += 1
+        listeObjectifs = list(self.listeObjectifs)
+        while self.robot.getRunningTime() < self.matchDuration:
+            objectif = self.selectionnerObjectif(listeObjectifs)
+            if objectif == None:
+                print("No possible objectif, looking in failed ones... ")
+                listeObjectifs += listeObjectifEchoue
+                listeObjectifEchoue = []
+                objectif = self.selectionnerObjectif(listeObjectifs)
+            if objectif == None:
+                print("No possible Objectif for the moment... time="+str(self.robot.getRunningTime())+"s")
+                time.sleep(1)
                 continue
             print "\n-------",objectif.nom,"-------"
             while not objectif.isFini() and self.robot.getRunningTime() < self.matchDuration: #tant que les actions de l'objectif n'ont pas ete faites
                 succes = objectif.executerActionSuivante(self.robot)    #executer l'action suivante
-
-                #if not succes:                                          #en cas d'echec, essayer de nouveau
-                #    print "\twarning: nouvel essaie"
-                #    succes = objectif.executerActionSuivante(self.robot)#on essaye a nouveau
-
-                if not succes:                                          #en cas d'echec, on met l'objectif en pause
-                    print "\t!!!warning: action impossible pour le moment, mise en pause de l'objectif"
+                if(self.fenetre != None):
+                    self.fenetre.win.redraw()
+                if not succes: #en cas d'echec, on repousse l'objectif
+                    print "\t!!!warning: action impossible pour le moment, arret de l'objectif"
                     #objectif.enPause()
                     objectif.reset()
                     listeObjectifEchoue.append(objectif)
-                    self.listeObjectifs.remove(objectif)
-                    i=-1
+                    listeObjectifs.remove(objectif)
                     break
-
                 if succes and objectif.isFini():
-                    self.listeObjectifs.remove(objectif)                #on retire l'objectif reussi
-                    i=-1
-                    """j = self.listeObjectifs.index(objectif) #on repouse l'execution de l'objectif <---v
-                    if j < len(self.listeObjectifs)-1:
-                        self.listeObjectifs[j],self.listeObjectifs[j+1] = self.listeObjectifs[j+1],self.listeObjectifs[j]
-                        i-=1
-                        break"""
-            i+=1
+                    listeObjectifs.remove(objectif) #on retire l'objectif reussi
+        print "Fin du match"
 
-        #on parcours chaque objectif Echoue
-        i=0
-        while i < len(listeObjectifEchoue) and self.robot.getRunningTime() < self.matchDuration:
-            objectif = listeObjectifEchoue[i]
-            print "\n-------",objectif.nom,"-------"
-            while not objectif.isFini() and self.robot.getRunningTime() < self.matchDuration:
-                succes = objectif.executerActionSuivante(self.robot)
-                if not succes:                                          #en cas d'echec, on met l'objectif en pause
-                    print "\t!!!warning: action impossible pour le moment, mise en pause de l'objectif"
-                    #objectif.enPause()
-                    objectif.reset()
-                    listeObjectifEchoue.remove(objectif)
-                    listeObjectifEchoue.append(objectif) #on le met a la fin de la liste
-                    i=-1
-                    break
-
-        print "Attente de la fin du match"
-        """for objectif in self.listeObjectifs:
-            if objectif.nom == "Funny Action":
-                while self.robot.getRunningTime() < self.matchDuration:
-                    pass
-                objectif.executer(self.robot)"""
-
-
-    def afficherObjectifs(self):
+    def afficherObjectifs(self, listeObjectifs=None):
+        if(listeObjectifs == None):
+            listeObjectifs = self.listeObjectifs
         print "Objectifs de", self.fichierObjectifs
         i=0
-        for objectif in self.listeObjectifs:
+        for objectif in listeObjectifs:
             i=i+1
-            print i,":",objectif.nom
+            print i,":",objectif.nom, objectif.etat

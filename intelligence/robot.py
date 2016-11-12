@@ -6,8 +6,9 @@ from intelligence.position import Position
 
 class Robot:
 
-    def __init__(self,port,largeur):
+    def __init__(self,nom, port,largeur):
         self.communication = None
+        self.nom = nom
         self.port = port
         self.fenetre = None
         self.largeur = largeur
@@ -25,15 +26,31 @@ class Robot:
         self.chercher = chercher
         self.listPointInteret = listPointInteret
 
+    def dessiner(self):
+        from cartographie.cercle import Cercle
+        circle = Cercle(self.nom, self.x, self.y, self.largeur, "grey")
+        circle.dessiner(self.fenetre)
+        line = Ligne("", self.x, self.y, self.x + self.largeur, self.y, "blue")
+        line.rotate(self.angle)
+        line.dessiner(self.fenetre)
+
     def attendreDepart(self):
         if self.communication.portserie == '':
             self.startTime = time.time()
-            self.couleur = self.listPosition[0].couleur
-            self.x = self.listPosition[0].x
-            self.y = self.listPosition[0].y
-            self.angle = self.listPosition[0].angle #0 degres =3 heures
+            defaultValues = self.listPosition[1]
+            if self.couleur != "":
+                if self.couleur == self.listPosition[0].couleur:
+                    defaultValues = self.listPosition[0]
+                elif self.couleur == self.listPosition[1].couleur:
+                    defaultValues = self.listPosition[1]
+            self.couleur = defaultValues.couleur
+            self.x = defaultValues.x
+            self.y = defaultValues.y
+            self.angle = defaultValues.angle #0 degres =3 heures
             self.startX = self.x
             self.startY = self.y
+            if self.fenetre != None:
+                self.dessiner()
             print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
             return True
         rcv = self.communication.recevoir()
@@ -73,6 +90,12 @@ class Robot:
     def attendreMilliseconde(self,duree):
         time.sleep(float(duree)/1000.0);
         return True
+
+    def getVariable(self, nom):
+        for variable in self.listVariables:
+            if variable.nom == nom:
+                return variable
+        return None
 
     def aveugler(self):
          time.sleep(500/1000.0);
@@ -144,7 +167,7 @@ class Robot:
         if self.angle < -180:
             self.angle = 360 + self.angle
         if self.fenetre != None:
-            ligne = Ligne("",xprev,yprev,self.x,self.y,"blue")
+            ligne = Ligne("",xprev,yprev,self.x,self.y,"green")
             ligne.dessiner(self.fenetre)
 
     def seDeplacerDistanceAngle(self,distance,angle,vitesse=1.0, retry=1, recalage = 0):
@@ -194,7 +217,7 @@ class Robot:
             couleur = self.couleur
         #recherche de l'objet
         for obj in self.listPointInteret:
-            if obj.type == type and (obj.couleur == couleur or obj.couleur== "orange"):  #modifie pour pouvoir aller chercher objets de couleur orange (neutres)
+            if obj.type == type and (obj.couleur == couleur or obj.couleur not in [self.listPosition[0].couleur, self.listPosition[1].couleur]):
                 element = obj
                 break
         if element == None:
@@ -204,21 +227,7 @@ class Robot:
         if zoneAcces == None:
             print "\t \tL'element \""+element.nom+"\" n'a pas de zone d'acces"
             return False
-        #calcul du chemin vers l'objet
-        chemin = self.chercher.trouverChemin(self.x,self.y,zoneAcces.x,zoneAcces.y,self.listPointInteret)
-        if chemin == None:
-            print "\t \tChemin non trouve vers \""+element.nom+"\"."
-            return False
-        for ligne in chemin:
-            if not self.seDeplacerDistanceAngle(ligne.getlongeur(), self.getAngleToDo(ligne.getAngle()),vitesse):
-                #Don't forget to get the new position in seDeplacerDistanceAngle
-                print "\t \tErreur lors d'un deplacement"
-                return False
-        #the angle of the AccesZone
-        if not self.seDeplacerDistanceAngle(0,self.getAngleToDo(zoneAcces.angle),vitesse):
-            print "\t \tErreur lors de la rotation"
-            return False
-        return True
+        return self.seDeplacerXY(zoneAcces.x, zoneAcces.y, zoneAcces.angle, vitesse)
 
 
     def retirerElementCarte(self,type,couleur=None):
@@ -233,8 +242,9 @@ class Robot:
         if element == None:
             print "Element non trouve!!!!"
             return False
+        self.chercher.updateNodesRemovingElement(element, self.listPointInteret)
         self.listPointInteret.remove(element)
-        self.chercher.createGraph(self.listPointInteret)
+        #self.chercher.createGraph(self.listPointInteret)
         return True
 
     def avancer(self,distance,vitesse=0.5):
@@ -274,6 +284,32 @@ class Robot:
         return True
 
 #Special methods for each year has to be wrote under there
+
+    def recolterModule(self):
+        #do the thing to store the module
+
+        reserveGauche = self.getVariable("reserveModuleGauche")
+        if reserveGauche.isMax():
+            reserveDroite = self.getVariable("reserveModuleDroite")
+            if reserveDroite.isMax():
+                print("Can't store more modules")
+                return False
+            else:
+                #store the module here
+                reserveDroite.incrementer()
+        else:
+            #store the module here
+            reserveGauche.incrementer()
+        return True
+
+    def deposerModule(self):
+        #do the thing to store the module
+
+        reserveGauche = self.getVariable("reserveModuleGauche")
+        reserveGauche.valeur = 0
+        reserveDroite = self.getVariable("reserveModuleDroite")
+        reserveDroite.valeur = 0
+        return True
 
 #SPECIAL 2016 METHODS (Can be suppressed for another year)
     def lireMessagesMbed(self):

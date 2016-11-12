@@ -21,7 +21,9 @@ class LecteurRobot:
             self.nom = root.get("nom")
             self.rayon = float(root.get("rayon"))
             self.port = root.get("port")
-            self.robot = Robot(self.port, self.rayon)
+            self.defaultColor = root.get("defaultColor")
+            self.robot = Robot(self.nom, self.port, self.rayon)
+            self.robot.couleur = self.defaultColor
             for child in root:
                 if child.tag == "equipement":
                     self.__getEquipement(child)

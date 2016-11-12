@@ -214,61 +214,91 @@
 
     <!--======================Module lunaire========================-->
 
-  <PointInteret nom="Module Bleu Haut" type="module" valeur="0" action="" temp="0"  couleur="blue">
+  <PointInteret nom="Module Bleu Haut" type="moduleHautCoin" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="-135">
+        <cercle x="400" y="800" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="200" y="600" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Jaune Haut" type="module" valeur="0" action="" temp="0"  couleur="yellow">
+  <PointInteret nom="Module Jaune Haut" type="moduleHautCoin" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="-45">
+        <cercle x="2600" y="800" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="2800" y="600" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Bleu Bas" type="module" valeur="0" action="" temp="0"  couleur="blue">
+  <PointInteret nom="Module Bleu Bas" type="moduleBasCentre" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="60">
+        <cercle x="675" y="1600" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="800" y="1850" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Jaune Bas" type="module" valeur="0" action="" temp="0"  couleur="yellow">
+  <PointInteret nom="Module Jaune Bas" type="moduleBasCentre" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="120">
+        <cercle x="2325" y="1600" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="2200" y="1850" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Haut G" type="module" valeur="0" action="" temp="0"  couleur="white">
+  <PointInteret nom="Module Haut G" type="moduleHautBase" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="180">
+        <cercle x="1300" y="600" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="1000" y="600" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Haut D" type="module" valeur="0" action="" temp="0"  couleur="white">
+  <PointInteret nom="Module Haut D" type="moduleHautBase" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="0">
+        <cercle x="1700" y="600" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="2000" y="600" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Millieu G" type="module" valeur="0" action="" temp="0"  couleur="white">
+  <PointInteret nom="Module Millieu G" type="moduleMillieuCote" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="90">
+        <cercle x="500" y="800" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="500" y="1100" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Millieu D" type="module" valeur="0" action="" temp="0"  couleur="white">
+  <PointInteret nom="Module Millieu D" type="moduleMillieuCote" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="90">
+        <cercle x="2500" y="800" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="2500" y="1100" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Bas G" type="module" valeur="0" action="" temp="0"  couleur="white">
+  <PointInteret nom="Module Bas G" type="moduleBaseLunaire" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="45">
+        <cercle x="700" y="1200" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="900" y="1400" rayon="32"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Module Bas D" type="module" valeur="0" action="" temp="0"  couleur="white">
+  <PointInteret nom="Module Bas D" type="moduleBaseLunaire" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="135">
+        <cercle x="2300" y="1200" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="2100" y="1400" rayon="32"/>
     </forme>

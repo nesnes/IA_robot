@@ -1,11 +1,11 @@
 class Objectif:
 
-    def __init__(self,nom,point,temp,dependDe,tabActions):
+    def __init__(self,nom,point,temp,tabActions,tabConditions):
         self.nom = nom
         self.points = point
         self.temp = temp
-        self.dependDe = dependDe
         self.tabActions = tabActions
+        self.tabConditions = tabConditions
         self.actionCourante = 0
         self.etat = 0
 
@@ -16,8 +16,10 @@ class Objectif:
         self.etat=1
     def isEnCours(self):
         return self.etat == 1
+
 #    def enPause(self):
  #       self.etat=0
+
     def reset(self):
          self.etat=0
          self.actionCourante=0
@@ -46,3 +48,20 @@ class Objectif:
         print "===!===",self.nom,"===!==="
         for action in self.tabActions:
             action.executer(robot)
+
+    def getPoints(self):
+        return self.points
+
+    def getDuration(self):
+        return self.temp
+
+    def estimateValue(self):
+        if float(self.getDuration()) == 0 or float(self.getPoints()) == 0:
+            return 0.0
+        return float(self.getDuration()) / float(self.getPoints())
+
+    def isPossible(self):
+        for condition in self.tabConditions:
+            if not condition.isTrue():
+                return False
+        return True

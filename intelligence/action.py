@@ -8,7 +8,7 @@ class Action:
 
 
     def executer(self,robot):
-        if self.couleur =='' or self.couleur == robot.couleur:
+        if self.couleur == '' or self.couleur == robot.couleur:
             print "\t->", self.methode
             success = robot.executer(self)
             if(success):

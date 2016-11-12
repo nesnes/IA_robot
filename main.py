@@ -50,7 +50,7 @@ def main():
         robot.port = ''
     robot.initialiser(chercher, listePointInteret, fenetre)
 
-    IA = ExecuteurObjectif(robot,fichierObjectif,fichierCarte, chercher) #creation de l'IA
+    IA = ExecuteurObjectif(robot,fichierObjectif,fichierCarte, chercher, fenetre) #creation de l'IA
 
 
     #if(robotConnected):

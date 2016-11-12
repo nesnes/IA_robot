@@ -51,7 +51,7 @@ class ChercheurChemin:
                 elementList.append(element)
         return elementList
 
-    def __updateNodesRemovingElement(self, element, listePointInteret):
+    def updateNodesRemovingElement(self, element, listePointInteret):
         tmpList = list(listePointInteret)  # copy
         tmpList.remove(element)
         for key, noeud in self.graph.listeNoeud.iteritems():
@@ -69,16 +69,16 @@ class ChercheurChemin:
         tester = Collision()
         for element in listePointInteret:
             if tester.contenuDans(x1,y1,element.zoneEvitement.forme):
-                self.__updateNodesRemovingElement(element, listePointInteret)
+                self.updateNodesRemovingElement(element, listePointInteret)
                 listePointInteret.remove(element)
             elif (x1 != x2 or y1 != y2) and tester.contenuDans(x2,y2,element.zoneEvitement.forme):
-                self.__updateNodesRemovingElement(element, listePointInteret)
+                self.updateNodesRemovingElement(element, listePointInteret)
                 listePointInteret.remove(element)
         self.createGraph(self.listePointInteret)
 
 
 
-    def trouverChemin(self,x1,y1,x2,y2,_listePointInteret, fenetre=None, depth=0):
+    def trouverChemin(self,x1,y1,x2,y2,_listePointInteret):
         directLine = Ligne("",x1,y1,x2,y2)
         if not self.enCollisionCarte(directLine,_listePointInteret):
             return [directLine]
@@ -114,51 +114,58 @@ class ChercheurChemin:
                         self.graph.setPere(noeud, currentNode)
                         self.graph.marquer(noeud)
                         listnoeud.append(noeud)
-        listChemin = []
+        listPoint = []
         lastNode = endNode
         currentNode = self.graph.getPere(endNode)
         if currentNode == None:
             pass
         elif self.graph.getPere(currentNode) == None:
             #from endNode
-            listChemin.append(Ligne("", x2, y2, lastNode.x, lastNode.y))
+            listPoint.append([x2, y2])
             #trip
-            listChemin.append(Ligne("", lastNode.x, lastNode.y, currentNode.x, currentNode.y))
-            #to endNode
-            listChemin.append(Ligne("", currentNode.x, currentNode.y, x1, y1))
+            listPoint.append([lastNode.x, lastNode.y])
+            listPoint.append([currentNode.x, currentNode.y])
+            #to startNode
+            listPoint.append([x1, y1])
         else:
             #from endNode
-            listChemin.append(Ligne("", x2, y2, lastNode.x, lastNode.y))
+            listPoint.append([x2, y2])
+            listPoint.append([lastNode.x, lastNode.y])
+            #trip
             while self.graph.getPere(currentNode) != None:
-                ligne = Ligne("", lastNode.x, lastNode.y, currentNode.x, currentNode.y)
-                listChemin.append(ligne)
-                lastNode = currentNode
+                listPoint.append([currentNode.x, currentNode.y])
                 currentNode = self.graph.getPere(currentNode)
-            # to endNode
-            listChemin.append(Ligne("", currentNode.x, currentNode.y, x1, y1))
+            # to startNode
+            listPoint.append([x1, y1])
 
         tmpList = list(_listePointInteret)
         for elem in blockingElements:
             tmpList.remove(elem)
 
-        listChemin.reverse()
+        listPoint.reverse()
+        listChemin = []
+        for i in range(1, len(listPoint)):
+            p1 = listPoint[i-1]
+            p2 = listPoint[i]
+            line = Ligne("", p1[0], p1[1], p2[0], p2[1])
+            listChemin.append(line)
         self.simplifierChemin(listChemin, tmpList)
 
         return listChemin
 
 
     def simplifierChemin(self, tabchemin, listPointInteret):
-        tabLen = len(tabchemin)-1
         i=-1
-        while i <= tabLen-2:
+        while i < len(tabchemin)-2:
             i+=1
-            line = Ligne("",tabchemin[i].x1,tabchemin[i].y1,tabchemin[i+1].x2,tabchemin[i+1].y2,"")
+            l1 = tabchemin[i]
+            l2 = tabchemin[i+1]
+            line = Ligne("",l1.x1, l1.y1, l2.x2, l2.y2, "")
             #line.setCouleur("white")
-            line.dessiner(self.fenetre)
+            #line.dessiner(self.fenetre)
             if not self.enCollisionCarte(line,listPointInteret):
-                tabchemin.remove(tabchemin[i+1])
-                tabchemin.remove(tabchemin[i])
                 tabchemin.insert(i,line)
-                tabLen = tabchemin.__len__()-1
+                tabchemin.remove(l1)
+                tabchemin.remove(l2)
                 i=-1
         return tabchemin
