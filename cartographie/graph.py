@@ -1,6 +1,4 @@
 from cartographie.noeud import Noeud
-from affichage.fenetre import Fenetre
-
 
 class Graph:
 
