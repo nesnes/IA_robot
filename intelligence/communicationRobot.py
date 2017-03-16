@@ -10,7 +10,8 @@ class CommunicationRobot:
             self.portserie.flushInput()
             self.portserie.flushOutput()
         except:
-            print "ERREUR: Impossible d'ouvrir le port serie!!! As tu bien utilise SUDO ?"
+            print "ERREUR: Impossible d'ouvrir le port serie " + port + "!!! As tu bien utilise SUDO ?"
+            self.portserie = ''
 
     def envoyer(self,message):
         if self.portserie == '':

@@ -7,7 +7,7 @@ from intelligence.executeurObjectif import ExecuteurObjectif
 
 #X;SERVO;ANGINIT;ANGFIN;TEMPSSecondesFloat
 def main():
-    isRaspberry = False
+    isRaspberry = True
 
     if(isRaspberry): # raspberry
         screen = False
@@ -41,7 +41,8 @@ def main():
     chercher = ChercheurChemin(carte.getTaille(), listePointInteret, fenetre)
     #chercher.graph.dessiner(fenetre)
 
-    fenetre.win.redraw()
+    if(fenetre):
+        fenetre.win.redraw()
 
     if(robotConnected):
         if screen:

@@ -1,5 +1,4 @@
 import math
-from affichage.fenetre import Fenetre
 
 class Noeud:
 
