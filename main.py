@@ -69,7 +69,7 @@ def main():
             y2=(click2.getY())/fenetre.ratio-fenetre.offset
             print "(",x1,y1,")","(",x2,y2,")"
             listMouvement = chercher.trouverChemin(x1,y1,x2,y2,listePointInteret,fenetre)
-            if listMouvement == None or len(listMouvement) == 0:
+            if listMouvement is None or len(listMouvement) == 0:
                 print "WARNING Path Not Found"
             else:
                 for ligne in listMouvement:
@@ -78,4 +78,6 @@ def main():
             fenetre.win.redraw()
     time.sleep(5)
 
-main()
+
+if __name__ == "__main__":
+    main()

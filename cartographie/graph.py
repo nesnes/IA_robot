@@ -1,6 +1,5 @@
 from cartographie.noeud import Noeud
 
-
 class Graph:
 
     def __init__(self):
