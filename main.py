@@ -23,14 +23,17 @@ def main():
     fenetre = None
 
     # creation du robot
+    print "Reading robot file"
     lecteurRobot = LecteurRobot(fichierRobot)
     robot = lecteurRobot.lire()
     # creation du lecteur de carte
+    print "Reading map file"
     carte = LecteurCarte(fichierCarte, robot.largeur)
     listePointInteret = carte.lire()   # chargement de la carte
 
     # creation de l'afficihage de la carte
     if(screen):
+        print "Creating map view"
         from affichage.afficheurCarte import AfficheurCarte
         from affichage.fenetre import Fenetre
         affichage = AfficheurCarte(fichierCarte,listePointInteret,0.25, 300)
@@ -38,7 +41,8 @@ def main():
         affichage.afficherCarte() # affichage de la carte
 
     # creation du pathfinding
-    chercher = ChercheurChemin(carte.getTaille(), listePointInteret, fenetre)
+    print "Initializing pathfinding"
+    chercher = ChercheurChemin(carte.getTaille(), carte.getHash(), listePointInteret, fenetre)
     #chercher.graph.dessiner(fenetre)
 
     if(fenetre):
@@ -49,13 +53,17 @@ def main():
             robot.port = '/dev/tty.usbmodem1422'
     else:
         robot.port = ''
+
+    print "Initializing robot"
     robot.initialiser(chercher, listePointInteret, fenetre)
 
+    print "Creating IA"
     IA = ExecuteurObjectif(robot,fichierObjectif,fichierCarte, chercher, fenetre) #creation de l'IA
 
 
     #if(robotConnected):
     IA.afficherObjectifs()
+    print "Running IA"
     IA.executerObjectifs() # execution de l'IA
 
     # Pour tester le pathfinding, cliquez a deux endroits sur la carte

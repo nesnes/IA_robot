@@ -6,15 +6,29 @@ from cartographie.rectangle import Rectangle
 from zoneAcces import ZoneAcces
 from cartographie.zoneEvitement import ZoneEvitement
 from cartographie.pointInteret import PointInteret
-
+import hashlib
 
 class LecteurCarte:
     distanceEvitement = 0
 
     def __init__(self,fichier, largeurRobot):
         self.fichier = fichier
+        self.hash = self.computeHash()
         self.tree = ET.parse(fichier)
         self.distanceEvitement = largeurRobot
+
+    def computeHash(self):
+        BLOCKSIZE = 2048 #small blocks for low memory devices like RaspberryPi
+        hasher = hashlib.md5()
+        with open(self.fichier, 'rb') as afile:
+            buf = afile.read(BLOCKSIZE)
+            while len(buf) > 0:
+                hasher.update(buf)
+                buf = afile.read(BLOCKSIZE)
+        return hasher.hexdigest()
+
+    def getHash(self):
+        return self.hash
 
     def getTaille(self):
         return [self.tree.getroot().get("largeur"),self.tree.getroot().get("hauteur")]

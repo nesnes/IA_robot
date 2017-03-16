@@ -1,5 +1,7 @@
 import copy
 import time
+import pickle
+import sys
 from collections import deque
 from cartographie.ligne import  Ligne
 from cartographie.collison import Collision
@@ -9,14 +11,32 @@ from cartographie.noeud import Noeud
 
 class ChercheurChemin:
 
-    def __init__(self, dimensions, listePointInteret, fenetre=None):
+    def __init__(self, dimensions, mapHash, listePointInteret, fenetre=None):
         self.largeur = int(dimensions[0])
         self.longueur = int(dimensions[1])
+        self.mapHash = mapHash
         self.listePointInteret = listePointInteret
         self.graph = Graph()
         self.fenetre = fenetre
         self.step = 40
-        self.createGraph(self.listePointInteret)
+        self.graphFile = "preComputedMap.graph"
+        savedGraph = None
+        graphLoaded = False
+        if not self.loadGraph():
+            print "Graph file can't be used, need to compute it"
+            self.createGraph(self.listePointInteret)
+            self.saveGraph()
+            print "Graph saved ("+self.mapHash+")"
+        else:
+            print "Graph loaded from file ("+self.mapHash+")"
+
+    def saveGraph(self):
+        print "TODO graph serialization"
+        return True
+
+    def loadGraph(self):
+        print "TODO graph deserialization"
+        return False
 
     def createGraph(self, listePointInteret):
         self.graph = Graph()
