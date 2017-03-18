@@ -1,4 +1,5 @@
 import time
+import os
 from cartographie.lecteurCarte import LecteurCarte
 from cartographie.chercheurChemin import ChercheurChemin
 from intelligence.robot import Robot
@@ -7,7 +8,8 @@ from intelligence.executeurObjectif import ExecuteurObjectif
 
 #X;SERVO;ANGINIT;ANGFIN;TEMPSSecondesFloat
 def main():
-    isRaspberry = True
+    #Detection du rapsberry
+    isRaspberry = os.popen("uname -m").read().__contains__("arm")
 
     if(isRaspberry): # raspberry
         screen = False
@@ -76,7 +78,7 @@ def main():
             x2=(click2.getX())/fenetre.ratio-fenetre.offset
             y2=(click2.getY())/fenetre.ratio-fenetre.offset
             print "(",x1,y1,")","(",x2,y2,")"
-            listMouvement = chercher.trouverChemin(x1,y1,x2,y2,listePointInteret,fenetre)
+            listMouvement = chercher.trouverChemin(x1,y1,x2,y2,listePointInteret)
             if listMouvement is None or len(listMouvement) == 0:
                 print "WARNING Path Not Found"
             else:

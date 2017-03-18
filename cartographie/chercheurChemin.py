@@ -2,6 +2,8 @@ import copy
 import time
 import pickle
 import sys
+import os
+import xml.etree.ElementTree as ET
 from collections import deque
 from cartographie.ligne import  Ligne
 from cartographie.collison import Collision
@@ -22,6 +24,7 @@ class ChercheurChemin:
         self.graphFile = "preComputedMap.graph"
         savedGraph = None
         graphLoaded = False
+        t = time.time()
         if not self.loadGraph():
             print "Graph file can't be used, need to compute it"
             self.createGraph(self.listePointInteret)
@@ -29,14 +32,28 @@ class ChercheurChemin:
             print "Graph saved ("+self.mapHash+")"
         else:
             print "Graph loaded from file ("+self.mapHash+")"
+        print "LoadTime: " + str(time.time() - t)
 
     def saveGraph(self):
-        print "TODO graph serialization"
-        return True
+        file = open(self.graphFile, "w")
+        if file:
+            file.write(self.graph.serialize(self.mapHash))
+            return True
+        return False
 
     def loadGraph(self):
-        print "TODO graph deserialization"
-        return False
+        if not os.path.isfile(self.graphFile):
+            return False
+        tree = ET.parse(self.graphFile)
+        root = tree.getroot()
+        if root.tag == "graph":
+            if root.get("hash") != self.mapHash:
+                return False
+            self.graph = Graph()
+            self.graph.initFromSerialization(root, self.listePointInteret)
+        else:
+            return False
+        return True
 
     def createGraph(self, listePointInteret):
         self.graph = Graph()

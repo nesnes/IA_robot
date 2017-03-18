@@ -5,6 +5,46 @@ class Graph:
     def __init__(self):
         self.listeNoeud = {}
 
+    def serialize(self, hash):
+        serialization = "<graph"
+        serialization += " hash='" + hash + "'"
+        serialization += " >\r\n"
+        for key, noeud in self.listeNoeud.iteritems():
+            serialization += noeud.serialize() + "\r\n"
+        serialization += "</graph>"
+        return serialization
+
+    def initFromSerialization(self, serialization, listePointInteret):
+        listVoisin = {}
+        listColision = {}
+        for node in serialization:
+            if node.tag == "n":
+                x = int(node.get("x"))
+                y = int(node.get("y"))
+                newNoeud = Noeud(x, y)
+                self.addNoeud(newNoeud)
+                listVoisin[newNoeud.getID()] = []
+                listColision[newNoeud.getID()] = []
+                voisinIds = node.get("v").split(";")
+                colisionIds = node.get("c").split(";")
+                if voisinIds[0] != '':
+                    for id in voisinIds:
+                        listVoisin[newNoeud.getID()].append(id)
+                if colisionIds[0] != '':
+                    for id in colisionIds:
+                        listColision[newNoeud.getID()].append(id)
+        for nodeId, idList in listVoisin.iteritems():
+            currentNode = self.listeNoeud[nodeId]
+            for idNode in idList:
+                currentNode.listVoisin.append(self.listeNoeud[idNode])
+        mapPointInteret = {}
+        for point in listePointInteret:
+            mapPointInteret[point.getID()] = point
+        for nodeId, idList in listColision.iteritems():
+            currentNode = self.listeNoeud[nodeId]
+            for idObject in idList:
+                currentNode.colisionObject.append(mapPointInteret[idObject])
+
     def addNoeud(self, noeud):
         self.listeNoeud[str(noeud.x)+","+str(noeud.y)] = noeud
 
