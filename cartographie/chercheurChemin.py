@@ -65,12 +65,16 @@ class ChercheurChemin:
                 self.graph.addNoeud(newNoeud)
         self.graph.creerVoisins(self.step)
 
-    def enCollisionCarte(self,ligne,_listePointInteret):
+    def enCollisionCarte(self,ligne,_listePointInteret, ignoreEvitmentZone=False):
         tester = Collision(self.fenetre)
         listePointInteret=sorted(_listePointInteret, key=lambda pointInteret : Ligne("",ligne.x1,ligne.y1,ligne.x1,ligne.y1).distanceAvec(pointInteret.forme))
         for point in listePointInteret:
-           if tester.collisionEntre(ligne,point.zoneEvitement.forme):
-                return point
+            if ignoreEvitmentZone:
+                if tester.collisionEntre(ligne, point.forme):
+                    return point
+            else:
+                if tester.collisionEntre(ligne, point.zoneEvitement.forme):
+                    return point
         return False
 
     def pointContenuDans(self,x,y,listePointInteret):

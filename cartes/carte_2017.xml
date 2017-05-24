@@ -123,36 +123,54 @@
     <!--======================Crateres========================-->
 
   <PointInteret nom="Grand Cratere Bleu" type="grandCratere" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="135">
+        <cercle x="550" y="1450" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="0" y="2000" rayon="540"/>
     </forme>
   </PointInteret>
 
   <PointInteret nom="Grand Cratere Jaune" type="grandCratere" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="45">
+        <cercle x="2450" y="1450" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="3000" y="2000" rayon="540"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Petit Cratere Bleu Haut" type="petitCratere" valeur="0" action="" temp="0"  couleur="blue">
+  <PointInteret nom="Petit Cratere Bleu Haut" type="petitCratereDepart" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="-130">
+        <cercle x="850" y="780" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="650" y="540" rayon="115"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Petit Cratere Bleu Bas" type="petitCratere" valeur="0" action="" temp="0"  couleur="blue">
-    <forme>
-      <cercle x="1052" y="1870" rayon="115"/>
-    </forme>
-  </PointInteret>
-
-  <PointInteret nom="Petit Cratere Jaune Haut" type="petitCratere" valeur="0" action="" temp="0"  couleur="yellow">
+  <PointInteret nom="Petit Cratere Jaune Haut" type="petitCratereDepart" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="-50">
+        <cercle x="2150" y="780" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="2350" y="540" rayon="115"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Petit Cratere Jaune Bas" type="petitCratere" valeur="0" action="" temp="0"  couleur="yellow">
+  <PointInteret nom="Petit Cratere Bleu Bas" type="petitCratereConstruction" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="45">
+        <cercle x="870" y="1720" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="1052" y="1870" rayon="115"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Petit Cratere Jaune Bas" type="petitCratereConstruction" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="135">
+        <cercle x="2130" y="1720" rayon="20"/>
+    </zoneAcces>
     <forme>
       <cercle x="1949" y="1870" rayon="115"/>
     </forme>
@@ -195,12 +213,18 @@
     <!--======================Zone de depart========================-->
 
   <PointInteret nom="Panier Bleu" type="panier" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="-100">
+        <cercle x="360" y="600" rayon="20"/>
+    </zoneAcces>
     <forme>
       <rectangle x1="50" y1="-222" x2="450" y2="0"/>
     </forme>
   </PointInteret>
 
   <PointInteret nom="Panier Jaune" type="panier" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="-80">
+        <cercle x="2640" y="600" rayon="20"/>
+    </zoneAcces>
     <forme>
       <rectangle x1="2550" y1="-222" x2="2950" y2="0"/>
     </forme>

@@ -2,6 +2,7 @@ import time
 import math
 from intelligence.communicationRobot import CommunicationRobot
 from cartographie.ligne import Ligne
+from cartographie.cercle import Cercle
 from intelligence.position import Position
 
 class Robot:
@@ -10,6 +11,7 @@ class Robot:
         self.communication = None
         self.nom = nom
         self.port = port
+        self.port2 = ""
         self.fenetre = None
         self.largeur = largeur
         self.chercher = None
@@ -33,6 +35,17 @@ class Robot:
         line = Ligne("", self.x, self.y, self.x + self.largeur, self.y, "blue")
         line.rotate(self.angle)
         line.dessiner(self.fenetre)
+        for telemetre in self.listTelemetre:
+            line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
+            line.rotate(line.getAngle()+self.angle-90)
+            line.dessiner(self.fenetre)
+            circle = Cercle(telemetre.nom, line.x2, line.y2, 10, "green")
+            circle.dessiner(self.fenetre)
+            lineTarget = Ligne("", line.x2, line.y2, line.x2*2, line.y2*2, "orange")
+            lineTarget.resize(20);
+            lineTarget.rotate(self.angle+telemetre.angle)
+            lineTarget.dessiner(self.fenetre)
+        self.telemetreDetectAdversaire()
 
     def attendreDepart(self):
         if self.communication.portserie == '':
@@ -96,6 +109,32 @@ class Robot:
             if variable.nom == nom:
                 return variable
         return None
+
+    def telemetreDetectAdversaire(self):
+        for telemetre in self.listTelemetre:
+            if telemetre.value == 0:
+                continue
+            line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
+            line.rotate(line.getAngle()+self.angle-90)
+            lineTarget = Ligne("", line.x2, line.y2, line.x2*2, line.y2*2, "purple")
+            lineTarget.resize(telemetre.value)
+            lineTarget.rotate(self.angle+telemetre.angle)
+            lineTarget.dessiner(self.fenetre)
+            if lineTarget.getlongeur() > 5:
+                containingElements = self.chercher.pointContenuListe(lineTarget.x1, lineTarget.y1, self.listPointInteret)
+                listPointDetection = list(self.listPointInteret)
+                for point in containingElements:
+                    listPointDetection.remove(point)
+                collision = self.chercher.enCollisionCarte(lineTarget, listPointDetection, True)
+                if not collision:
+                    circle = Cercle(telemetre.nom, line.x2, line.y2, 20, "purple")
+                    circle.dessiner(self.fenetre)
+                    lineTarget.dessiner(self.fenetre)
+                    print("/!\\ Telemeter("+telemetre.nom+") detected Unkown object. Position "+str(lineTarget.x1)+","+str(lineTarget.x2)+", angle "+str(lineTarget.getAngle())+ " at distance "+str(telemetre.value))
+                    return lineTarget.x2, lineTarget.y2
+                else:
+                    print("Telemeter detected " + collision.nom)
+        return False
 
     def aveugler(self):
          time.sleep(500/1000.0);
@@ -300,6 +339,18 @@ class Robot:
         else:
             #store the module here
             reserveGauche.incrementer()
+        return True
+
+    def recolterRoche(self):
+        #do the thing
+        bacRoche = self.getVariable("bacRoche")
+        bacRoche.incrementer()
+        return True
+
+    def deposerRoche(self):
+        #do the thing
+        bacRoche = self.getVariable("bacRoche")
+        bacRoche.valeur = 0
         return True
 
     def deposerModule(self):

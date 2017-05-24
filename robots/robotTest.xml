@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot nom="RobotTest" rayon="153" port="/dev/ttyACM0" defaultColor="blue">
+<robot nom="RobotTest" rayon="153" port="/dev/ttyACM0" port2="/dev/ttyACM1" defaultColor="blue">
 
     <position nom="PositionDepartA" couleur="blue" x="850" y="200" angle="0"/>
     <position nom="PositionDepartB" couleur="yellow" x="2150" y="200" angle="180"/>

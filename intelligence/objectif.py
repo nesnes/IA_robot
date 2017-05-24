@@ -1,9 +1,10 @@
 class Objectif:
 
-    def __init__(self,nom,point,temp,tabActions,tabConditions):
+    def __init__(self,nom,point,temp,repetitions,tabActions,tabConditions):
         self.nom = nom
         self.points = point
         self.temp = temp
+        self.repetitions = repetitions
         self.tabActions = tabActions
         self.tabConditions = tabConditions
         self.actionCourante = 0

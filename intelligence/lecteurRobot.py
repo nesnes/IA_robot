@@ -21,6 +21,7 @@ class LecteurRobot:
             self.nom = root.get("nom")
             self.rayon = float(root.get("rayon"))
             self.port = root.get("port")
+            self.port2 = root.get("port2")
             self.defaultColor = root.get("defaultColor")
             self.robot = Robot(self.nom, self.port, self.rayon)
             self.robot.couleur = self.defaultColor

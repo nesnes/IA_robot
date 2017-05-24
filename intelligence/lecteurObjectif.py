@@ -28,6 +28,11 @@ class LecteurObjectif:
         nom = objectif.get("nom")
         points = objectif.get("points")
         temp = objectif.get("temp")
+        repetitions = objectif.get("repetitions")
+        if(repetitions == None):
+            repetitions = 0
+        else:
+            repetitions = int(repetitions)
         tabActions = []
         tabConditions = []
 
@@ -37,7 +42,7 @@ class LecteurObjectif:
             elif noeud.tag == "conditions":
                 for condition in noeud:
                     tabConditions.append(self._getCondition(condition))
-        return Objectif(nom,points,temp,tabActions,tabConditions)
+        return Objectif(nom,points,temp,repetitions,tabActions,tabConditions)
 
     def _getAction(self,_action):
         methode=_action.get("methode")

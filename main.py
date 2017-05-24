@@ -19,8 +19,8 @@ def main():
         robotConnected = False
 
     fichierCarte = "cartes/carte_2017.xml"
-    fichierObjectif = "objectifs/2017/objectifsMatch.xml"
-    fichierRobot = "robots/robotTest.xml"
+    fichierObjectif = "objectifs/2017/objectifsPrincipal.xml"
+    fichierRobot = "robots/robotPrincipal2017.xml"
 
     fenetre = None
 

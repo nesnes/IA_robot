@@ -85,7 +85,9 @@ class ExecuteurObjectif:
                 time.sleep(1)
                 continue
             print "\n-------",objectif.nom,"-------"
-            while not objectif.isFini() and self.robot.getRunningTime() < self.matchDuration: #tant que les actions de l'objectif n'ont pas ete faites
+            objectifFinished = False
+            while not objectifFinished and self.robot.getRunningTime() < self.matchDuration: #tant que les actions de l'objectif n'ont pas ete faites
+                objectifFinished = False
                 succes = objectif.executerActionSuivante(self.robot)    #executer l'action suivante
                 if(self.fenetre != None):
                     self.fenetre.win.redraw()
@@ -97,7 +99,12 @@ class ExecuteurObjectif:
                     listeObjectifs.remove(objectif)
                     break
                 if succes and objectif.isFini():
-                    listeObjectifs.remove(objectif) #on retire l'objectif reussi
+                    objectifFinished = True
+                    if objectif.repetitions > 0:
+                        objectif.repetitions -= 1
+                        objectif.reset()
+                    else:
+                        listeObjectifs.remove(objectif) #on retire l'objectif reussi
         print "Fin du match"
 
     def afficherObjectifs(self, listeObjectifs=None):

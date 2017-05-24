@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart"/>
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="1000"/>
+        </action>
+    </objectif>
+
+	<objectif nom="Funny Action" points="0" temp="5">
+        <action methode="setServomoteur">
+            <param nom="idServo" type="int" value="3"/>
+            <param nom="angle" type="int" value="15"/>
+        </action>
+    </objectif>
+
+    <objectif nom="DeposeRoche" points="20" temp="5" repetitions="10">
+        <conditions>
+            <or>
+                <variable nom="bacRoche" condition="max"/>
+                <and>
+                    <variable nom="bacRoche" condition="notZero"/>
+                    <!--<tempsRestant condition="&lt;" value="5" />  In the 20 last seconds -->
+                </and>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="panier"/>
+            <param nom="vitesse" type="float" value="1"/>
+            <onError>
+                <action methode="reculer">
+                    <param nom="distance" type="int" value="100"/>
+                    <param nom="vitesse" type="float" value="0.4"/>
+                </action>
+            </onError>
+        </action>
+        <action methode="deposerRoche" />
+    </objectif>
+     
+	<objectif nom="RecolteRocheDepart" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="bacRoche" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="petitCratereDepart"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterRoche" />
+    </objectif>
+
+	<objectif nom="RecolteRocheConstruction" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="bacRoche" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="petitCratereConstruction"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterRoche" />
+    </objectif>
+
+
+
+	<objectif nom="RecolteRocheGrandCratere" points="0" temp="4">
+        <conditions>
+            <or>
+                <variable nom="bacRoche" condition="notMax"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="grandCratere"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="recolterRoche" />
+    </objectif>
+
+
+</listeObjectif>
