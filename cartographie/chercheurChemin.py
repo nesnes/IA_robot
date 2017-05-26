@@ -73,7 +73,7 @@ class ChercheurChemin:
                 if tester.collisionEntre(ligne, point.forme):
                     return point
             else:
-                if tester.collisionEntre(ligne, point.zoneEvitement.forme):
+                if tester.collisionEntre(ligne,point.zoneEvitement.forme):
                     return point
         return False
 
@@ -96,8 +96,8 @@ class ChercheurChemin:
         tmpList = list(listePointInteret)  # copy
         tmpList.remove(element)
         for key, noeud in self.graph.listeNoeud.iteritems():
-            if noeud.colisionObject == element:
-                noeud.colisionObject = None
+            if element in noeud.colisionObject:
+                noeud.colisionObject.remove(element)#line added during cup 2017
                 tester = Collision(self.fenetre)
                 line = Ligne("", noeud.x, noeud.y, noeud.x, noeud.y)
                 tmpList = sorted(tmpList,key=lambda pointInteret: line.distanceAvec(pointInteret.forme))

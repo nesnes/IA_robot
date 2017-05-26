@@ -89,6 +89,7 @@ class ExecuteurObjectif:
             while not objectifFinished and self.robot.getRunningTime() < self.matchDuration: #tant que les actions de l'objectif n'ont pas ete faites
                 objectifFinished = False
                 succes = objectif.executerActionSuivante(self.robot)    #executer l'action suivante
+                time.sleep(0.05)
                 if(self.fenetre != None):
                     self.fenetre.win.redraw()
                 if not succes: #en cas d'echec, on repousse l'objectif

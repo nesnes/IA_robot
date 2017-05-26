@@ -19,8 +19,10 @@ def main():
         robotConnected = False
 
     fichierCarte = "cartes/carte_2017.xml"
-    fichierObjectif = "objectifs/2017/objectifsPrincipal.xml"
-    fichierRobot = "robots/robotPrincipal2017.xml"
+    fichierObjectif = "objectifs/2017/objectifsPrincipalSolo.xml"
+    fichierRobot = "robots/robotPrincipal2017Solo.xml"
+    #fichierObjectif = "objectifs/2017/objectifsSecondaireTest.xml"
+    #fichierRobot = "robots/robotSecondaire2017.xml"
 
     fenetre = None
 
@@ -50,11 +52,17 @@ def main():
     if(fenetre):
         fenetre.win.redraw()
 
-    if(robotConnected):
+    if not isRaspberry and robotConnected:
         if screen:
-            robot.port = '/dev/tty.usbmodem1422'
-    else:
+            robot.port = '/dev/tty.usbmodem1412'
+            #robot.port = '/dev/tty.usbmodem1412'
+            #robot.port2 = '/dev/tty.usbmodem1423'
+    elif not isRaspberry and not robotConnected:
         robot.port = ''
+        robot.port2 = ''
+
+    if not isRaspberry:
+        robot.port2=""
 
     print "Initializing robot"
     robot.initialiser(chercher, listePointInteret, fenetre)

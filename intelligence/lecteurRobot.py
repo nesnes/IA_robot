@@ -12,7 +12,9 @@ class LecteurRobot:
         self.robot = None
         self.nom = ""
         self.port = ""
+        self.port2 = ""
         self.rayon = 0
+        self.defaultColor = ""
 
     def lire(self):
         root = self.tree.getroot()
@@ -25,6 +27,7 @@ class LecteurRobot:
             self.defaultColor = root.get("defaultColor")
             self.robot = Robot(self.nom, self.port, self.rayon)
             self.robot.couleur = self.defaultColor
+            self.robot.port2 = self.port2
             for child in root:
                 if child.tag == "equipement":
                     self.__getEquipement(child)
@@ -43,7 +46,7 @@ class LecteurRobot:
             variable = Variable(nom, valeur, maxVal)
             self.robot.listVariables.append(variable)
         if type == "telemetre":
-            id = equipement.get("id")
+            id = int(equipement.get("id"))
             x = float(equipement.get("x"))
             y = float(equipement.get("y"))
             angle = float(equipement.get("angle"))

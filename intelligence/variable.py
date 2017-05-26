@@ -9,7 +9,7 @@ class Variable:
         return self.valeur
 
     def getMax(self):
-        return self.valeur
+        return self.max
 
     def isMax(self):
         return self.valeur >= self.max

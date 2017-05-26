@@ -16,8 +16,8 @@ class AfficheurCarte:
             if p.zoneEvitement != None:
                 p.zoneEvitement.dessiner(self.fenetre)
         for p in self.listePointInteret:
-            if p.zoneAcces != None:
-                p.zoneAcces.dessiner(self.fenetre)
-        for p in self.listePointInteret:
             if p.forme != None:
                 p.forme.dessiner(self.fenetre)
+        for p in self.listePointInteret:
+            if p.zoneAcces != None:
+                p.zoneAcces.dessiner(self.fenetre)

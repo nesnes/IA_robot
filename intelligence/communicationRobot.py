@@ -11,6 +11,7 @@ class CommunicationRobot:
             self.portserie.flushOutput()
         except:
             print "ERREUR: Impossible d'ouvrir le port serie " + port + "!!! As tu bien utilise SUDO ?"
+            exit(1)
             self.portserie = ''
 
     def envoyer(self,message):

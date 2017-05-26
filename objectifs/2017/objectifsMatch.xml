@@ -15,7 +15,7 @@
         </action>
     </objectif>
 
-    <objectif nom="DeposeElement" points="20" temp="5">
+    <objectif nom="DeposeElement" points="20" temp="5" repetitions="10">
         <conditions>
             <or>
                 <and>
