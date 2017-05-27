@@ -24,17 +24,17 @@
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="depart"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="leverBras"/>
         <action methode="avancer">
             <param nom="distance" type="int" value="300"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="viderBac"/>
         <action methode="reculer">
             <param nom="distance" type="int" value="600"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
     </objectif>
 
@@ -44,12 +44,12 @@
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="moduleHautBase"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <!--<action methode="leverBras"/>-->
         <!--<action methode="avancer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>-->
         <!--<action methode="baisserBras" />-->
         <action methode="incrementerBac"/>
@@ -64,22 +64,21 @@
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="petitCratereDepart"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <!--<action methode="leverBras"/>-->
         <action methode="avancer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
             <onError>
                 <action methode="baisserBras" />
             </onError>
         </action>
         <action methode="baisserBras" />
         <action methode="incrementerBac"/>
-        <action methode="incrementerBac"/>
         <action methode="reculer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
     </objectif>
 
@@ -89,42 +88,17 @@
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="moduleMillieuCote"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="leverBras"/>
         <action methode="avancer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="baisserBras" />
         <action methode="incrementerBac"/>
         <action methode="retirerElementCarte">
             <param nom="type" type="string" value="moduleMillieuCote"/>
-        </action>
-    </objectif>
-
-    <objectif nom="RecolteRocheDepart" points="0" temp="4">
-        <conditions>
-                <variable nom="bacRoche" condition="notMax"/>
-        </conditions>
-        <action methode="seDeplacerVersUnElement">
-            <param nom="type" type="string" value="petitCratereDepart"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
-        <!--<action methode="leverBras"/>-->
-        <action methode="avancer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-            <onError>
-                <action methode="baisserBras" />
-            </onError>
-        </action>
-        <action methode="baisserBras" />
-        <action methode="incrementerBac"/>
-        <action methode="incrementerBac"/>
-        <action methode="reculer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
         </action>
     </objectif>
 
@@ -134,17 +108,17 @@
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="moduleBaseLunaire"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="leverBras"/>
         <action methode="avancer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="baisserBras" />
         <action methode="reculer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="incrementerBac"/>
         <action methode="retirerElementCarte">
@@ -152,24 +126,24 @@
         </action>
     </objectif>
 
-<!--
+
     <objectif nom="RecoltemoduleBasCentre" points="0" temp="4">
         <conditions>
                 <variable nom="bacRoche" condition="notMax"/>
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="moduleBasCentre"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="leverBras"/>
         <action methode="avancer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="baisserBras" />
         <action methode="reculer">
             <param nom="distance" type="int" value="350"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="incrementerBac"/>
         <action methode="retirerElementCarte">
@@ -185,17 +159,17 @@
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="moduleHautCoin"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="leverBras"/>
         <action methode="avancer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="baisserBras" />
         <action methode="reculer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="incrementerBac"/>
         <action methode="retirerElementCarte">
@@ -205,99 +179,28 @@
 
 
 
-    <objectif nom="RecoltegrandCratere" points="0" temp="4">
+    <!--<objectif nom="RecoltegrandCratere" points="0" temp="4">
         <conditions>
                 <variable nom="bacRoche" condition="notMax"/>
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="grandCratere"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="leverBras"/>
         <action methode="avancer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="baisserBras" />
         <action methode="reculer">
             <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+            <param nom="vitesse" type="float" value="0.3"/>
         </action>
         <action methode="incrementerBac"/>
         <action methode="retirerElementCarte">
             <param nom="type" type="string" value="grandCratere"/>
         </action>
-    </objectif>
-
-	<objectif nom="RecolteRocheDepart" points="0" temp="4">
-        <conditions>
-                <variable nom="bacRoche" condition="notMax"/>
-        </conditions>
-        <action methode="seDeplacerVersUnElement">
-            <param nom="type" type="string" value="petitCratereDepart"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
-        <action methode="leverBras"/>
-        <action methode="avancer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-            <onError>
-                <action methode="baisserBras" />
-            </onError>
-        </action>
-        <action methode="baisserBras" />
-        <action methode="incrementerBac"/>
-        <action methode="reculer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
-    </objectif>
-
-
-
-
-
-
-
-    <objectif nom="RecoltegrandCratere" points="0" temp="4">
-        <conditions>
-                <variable nom="bacRoche" condition="notMax"/>
-        </conditions>
-        <action methode="seDeplacerVersUnElement">
-            <param nom="type" type="string" value="grandCratere"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
-        <action methode="leverBras"/>
-        <action methode="avancer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
-        <action methode="baisserBras" />
-        <action methode="reculer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
-        <action methode="incrementerBac"/>
-        <action methode="retirerElementCarte">
-            <param nom="type" type="string" value="grandCratere"/>
-        </action>
-    </objectif>
-
--->
-
-
-	<!--<objectif nom="RecolteRocheGrandCratere" points="0" temp="4">
-        <conditions>
-            <or>
-                <variable nom="bacRoche" condition="notMax"/>
-            </or>
-        </conditions>
-        <action methode="seDeplacerVersUnElement">
-            <param nom="type" type="string" value="grandCratere"/>
-            <param nom="vitesse" type="float" value="1"/>
-        </action>
-        <action methode="recolterRoche" />
     </objectif>-->
-
 
 </listeObjectif>

@@ -21,6 +21,7 @@ class Robot:
         self.listPosition = []
         self.listTelemetre = []
         self.couleur=""
+        self.countTest=0
         self.startTime = time.time()
 
     def initialiser(self, chercher, listPointInteret, fenetre=None):
@@ -218,7 +219,6 @@ class Robot:
             return True
 
     def updatePositionRelative(self,distance,angle):
-        print("Update Pos")
         angleDiff=(angle+self.angle)*0.0174532925 #rad
         xprev=self.x
         yprev=self.y
@@ -262,7 +262,6 @@ class Robot:
             if message.__contains__("obstacle"):
                 errorObstacle = True
             encodeur = self.communication.recevoir()
-
         if self.communication.portserie != '':
             while not encodeur.__contains__("EG") and not encodeur.__contains__("Orientation"):
                 encodeur = self.communication.recevoir()
@@ -275,15 +274,21 @@ class Robot:
             distanceDone = float(encodeur.split(";")[0].split("=")[1])
             angleDone = float(encodeur.split(";")[1].split("=")[1])
             self.updatePositionRelative(distanceDone,angleDone)
+
             if(recalage == 1):
                 print "recalage"
                 return True
             if errorObstacle or errorStatic:
                 if errorObstacle:
                     print "Error obstacle"
+                    if distance<0:
+                        self.eviterObstacle(self.angle, -1)
+                    else:
+                        self.eviterObstacle(self.angle)
                 else:
                     #self.communication.recevoir() #need to read telemeter message
-                    print "Error static robot"
+                    print "Error static robot, temporary accepted"
+                    return True #TODO remove, tested with distanceAtteinte
                 return self.distanceAtteinte(distance, angle, distanceDone, angleDone, 30, 5)
             print "\t \tMouvement Fini: "+encodeur
             if(encodeur.__len__() != 0):
@@ -299,8 +304,66 @@ class Robot:
                 return False
         else:
             self.updatePositionRelative(distance, angle)
+            """#simulate collision
+            self.countTest+=1
+            if self.countTest == 1:
+                if distance < 0:
+                    self.eviterObstacle(self.angle, -1)
+                else:
+                    self.eviterObstacle(self.angle)
+                return False"""
             return True
         return False
+
+    def eviterObstacle(self, absoluteObstacleAngle, direction=1):
+        print("Escape from A="+str(absoluteObstacleAngle))
+        #Get opposed angle
+        if absoluteObstacleAngle > 0:
+            newAngle = absoluteObstacleAngle-180
+        else:
+            newAngle = absoluteObstacleAngle+180
+        #newAngle = absoluteObstacleAngle
+        xprev=self.x
+        yprev=self.y
+        newx = xprev + 300*math.cos(newAngle*0.0174532925) #rad
+        newy = yprev + 300*math.sin(newAngle*0.0174532925) #rad
+        ligne = Ligne("", xprev, yprev, newx, newy, "purple")
+        distance = -1 * direction * ligne.getlongeur()
+        self.aveugler()
+        time.sleep(0.2)
+        self.seDeplacerDistanceAngle(distance, 0, 0.2, 0)
+        time.sleep(0.2)
+        self.rendreVue()
+        time.sleep(0.2)
+        return True
+        #search for a free opposed movment
+        """escapePointInteretList = list(self.listPointInteret)
+        escapeObstacles = self.chercher.pointContenuListe(xprev, yprev, escapePointInteretList)
+        for elem in escapeObstacles:
+            escapePointInteretList.remove(elem)
+        for size in [400, 300, 250]:
+            for a in range(0, 41, 10):
+                for side in [-1, 1]:
+                    lineTest = Ligne("", xprev, yprev, newx, newy, "purple")
+                    lineTest.resize(size)
+                    testAngle = lineTest.getAngle()+a*side
+                    lineTest.rotate(lineTest.getAngle()+a*side)
+                    if not self.chercher.enCollisionCarte(lineTest, escapePointInteretList):
+                        print("Found collision escape")
+                        print("Escape angle=" + str(lineTest.getAngle()))
+                        distance = -1*direction*lineTest.getlongeur()
+                        angleToDo = self.getAngleToDo(lineTest.getAngle())
+                        if angleToDo>0:
+                            angleToDo-=180
+                        else:
+                            angleToDo+=180
+                        self.seDeplacerDistanceAngle(distance, angleToDo, 0.2, 0)
+                        return True
+                    elif (self.fenetre):
+                        lineTest.dessiner(self.fenetre)
+                        self.fenetre.win.redraw()"""
+        return False
+
 
     def seDeplacerVersUnElement(self,type,vitesse=1,couleur=None):
         element = None
@@ -507,10 +570,10 @@ class Robot:
         self.aveugler()
         time.sleep(0.1)
         self.tournerBrosse()
-        time.sleep(0.3)
+        time.sleep(0.5)
         if self.communication.portserie != '':
             self.communication.envoyer("F\r\n")
-        time.sleep(0.3)
+        time.sleep(0.5)
         self.rendreVue()
         time.sleep(0.1)
         return True

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart"/>
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="1000"/>
+        </action>
+    </objectif>
+
+	<objectif nom="Avancer1" points="0" temp="4">
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+    </objectif>
+
+	<objectif nom="Virage2" points="0" temp="4">
+        <action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="90"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+    </objectif>
+
+	<objectif nom="Avancer3" points="0" temp="4">
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+    </objectif>
+
+	<objectif nom="Reculer4" points="0" temp="4">
+        <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+    </objectif>
+
+	<objectif nom="Virage5" points="0" temp="4">
+        <action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="0"/>
+            <param nom="angle" type="int" value="-90"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+    </objectif>
+
+	<objectif nom="Reculer6" points="0" temp="4">
+        <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+    </objectif>
+
+
+</listeObjectif>

@@ -4,7 +4,7 @@
     <position nom="PositionDepartA" couleur="blue" x="890" y="65" angle="90"/>
     <position nom="PositionDepartB" couleur="yellow" x="2110" y="65" angle="90"/>
 
-    <equipement nom="bacRoche" type="variable" valeur="0" max="3"/>
+    <equipement nom="bacRoche" type="variable" valeur="0" max="2"/>
 
     <equipement nom="telemetreArriere" type="telemetre" id="2" x="0" y="-150" angle="180"/>
     <equipement nom="telemetreAvant" type="telemetre" id="0" x="0" y="150" angle="0"/>
