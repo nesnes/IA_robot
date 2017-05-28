@@ -3,6 +3,8 @@ from intelligence.robot import Robot
 from intelligence.variable import Variable
 from intelligence.position import Position
 from intelligence.telemetre import Telemetre
+from boards.board import Board
+from pydoc import locate
 
 class LecteurRobot:
 
@@ -33,6 +35,8 @@ class LecteurRobot:
                     self.__getEquipement(child)
                 elif child.tag == "position":
                     self.__getPosition(child)
+                elif child.tag == "board":
+                    self.__getBoard(child)
         else:
             print("Error, not a robot description file")
         return self.robot
@@ -61,4 +65,25 @@ class LecteurRobot:
         angle = float(position.get("angle"))
         newPosition = Position(nom, couleur, x, y, angle)
         self.robot.listPosition.append(newPosition)
+
+    def __getBoard(self, board):
+        nom = board.get("nom")
+        fonction = board.get("fonction")
+        communication = board.get("communication")
+        newBoard = None
+
+        className = nom[0].upper() + nom[1:]
+        boardClass = locate("boards." + nom + "." + className)  #find a class with the board name
+
+        if boardClass is None:  # else find a class with the function name
+            className = fonction[0].upper()+fonction[1:]
+            boardClass = locate("boards." + fonction + "." + className)
+
+        if boardClass is None:  # else use the default Board
+            boardClass = Board
+
+        print "Class", boardClass
+
+        newBoard = boardClass(nom, fonction, communication)
+        self.robot.listBoard.append(newBoard)
 

@@ -1,18 +1,17 @@
-import time
 import math
-from intelligence.communicationRobot import CommunicationRobot
-from cartographie.ligne import Ligne
+import time
+
 from cartographie.cercle import Cercle
-from intelligence.position import Position
+from cartographie.ligne import Ligne
+
 
 class Robot:
 
     def __init__(self,nom, port,largeur):
-        self.communication = None
-        self.communication2 = None
+        self.movingBase = None
+        self.controlPanel = None
+        self.collisionDetector = None
         self.nom = nom
-        self.port = port
-        self.port2 = "" #Commande W pour ID:"carte2"
         self.fenetre = None
         self.largeur = largeur
         self.chercher = None
@@ -20,33 +19,48 @@ class Robot:
         self.listVariables = []
         self.listPosition = []
         self.listTelemetre = []
+        self.listBoard = []
         self.couleur=""
         self.countTest=0
+        self.isSimulated = False
+        self.x = 0
+        self.y = 0
+        self.angle = 0
         self.startTime = time.time()
 
-    def initialiser(self, chercher, listPointInteret, fenetre=None):
-        self.communication = CommunicationRobot(self.port)
-        if self.port2:
-            self.communication2 = CommunicationRobot(self.port2)
-            self.communication2.envoyer("W\r\n")
-            rcv2 = self.communication2.recevoir()
-            print("Port2 "+self.port2+" ID:"+rcv2)
-            self.communication.envoyer("W\r\n")
-            rcv1 = self.communication.recevoir()
-            print("Port1 "+self.port+" ID:"+rcv1)
-            if rcv2.__contains__("1"):
-                print("Switching serial ports")
-                tmp = self.communication
-                self.communication = self.communication2
-                self.communication2 = tmp
-                tmp = self.port
-                self.port = self.port2
-                self.port2 = tmp
-        else:
-            print("Only one card")
+    def initialiser(self, chercher, listPointInteret, fenetre=None, simulate=False):
+        self.isSimulated = simulate
         self.fenetre = fenetre
         self.chercher = chercher
         self.listPointInteret = listPointInteret
+        if not self.isSimulated:
+            for board in self.listBoard:
+                if not board.connect():
+                    print("ERROR: Unable to connect " + board.nom)
+            for board in self.listBoard:
+                if board.fonction == "movingBase":
+                    self.movingBase = board
+                elif board.fonction == "controlPanel":
+                    self.controlPanel = board
+                elif board.fonction == "collisionDetector":
+                    self.collisionDetector = board
+        if self.controlPanel is None:
+            print("ERROR: No controlPanel found")
+            self.isSimulated = True
+        if self.movingBase is None:
+            print("ERROR: No movingBase found")
+            self.isSimulated = True
+        if self.collisionDetector is None:
+            print("ERROR: No collisionDetector found")
+            self.isSimulated = True
+        if self.isSimulated:
+            print("WARNING: Simulation activated")
+        return self.isSimulated
+
+    def closeConnections(self):
+        if not self.isSimulated:
+            for board in self.listBoard:
+                board.disconnect()
 
     def dessiner(self):
         from cartographie.cercle import Cercle
@@ -68,7 +82,7 @@ class Robot:
         self.telemetreDetectAdversaire()
 
     def attendreDepart(self):
-        if self.communication.portserie == '':
+        if self.isSimulated:
             self.startTime = time.time()
             defaultValues = self.listPosition[1]
             if self.couleur != "":
@@ -80,46 +94,31 @@ class Robot:
             self.x = defaultValues.x
             self.y = defaultValues.y
             self.angle = defaultValues.angle #0 degres =3 heures
-            self.startX = self.x
-            self.startY = self.y
             if self.fenetre != None:
                 self.dessiner()
             print("Le robot virtuel est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
             return True
-        rcv = self.communication.recevoir()
-        print rcv
-        while(not rcv.__contains__("GO")):
-            self.startTime = time.time()
-            rcv = self.communication.recevoir()
-            print rcv
-            #check if we recieved the color
-            if(rcv.__contains__("BLEU")): #COLOR A
-                self.couleur=self.listPosition[0].couleur
-                print("Le robot est "+self.couleur)
-            if(rcv.__contains__("JAUNE")): #COLOR B
-                self.couleur=self.listPosition[1].couleur
-                print("Le robot est "+self.couleur)
-
-        #Set the initial positions
-        if(self.couleur==self.listPosition[0].couleur):
-            self.x = self.listPosition[0].x
-            self.y = self.listPosition[0].y
-            self.angle = self.listPosition[0].angle #0=3h
-
         else:
-            self.x = self.listPosition[1].x
-            self.y = self.listPosition[1].y
-            self.angle = self.listPosition[1].angle #180=9h
-        #self.retirerElementCarte("depart", self.couleur)
-        print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
-        self.startTime = time.time()
-        self.communication.envoyer("G\r\n") #Go to the robot
-        goEcho = self.communication.recevoir()
-        if self.communication2:
-            self.communication2.envoyer("G\r\n") #Go to the robot
-        self.startX = self.x
-        self.startY = self.y
-        return True
+            oldColor=None
+            while(not self.controlPanel.getStartSignal()):
+                self.startTime = time.time()
+                color = self.controlPanel.getColor() #get the color
+                if color != oldColor:
+                    self.couleur = self.listPosition[color].couleur
+                    self.x = self.listPosition[color].x
+                    self.y = self.listPosition[color].y
+                    self.angle = self.listPosition[color].angle #0=3h 180=9h
+                    if self.movingBase.isXYSupported():
+                        self.movingBase.setPosition(self.x, self.y, self.angle)
+                    print("Le robot est " + self.couleur)
+                    oldColor = color
+                time.sleep(0.1)
+
+            #Set the initial positions
+            print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
+            self.startTime = time.time()
+            self.movingBase.enableMovements() #authorize the robot to move
+            return True
 
     def getRunningTime(self):
         return time.time() - self.startTime
@@ -160,18 +159,6 @@ class Robot:
                     print("Telemeter detected " + collision.nom)
         return False
 
-    def aveugler(self):
-         time.sleep(500/1000.0);
-         self.communication.envoyer("U\r\n")
-         time.sleep(500/1000.0);
-         return True
-
-    def rendreVue(self):
-         time.sleep(500/1000.0);
-         self.communication.envoyer("V\r\n")
-         time.sleep(500/1000.0);
-         return True
-
     def executer(self,action):
         tabParam=[]
         for param in action.tabParametres:
@@ -182,8 +169,8 @@ class Robot:
             print "ERREUR: La methode",action.methode,"n'existe pas!!!"
             return False
 
-    def positionAtteinte(self,x,y,x1,y1,erreur):
-        if( (abs(x-x1) <= erreur) and (abs(y-y1) <= erreur) ):
+    def positionAtteinte(self, x, y, angle, x1, y1, angle1, erreurPos, erreurAngle):
+        if( (abs(x-x1) <= erreurPos) and (abs(y-y1) <= erreurPos) and (abs(angle-angle1) <= erreurAngle)):
             return True
         return False
 
@@ -191,7 +178,6 @@ class Robot:
         if( (abs(dist1-dist2) <= erreurDist) and (abs(angle1-angle2) <= erreurAngle) ):
             return True
         return False
-
 
     def getAngleToDo(self,angle):
         res = angle - self.angle
@@ -201,107 +187,36 @@ class Robot:
             res = 360 + res
         return res
 
-    def seDeplacerXY(self,x,y,angle, vitesse=1.0):
-        print "\t \t Deplacement: x:",x," y:",y," angle:",angle
+    def seDeplacerXY(self, x, y, absoluteAngle, vitesse=1.0):
+        print "\t \t Deplacement: x:", x, " y:", y, " angle:", absoluteAngle
         chemin = self.chercher.trouverChemin(self.x,self.y,x,y,self.listPointInteret)
         if chemin == None:
             print "\t \t Chemin non trouve"
             return False
         for ligne in chemin:
-            if not self.seDeplacerDistanceAngle(ligne.getlongeur(),self.getAngleToDo(ligne.getAngle())):
+            result = False
+            if not self.movingBase.isXYSupported:
+                result = self.seDeplacerDistanceAngle(ligne.getlongeur(), self.getAngleToDo(ligne.getAngle()))
+            else:
+                self.movingBase.startMovementXY(x, y, absoluteAngle, vitesse)
+                result = self.__waitForMovementFinished(True)
+            if not result:
                 return False
-            #print "\t \tDeplacement: distance:",str(ligne.getlongeur())," angle:",str(ligne.getAngle())
-        if not self.seDeplacerDistanceAngle(0,self.getAngleToDo(angle),vitesse):
+        if not self.seDeplacerDistanceAngle(0, self.getAngleToDo(absoluteAngle), vitesse):
             return False
-        if self.communication.portserie != '':
-            return self.positionAtteinte(x, y, self.x, self.y,50)
+        if not self.isSimulated:
+            return self.positionAtteinte(x, y, absoluteAngle, self.x, self.y, self.angle, 50, 5)
         else:
             return True
 
-    def updatePositionRelative(self,distance,angle):
-        angleDiff=(angle+self.angle)*0.0174532925 #rad
-        xprev=self.x
-        yprev=self.y
-        self.x += distance*math.cos(angleDiff)
-        self.y += distance*math.sin(angleDiff)
-        self.angle += angle
-        if self.angle > 180:
-            self.angle = -360 + self.angle
-        if self.angle < -180:
-            self.angle = 360 + self.angle
-        if self.fenetre != None:
-            ligne = Ligne("",xprev,yprev,self.x,self.y,"green")
-            ligne.dessiner(self.fenetre)
-            self.fenetre.win.redraw()
-
-    def seDeplacerDistanceAngle(self,distance,angle,vitesse=0.3, retry=1, recalage = 0):
-        print "\t \tDeplacement: distance:",str(distance)," angle:",str(angle)
-        errorObstacle=False
-        errorStatic=False
-        if self.communication.portserie != '':
-            self.communication.envoyer("M;"+str(distance)+";"+str(angle)+";"+str(vitesse)+";1\r\n")
-            ok = self.communication.recevoir() # "OK"
-            print ok
-            message = ""
-            while not message.__contains__("mouvement"):
-                message = self.communication.recevoir()
-                """res = self.interrogerCapteurIR()
-                if not type(res) == bool:
-                    print("test telemetre bool")
-                    message = res
-                else:
-                    print("test telemetre")
-                    collision = self.telemetreDetectAdversaire()
-                    if not collision:
-                        print "Stopping robot"
-                        self.communication.envoyer("H\r\n")
-                        errorObstacle = True
-                        break"""
-            if message.__contains__("immobile"):
-                errorStatic=True
-            if message.__contains__("obstacle"):
-                errorObstacle = True
-            encodeur = self.communication.recevoir()
-        if self.communication.portserie != '':
-            while not encodeur.__contains__("EG") and not encodeur.__contains__("Orientation"):
-                encodeur = self.communication.recevoir()
-                print encodeur
-
-            if encodeur.__contains__("EG"):
-                encodeur = self.communication.recevoir()
-
-            #Update Position / Angle
-            distanceDone = float(encodeur.split(";")[0].split("=")[1])
-            angleDone = float(encodeur.split(";")[1].split("=")[1])
-            self.updatePositionRelative(distanceDone,angleDone)
-
-            if(recalage == 1):
-                print "recalage"
-                return True
-            if errorObstacle or errorStatic:
-                if errorObstacle:
-                    print "Error obstacle"
-                    if distance<0:
-                        self.eviterObstacle(self.angle, -1)
-                    else:
-                        self.eviterObstacle(self.angle)
-                else:
-                    #self.communication.recevoir() #need to read telemeter message
-                    print "Error static robot, temporary accepted"
-                    return True #TODO remove, tested with distanceAtteinte
-                return self.distanceAtteinte(distance, angle, distanceDone, angleDone, 30, 5)
-            print "\t \tMouvement Fini: "+encodeur
-            if(encodeur.__len__() != 0):
-                if not self.distanceAtteinte(distance, angle, distanceDone, angleDone, 50, 5):
-                    pass
-                    if(retry):
-                        self.seDeplacerDistanceAngle(distance, angle, vitesse, 0)
-                    else:
-                        return False
-                else:
-                    return True
-            else:
-                return False
+    def seDeplacerDistanceAngle(self,distance,angle,vitesse=0.3, retry=1):
+        print "\t \tDeplacement: distance:", str(distance), " angle:", str(angle)
+        if not self.isSimulated:
+            self.movingBase.startMovementDistanceAngle(distance, angle, vitesse)
+            direction = 1
+            if distance < 0:
+                direction = -1
+            return self.__waitForMovementFinished(False, direction)
         else:
             self.updatePositionRelative(distance, angle)
             """#simulate collision
@@ -313,10 +228,42 @@ class Robot:
                     self.eviterObstacle(self.angle)
                 return False"""
             return True
-        return False
+
+    def __waitForMovementFinished(self, xyMove, direction=1, doNotAvoid=False):
+        errorObstacle = False
+        errorStuck = False
+        time.sleep(0.1)  #wait 100ms before getting information on the movment
+        status = self.movingBase.getMovementStatus()
+        while status.__contains__("running"):
+            status = self.movingBase.getMovementStatus()
+            self.collisionDetector.updateTelemetre(self.listTelemetre)
+            collision = self.telemetreDetectAdversaire()
+            if type(collision) != bool:
+                collisionX, collisionY = collision
+                print "Stopping robot"
+                self.movingBase.emergencyBreak()
+                errorObstacle = True
+                break
+        if status.__contains__("stuck"):
+            errorStuck = True
+        if xyMove:
+            newX, newY, newAngle = self.movingBase.getPositionXY()
+            self.x = newX
+            self.y = newY
+            self.angle = newAngle
+        else:
+            distanceDone, angleDone, currentSpeed = self.movingBase.getPositionDistanceAngle()
+            self.updatePositionRelative(distanceDone, angleDone)
+
+        if errorObstacle or errorStuck:
+            if not doNotAvoid:
+                print "\t \tERROR: obstacle, starting avoidance"
+                self.eviterObstacle(self.angle, direction)
+            return False
+        return True
 
     def eviterObstacle(self, absoluteObstacleAngle, direction=1):
-        print("Escape from A="+str(absoluteObstacleAngle))
+        print("\t \tEscape from A="+str(absoluteObstacleAngle))
         #Get opposed angle
         if absoluteObstacleAngle > 0:
             newAngle = absoluteObstacleAngle-180
@@ -349,8 +296,8 @@ class Robot:
                     testAngle = lineTest.getAngle()+a*side
                     lineTest.rotate(lineTest.getAngle()+a*side)
                     if not self.chercher.enCollisionCarte(lineTest, escapePointInteretList):
-                        print("Found collision escape")
-                        print("Escape angle=" + str(lineTest.getAngle()))
+                        print("\t \tFound collision escape")
+                        print("\t \tEscape angle=" + str(lineTest.getAngle()))
                         distance = -1*direction*lineTest.getlongeur()
                         angleToDo = self.getAngleToDo(lineTest.getAngle())
                         if angleToDo>0:
@@ -364,6 +311,21 @@ class Robot:
                         self.fenetre.win.redraw()"""
         return False
 
+    def updatePositionRelative(self, distance, angle):
+        angleDiff = (angle+self.angle)*0.0174532925  #rad
+        xprev = self.x
+        yprev = self.y
+        self.x += distance*math.cos(angleDiff)
+        self.y += distance*math.sin(angleDiff)
+        self.angle += angle
+        if self.angle > 180:
+            self.angle = -360 + self.angle
+        if self.angle < -180:
+            self.angle = 360 + self.angle
+        if self.fenetre != None:
+            ligne = Ligne("",xprev,yprev,self.x,self.y,"green")
+            ligne.dessiner(self.fenetre)
+            self.fenetre.win.redraw()
 
     def seDeplacerVersUnElement(self,type,vitesse=1,couleur=None):
         element = None
@@ -398,8 +360,6 @@ class Robot:
             return False
         self.chercher.updateNodesRemovingElement(element, self.listPointInteret)
         self.listPointInteret.remove(element)
-        print("Points: "+str(len(self.listPointInteret)))
-        #self.chercher.createGraph(self.listPointInteret)
         if self.fenetre:
             element.zoneEvitement.forme.couleur = "white"
             element.zoneEvitement.dessiner(self.fenetre)
@@ -407,187 +367,53 @@ class Robot:
         return True
 
     def avancer(self,distance,vitesse=0.5):
-        return self.seDeplacerDistanceAngle(distance,0,vitesse)
+        newx = self.x + distance * math.cos(self.angle * 0.0174532925)  # rad
+        newy = self.y + distance * math.sin(self.angle * 0.0174532925)  # rad
+        return self.seDeplacerXY(newx, newy, self.angle, vitesse)
 
     def reculer(self,distance,vitesse=0.5):
-        return self.seDeplacerDistanceAngle(-distance,0,vitesse)
+        newx = self.x + -distance * math.cos(self.angle * 0.0174532925)  # rad
+        newy = self.y + -distance * math.sin(self.angle * 0.0174532925)  # rad
+        return self.seDeplacerXY(newx, newy, self.angle, vitesse)
 
-    def recaler(self,distance,vitesse=0.5):
-        return self.seDeplacerDistanceAngle(distance,0,vitesse, 1, 1)
+    def recaler(self, distance, axe, coordinate, angle, vitesse=0.2, coordinate2=None):
+        success = True
+        if not self.isSimulated:
+            self.movingBase.startRepositioningMovement(distance, vitesse)
+            direction = 1
+            if distance < 0:
+                direction = -1
+            result = self.__waitForMovementFinished(False,direction,True)
+            if result:
+                print("ERROR: Movement wasn't stuck during the repositioning movement, the known angle should have a big error.")
+                success = False
+        if axe == "X":
+            self.x = coordinate
+        elif axe == "Y":
+            self.y = coordinate
+        elif axe == "XY":
+            self.x = coordinate
+            self.y = coordinate2
+        self.angle = angle
+        return success
 
-    def setServomoteur(self, idServo, angle):
-        if self.communication.portserie != '':
-            self.communication.envoyer("S;"+str(idServo)+";0;"+str(angle)+"\r\n")
-            valid = ""
-            #OK
-            while(not valid.__contains__("K")):
-                valid = self.communication.recevoir()
-                #PB
-                if(valid.__contains__("B")):
-                    return False
-        return True
-
-    def setProgressiveServomoteur(self, idServo, startAngle, endAngle, seconds, blocking=True):
-        #Methode not tested, not sure we need to wait for OK or PB, ask fabrice AND check in the Mbed code
-        if self.communication.portserie != '':
-            self.communication.envoyer("X;"+str(idServo)+";"+str(startAngle)+";"+str(endAngle)+";"+str(seconds)+"\r\n")
-            if(blocking):
-                time.sleep(seconds)
-            valid = ""
-            #OK
-            while(not valid.__contains__("K")):
-                valid = self.communication.recevoir()
-                #PB
-                if(valid.__contains__("B")):
-                    return False
-        return True
-
-#Special methods for each year has to be wrote under there
-
-    def recolterModule(self):
-        #do the thing to store the module
-
-        reserveGauche = self.getVariable("reserveModuleGauche")
-        if reserveGauche.isMax():
-            reserveDroite = self.getVariable("reserveModuleDroite")
-            if reserveDroite.isMax():
-                print("Can't store more modules")
-                return False
-            else:
-                #store the module here
-                reserveDroite.incrementer()
+    def incrementerVariable(self, variable):
+        var = self.getVariable(variable)
+        if var:
+            var.incrementer()
         else:
-            #store the module here
-            reserveGauche.incrementer()
-        return True
+            print("ERROR: Variable not found: " + str(variable))
 
-    def recolterRoche(self):
-        #do the thing
-        bacRoche = self.getVariable("bacRoche")
-        bacRoche.incrementer()
-        return True
+    def decrementerVariable(self, variable):
+        var = self.getVariable(variable)
+        if var:
+            var.decrementer()
+        else:
+            print("ERROR: Variable not found: " + str(variable))
 
-    def deposerRoche(self):
-        #do the thing
-
-        bacRoche = self.getVariable("bacRoche")
-        bacRoche.valeur = 0
-        return True
-
-    def deposerModule(self):
-        #do the thing to store the module
-
-        reserveGauche = self.getVariable("reserveModuleGauche")
-        reserveGauche.valeur = 0
-        reserveDroite = self.getVariable("reserveModuleDroite")
-        reserveDroite.valeur = 0
-        return True
-
-#SPECIAL 2016 METHODS (Can be suppressed for another year)
-    def lireMessagesMbed(self):
-        if self.communication.portserie == '':
-            self.startTime = time.time()
-            return True
-        rcv = self.communication.recevoir()
-        print rcv
-        while(True):
-            rcv = self.communication.recevoir()
-            print rcv
-        return True
-
-    def interrogerCapteurIR(self):
-        self.communication.envoyer("I\r\n")
-        if self.communication.portserie == '':
-           return True
-        rcv = self.communication.recevoir()
-        if not rcv.__contains__("I;"):
-            return rcv #Probably the end of the movment message
-        values = rcv.split(";")
-        for telemetre in self.listTelemetre:
-            telemetre.value = int(values[telemetre.id+1])
-        print rcv
-        return True
-
-    def tournerBrosse(self):
-
-        time.sleep(0.3)
-        if self.communication.portserie != '':
-            self.communication.envoyer("B\r\n")
-        time.sleep(0.3)
-        return True
-
-    def arreterBrosse(self):
-        time.sleep(0.3)
-        if self.communication.portserie != '':
-            self.communication.envoyer("A\r\n")
-        time.sleep(0.3)
-        return True
-
-    def allumerExpulseurBalle(self):
-        if self.communication2:
-            self.communication2.envoyer("B\r\n")
-        return True
-
-    def eteindreExpulseurBalle(self):
-        if self.communication2:
-            self.communication2.envoyer("A\r\n")
-        return True
-
-    def monterPanier(self):
-        if self.communication2:
-            self.communication2.envoyer("M\r\n")
-            valid = ""
-            while (not valid.__contains__("haut")):
-                valid = self.communication2.recevoir()
-        return True
-
-    def descendrePanier(self):
-        if self.communication2:
-            self.communication2.envoyer("D\r\n")
-            valid = ""
-            while (not valid.__contains__("bas")):
-                valid = self.communication2.recevoir()
-        return True
-
-    def funnyAction(self):
-        if self.communication2:
-            self.communication2.envoyer("F\r\n")
-        return True
-
-    def leverBras(self):
-        self.aveugler()
-        time.sleep(0.1)
-        if self.communication.portserie != '':
-            self.communication.envoyer("Z\r\n")
-        time.sleep(0.3)
-        self.arreterBrosse()
-        time.sleep(0.1)
-        self.rendreVue()
-        time.sleep(0.1)
-        return True
-
-    def baisserBras(self):
-        self.aveugler()
-        time.sleep(0.1)
-        self.tournerBrosse()
-        time.sleep(0.5)
-        if self.communication.portserie != '':
-            self.communication.envoyer("F\r\n")
-        time.sleep(0.5)
-        self.rendreVue()
-        time.sleep(0.1)
-        return True
-
-    def incrementerBac(self):
-        bacRoche = self.getVariable("bacRoche")
-        bacRoche.incrementer()
-        return True
-
-    def viderBac(self):
-        bacRoche = self.getVariable("bacRoche")
-        bacRoche.set(0)
-        print("Bac roche" + str(bacRoche.get()))
-        return True
-
-
-    #SPECIAL 2016 METHODS
+    def resetVariable(self, variable):
+        var = self.getVariable(variable)
+        if var:
+            var.set(0)
+        else:
+            print("ERROR: Variable not found: " + str(variable))

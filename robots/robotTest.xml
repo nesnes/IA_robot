@@ -1,13 +1,21 @@
 <?xml version="1.0"?>
-<robot nom="RobotTest" rayon="153" port="/dev/ttyACM0" port2="/dev/ttyACM1" defaultColor="blue">
+<robot nom="RobotTest" rayon="153" defaultColor="blue">
+
 
     <position nom="PositionDepartA" couleur="blue" x="850" y="200" angle="0"/>
     <position nom="PositionDepartB" couleur="yellow" x="2150" y="200" angle="180"/>
 
+    <board nom="BaseRoulanteV1" fonction="movingBase" communication="serial" />
+    <board nom="PaneauContolV1" fonction="controlPanel" communication="serial" />
+    <board nom="CollisionDetectionV1" fonction="collisionDetector" communication="serial" />
+    <board nom="DummyActuatorV1" fonction="other" communication="serial" />
+
     <equipement nom="reserveModuleGauche" type="variable" valeur="0" max="3"/>
     <equipement nom="reserveModuleDroite" type="variable" valeur="0" max="3"/>
 
-    <equipement nom="telemetreArriere" type="telemetre" id="0" x="0" y="-500" angle="0"/>
-    <equipement nom="telemetreAvant" type="telemetre" id="1" x="0" y="500" angle="180"/>
+    <equipement nom="telemetreArriere" type="telemetre" id="2" x="0" y="-150" angle="180"/>
+    <equipement nom="telemetreAvant" type="telemetre" id="0" x="0" y="150" angle="0"/>
+    <equipement nom="telemetreAvantDroite" type="telemetre" id="1" x="100" y="100" angle="0"/>
+    <equipement nom="telemetreAvantGauche" type="telemetre" id="3" x="-100" y="100" angle="0"/>
 
 </robot>

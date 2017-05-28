@@ -20,7 +20,7 @@ def main():
 
     fichierCarte = "cartes/carte_2017.xml"
     fichierObjectif = "objectifs/2017/objectifsPrincipalSolo.xml"
-    fichierRobot = "robots/robotPrincipal2017Solo.xml"
+    fichierRobot = "robots/robotTest.xml"
     #fichierObjectif = "objectifs/2017/objectifsSecondaireTest.xml"
     #fichierRobot = "robots/robotSecondaire2017.xml"
 
@@ -52,29 +52,22 @@ def main():
     if(fenetre):
         fenetre.win.redraw()
 
-    if not isRaspberry and robotConnected:
-        if screen:
-            robot.port = '/dev/tty.usbmodem1412'
-            #robot.port = '/dev/tty.usbmodem1412'
-            #robot.port2 = '/dev/tty.usbmodem1423'
-    elif not isRaspberry and not robotConnected:
-        robot.port = ''
-        robot.port2 = ''
-
-    if not isRaspberry:
-        robot.port2=""
-
     print "Initializing robot"
-    robot.initialiser(chercher, listePointInteret, fenetre)
+    simulation = robot.initialiser(chercher, listePointInteret, fenetre, not robotConnected)
+    if simulation:
+        print("ERROR: once again the program is in simulation mode! Some boards can't be detected.")
+        print("Statring in 2s.")
+        time.sleep(2)
 
     print "Creating IA"
     IA = ExecuteurObjectif(robot,fichierObjectif,fichierCarte, chercher, fenetre) #creation de l'IA
 
-
-    #if(robotConnected):
     IA.afficherObjectifs()
     print "Running IA"
     IA.executerObjectifs() # execution de l'IA
+
+    print("End of the match, closing board connections")
+    robot.closeConnections()
 
     # Pour tester le pathfinding, cliquez a deux endroits sur la carte
     if(screen):

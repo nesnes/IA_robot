@@ -1,5 +1,4 @@
 from cartographie.ligne import Ligne
-from intelligence.robot import Robot
 
 class Telemetre:
 
@@ -16,7 +15,3 @@ class Telemetre:
 
     def getValue(self):
         return self.value
-
-    def getLine(self, value, robot):
-        line = Ligne("", 0, 0, 0, 0)
-        return line
