@@ -7,7 +7,7 @@ from cartographie.ligne import Ligne
 
 class Robot:
 
-    def __init__(self,nom, port,largeur):
+    def __init__(self,nom,largeur):
         self.movingBase = None
         self.controlPanel = None
         self.collisionDetector = None

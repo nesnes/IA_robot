@@ -27,7 +27,16 @@ class LecteurRobot:
             self.port = root.get("port")
             self.port2 = root.get("port2")
             self.defaultColor = root.get("defaultColor")
-            self.robot = Robot(self.nom, self.port, self.rayon)
+
+            # find the requested Robot python class
+            robotClass = None
+            className = self.nom[0].upper() + self.nom[1:]
+            robotClass = locate("robots." + self.nom + "." + className)  # find a class with the board name
+
+            if robotClass is None:  # else use the default Board
+                robotClass = Robot
+
+            self.robot = robotClass(self.nom, self.rayon)
             self.robot.couleur = self.defaultColor
             self.robot.port2 = self.port2
             for child in root:

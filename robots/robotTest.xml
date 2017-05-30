@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot nom="RobotTest" rayon="153" defaultColor="blue">
+<robot nom="RobotTest" class="RobotTest" rayon="153" defaultColor="blue">
 
 
     <position nom="PositionDepartA" couleur="blue" x="850" y="200" angle="0"/>
