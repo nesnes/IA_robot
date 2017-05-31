@@ -13,7 +13,7 @@ class CollisionDetector(Board):
         if self.isConnected():
             self.sendMessage("distances get\r\n")
             distances = ""
-            while not distances.__contains__("distances"):
+            while "distances" not in distances:
                 distances = self.receiveMessage() #"distances 0;1.2;0.4"... in the order of the IDs
             listDistances = distances.split(" ")[1].split(";")
             count = 0

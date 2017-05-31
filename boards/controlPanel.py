@@ -13,7 +13,7 @@ class ControlPanel(Board):
         if self.isConnected():
             self.sendMessage(">color get\r\n")
             color = ""
-            while not color.__contains__("color"):
+            while "color" not in color:
                 color = self.receiveMessage() #"color 0" or "color 1"
             return color
 
@@ -21,8 +21,8 @@ class ControlPanel(Board):
         if self.isConnected():
             self.sendMessage(">start get\r\n")
             start = ""
-            while not start.__contains__("start"):
+            while "start" not in start:
                 start = self.receiveMessage() #"start 1" or "start 0"
-            if start.__contains__("1"):
+            if "1" in start:
                 return True
         return False

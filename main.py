@@ -9,7 +9,7 @@ from intelligence.executeurObjectif import ExecuteurObjectif
 #X;SERVO;ANGINIT;ANGFIN;TEMPSSecondesFloat
 def main():
     #Detection du rapsberry
-    isRaspberry = os.popen("uname -m").read().__contains__("arm")
+    isRaspberry = "arm" in os.popen("uname -m").read()
 
     if(isRaspberry): # raspberry
         screen = False

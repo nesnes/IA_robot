@@ -13,7 +13,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("move enable\r\n")
             echo = ""
-            while not echo.__contains__("move OK"):
+            while "move OK" not in echo:
                 echo = self.receiveMessage()  # "move OK"
             return True
 
@@ -21,7 +21,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("move disable\r\n")
             echo = ""
-            while not echo.__contains__("move OK"):
+            while "move OK" not in echo:
                 echo = self.receiveMessage()  # "move OK"
             return True
 
@@ -29,7 +29,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("position set "+str(x)+";"+str(y)+";"+str(angle)+"\r\n")
             echo = ""
-            while not echo.__contains__("position OK"):
+            while "position OK" not in echo:
                 echo = self.receiveMessage() #"position OK"
             return True
 
@@ -37,7 +37,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("position getXY\r\n")
             position = ""
-            while not position.__contains__("position"):
+            while "position" not in position:
                 position = self.receiveMessage() #"position x;y;angle;speed"
             values = position.split(" ")[1].split(";")
             x = float(values[0])
@@ -50,7 +50,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("position getDA\r\n")
             position = ""
-            while not position.__contains__("position"):
+            while "position" not in position:
                 position = self.receiveMessage() #"position distance;angle;speed"
             values = position.split(" ")[1].split(";")
             distance = float(values[0])
@@ -63,7 +63,7 @@ class MovingBase(Board):
             if self.isXYSupported:
                 self.sendMessage("move setXY " + str(x) + ";" + str(y) + ";" + str(angle) + ";" + str(speed) + "\r\n")
                 echo = ""
-                while not echo.__contains__("move OK"):
+                while "move OK" not in echo:
                     echo = self.receiveMessage()  # "move OK"
                 return True
             else:
@@ -74,7 +74,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("move setDA " + str(distance) + ";" + str(angle) + ";" + str(speed) + "\r\n")
             echo = ""
-            while not echo.__contains__("move OK"):
+            while "move OK" not in echo:
                 echo = self.receiveMessage()  # "move OK"
             return True
 
@@ -82,7 +82,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("move status\r\n")
             status = ""
-            while not status.__contains__("move"):
+            while "move" not in status:
                 status = self.receiveMessage()  # "move running" "move stuck" "move finished"
             return status.split(" ")[1]
 
@@ -90,7 +90,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("speed get\r\n")
             speed = ""
-            while not speed.__contains__("speed"):
+            while "speed" not in speed:
                 speed = self.receiveMessage()  # "speed 0.3"
             value = float(speed.split(" ")[1])
             return value
@@ -99,7 +99,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("move break\r\n")
             echo = ""
-            while not echo.__contains__("move OK"):
+            while "move OK" not in echo:
                 echo = self.receiveMessage()  # "move OK"
             return True
 
@@ -107,7 +107,7 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("move setRM " + str(distance) + ";" + str(speed) + "\r\n")
             echo = ""
-            while not echo.__contains__("move OK"):
+            while "move OK" not in echo:
                 echo = self.receiveMessage()  # "move OK"
             return True
 
@@ -115,8 +115,8 @@ class MovingBase(Board):
         if self.isConnected():
             self.sendMessage("support XY\r\n")
             support = ""
-            while not support.__contains__("support"):
+            while "support" not in support:
                 support = self.receiveMessage()  # "support 0" or "support 1"
-            if support.__contains__("1"):
+            if "1" in support:
                 return True
             return False

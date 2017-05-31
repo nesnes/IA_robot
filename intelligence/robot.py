@@ -234,7 +234,7 @@ class Robot:
         errorStuck = False
         time.sleep(0.1)  #wait 100ms before getting information on the movment
         status = self.movingBase.getMovementStatus()
-        while status.__contains__("running"):
+        while "running" in status:
             status = self.movingBase.getMovementStatus()
             self.collisionDetector.updateTelemetre(self.listTelemetre)
             collision = self.telemetreDetectAdversaire()
@@ -244,7 +244,7 @@ class Robot:
                 self.movingBase.emergencyBreak()
                 errorObstacle = True
                 break
-        if status.__contains__("stuck"):
+        if "stuck" in status:
             errorStuck = True
         if xyMove:
             newX, newY, newAngle = self.movingBase.getPositionXY()

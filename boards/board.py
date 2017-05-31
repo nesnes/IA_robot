@@ -18,7 +18,7 @@ class Board:
         if self.communication == "serial":
             ports = serial.tools.list_ports.comports()
             for port in ports:
-                if not port[0].__contains__("tty") and not port[0].__contains__("usbmodem") and not port[0].__contains__("COM"):
+                if all(s not in port[0] for s in ("tty", "usbmodem", "COM")):
                     continue
                 if self.connection.connect(port[0]):
                     self.connection.sendMessage("id\r\n")
