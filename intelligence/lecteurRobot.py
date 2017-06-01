@@ -95,4 +95,3 @@ class LecteurRobot:
 
         newBoard = boardClass(nom, fonction, communication)
         self.robot.listBoard.append(newBoard)
-

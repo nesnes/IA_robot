@@ -43,11 +43,11 @@ class ExecuteurObjectif:
         self.listeObjectifs = lecteurObjectif.lire()
 
     def executerObjectifs(self):
-    	#thread de funny Action
+        #thread de funny Action
         signal.signal(signal.SIGINT, signal_handler)
-    	self.funnyThread = Thread(target=waitForFunnyAction, args=(self,))
-    	self.funnyThread.start()
-    
+        self.funnyThread = Thread(target=waitForFunnyAction, args=(self,))
+        self.funnyThread.start()
+
         #Mode automate, execution dans l'ordre
         listeObjectifEchoue = []
         i=0

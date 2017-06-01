@@ -85,4 +85,3 @@ class LecteurObjectif:
         for subCondition in noeud:
             newCondition.conditionList.append(self._getCondition(subCondition))
         return newCondition
-

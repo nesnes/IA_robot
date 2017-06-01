@@ -22,8 +22,8 @@ class Objectif:
  #       self.etat=0
 
     def reset(self):
-         self.etat=0
-         self.actionCourante=0
+        self.etat=0
+        self.actionCourante=0
     def isEnPause(self):
         return self.etat == 0
     def fini(self):
