@@ -2,14 +2,14 @@ from cartographie.forme import *
 
 
 class Cercle(Forme):
-	
+
     def __init__(self,nom="no name",x=0,y=0,rayon=0,couleur="black"):
         self.nom = nom
         self.x = x
         self.y = y
         self.rayon = rayon
         self.couleur = couleur
-        
+
     def setCouleur(self,newCouleur):
         couleur = newCouleur
 

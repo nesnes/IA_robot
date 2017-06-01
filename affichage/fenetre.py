@@ -104,6 +104,6 @@ class Fenetre:
     mouth.setFill("red")
     mouth.draw(win)
 
-    
+
     self.win.getMouse()
     self.win.close()"""

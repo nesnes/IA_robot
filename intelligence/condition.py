@@ -50,5 +50,3 @@ class Condition:
 
         print("WARNING: Unkonwn condition type: "+self.type)
         return False
-
-
