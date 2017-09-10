@@ -6,6 +6,8 @@ from boards.communicationSerial import CommunicationSerial
 
 class Board:
 
+    serialConnectionList = []
+
     def __init__(self, nom, fonction, communication):
         self.nom = nom
         self.fonction = fonction
@@ -16,19 +18,14 @@ class Board:
 
     def connect(self):
         if self.communication == "serial":
+            if len(Board.serialConnectionList) == 0:
+                Board.updateSerialConnectionList()
             ports = serial.tools.list_ports.comports()
-            for port in ports:
-                if all(s not in port[0] for s in ("tty", "usbmodem", "COM")):
-                    continue
-                if self.connection.connect(port[0]):
-                    self.connection.sendMessage("id\r\n")
-                    time.sleep(0.1) #giving 100ms to answer (that's a lot!)
-                    while self.connection.isMessageAvailable():
-                        id = self.connection.receiveMessage()
-                        if id == self.nom:
-                            print(self.nom+" connected on port " + port[0])
-                            return True
-                    self.connection.disconnect()
+            for device in Board.serialConnectionList:
+                if device[0] == self.nom:
+                    self.connection = device[1]
+                    print(self.nom+" connected")
+                    return True
         return False
 
 
@@ -46,3 +43,23 @@ class Board:
 
     def receiveMessage(self):
         return self.connection.receiveMessage()
+
+    @staticmethod
+    def updateSerialConnectionList():
+        ports = serial.tools.list_ports.comports()
+        for port in ports:
+            if all(s not in port[0] for s in ("tty", "usbmodem", "usbserial", "COM")):
+                continue
+            connection = CommunicationSerial()
+            found = False
+            if connection.connect(port[0]):
+                time.sleep(2)  # giving 2s to initiate the connection (that's a lot!)
+                connection.sendMessage("id\r\n")
+                time.sleep(0.2)  # giving 200ms to answer (that's a lot too!)
+                while connection.isMessageAvailable():
+                    id = connection.receiveMessage()
+                    print("Found " + id + " on " + port[0])
+                    Board.serialConnectionList.append([id, connection])
+                    found = True
+            if not found:
+                connection.disconnect()

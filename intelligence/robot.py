@@ -28,6 +28,9 @@ class Robot:
         self.angle = 0
         self.startTime = time.time()
 
+    def __del__(self):
+        self.closeConnections()
+
     def initialiser(self, chercher, listPointInteret, fenetre=None, simulate=False):
         self.isSimulated = simulate
         self.fenetre = fenetre
@@ -37,6 +40,7 @@ class Robot:
             for board in self.listBoard:
                 if not board.connect():
                     print("ERROR: Unable to connect " + board.nom)
+                    self.isSimulated = True
             for board in self.listBoard:
                 if board.fonction == "movingBase":
                     self.movingBase = board
@@ -44,22 +48,26 @@ class Robot:
                     self.controlPanel = board
                 elif board.fonction == "collisionDetector":
                     self.collisionDetector = board
-        if self.controlPanel is None:
+        if not self.controlPanel:
             print("ERROR: No controlPanel found")
             self.isSimulated = True
-        if self.movingBase is None:
+        if not self.movingBase:
             print("ERROR: No movingBase found")
             self.isSimulated = True
-        if self.collisionDetector is None:
+        if not self.collisionDetector:
             print("ERROR: No collisionDetector found")
             self.isSimulated = True
         if self.isSimulated:
             print("WARNING: Simulation activated")
+
+        if(simulate != self.isSimulated):
+            print "HALT: Stopping"
+            exit(0)
         return self.isSimulated
 
     def closeConnections(self):
-        if not self.isSimulated:
-            for board in self.listBoard:
+        for board in self.listBoard:
+            if board:
                 board.disconnect()
 
     def dessiner(self):
@@ -100,6 +108,8 @@ class Robot:
             return True
         else:
             oldColor=None
+            while (self.controlPanel.getStartSignal()):
+                time.sleep(0.2)
             while(not self.controlPanel.getStartSignal()):
                 self.startTime = time.time()
                 color = self.controlPanel.getColor() #get the color
@@ -111,12 +121,14 @@ class Robot:
                     if self.movingBase.isXYSupported():
                         self.movingBase.setPosition(self.x, self.y, self.angle)
                     print("Le robot est " + self.couleur)
+                    self.controlPanel.displayMessage("Color: " + self.couleur)
                     oldColor = color
-                time.sleep(0.1)
+                time.sleep(0.2)
 
             #Set the initial positions
             print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
             self.startTime = time.time()
+            self.controlPanel.displayMessage("Start")
             self.movingBase.enableMovements() #authorize the robot to move
             return True
 

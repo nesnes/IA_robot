@@ -5,10 +5,10 @@
     <position nom="PositionDepartA" couleur="blue" x="850" y="200" angle="0"/>
     <position nom="PositionDepartB" couleur="yellow" x="2150" y="200" angle="180"/>
 
-    <board nom="BaseRoulanteV1" fonction="movingBase" communication="serial" />
-    <board nom="PaneauContolV1" fonction="controlPanel" communication="serial" />
-    <board nom="CollisionDetectionV1" fonction="collisionDetector" communication="serial" />
-    <board nom="DummyActuatorV1" fonction="other" communication="serial" />
+    <board nom="MovingBaseAlexandreV2" fonction="movingBase" communication="serial" />
+    <board nom="ControlPanelAlexV1" fonction="controlPanel" communication="serial" />
+    <board nom="CollisionDetectionTheo" fonction="collisionDetector" communication="serial" />
+    <!--<board nom="DummyActuatorV1" fonction="other" communication="serial" />-->
 
     <equipement nom="reserveModuleGauche" type="variable" valeur="0" max="3"/>
     <equipement nom="reserveModuleDroite" type="variable" valeur="0" max="3"/>

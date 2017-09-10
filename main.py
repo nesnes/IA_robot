@@ -16,7 +16,7 @@ def main():
         robotConnected = True
     else:
         screen = True
-        robotConnected = False
+        robotConnected = True
 
     fichierCarte = "cartes/carte_2017.xml"
     fichierObjectif = "objectifs/2017/objectifsPrincipalSolo.xml"

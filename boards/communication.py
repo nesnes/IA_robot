@@ -26,7 +26,7 @@ class Communication:
     def isMessageAvailable(self):
         return len(self.pendingMessageList)
 
-    def __addPendingMessage(self, message):
+    def addPendingMessage(self, message):
         self.pendingMessageList.append(message)
 
     def __getFirstPendingMessage(self):

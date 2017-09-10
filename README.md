@@ -6,7 +6,10 @@ Intelligence artificielle pour robot destiné à participer à la Coupe De Franc
 # Installation
  - Install python 2.7 on your windows/mac/linux
  - Install the `numpy` and the `pyserial` python package
-    - `python -m pip install numpy pyserial` 
+    - `python -m pip install numpy pyserial`
+ - On Raspberry, disable serial Boot console:
+    - `sudo raspi-config [enter] [5]InterfaceOptions->[P6]->disable bootSerial, enable hardware`
+    - reboot
  - Run the IA with `python main.py`
 
 # Usage

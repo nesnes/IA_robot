@@ -7,7 +7,7 @@ class MovingBase(Board):
         self.nom = nom
         self.fonction = fonction
         self.communication = communication
-        self.isXYSupported = self.__getXYSupport()
+        self._isXYSupported = None
 
     def enableMovements(self):
         if self.isConnected():
@@ -60,7 +60,7 @@ class MovingBase(Board):
 
     def startMovementXY(self, x, y, angle, speed):
         if self.isConnected():
-            if self.isXYSupported:
+            if self.isXYSupported():
                 self.sendMessage("move setXY " + str(x) + ";" + str(y) + ";" + str(angle) + ";" + str(speed) + "\r\n")
                 echo = ""
                 while "move OK" not in echo:
@@ -111,12 +111,13 @@ class MovingBase(Board):
                 echo = self.receiveMessage()  # "move OK"
             return True
 
-    def __getXYSupport(self):
-        if self.isConnected():
+    def isXYSupported(self):
+        if self._isXYSupported is None and self.isConnected():
             self.sendMessage("support XY\r\n")
             support = ""
             while "support" not in support:
                 support = self.receiveMessage()  # "support 0" or "support 1"
             if "1" in support:
-                return True
-            return False
+                self._isXYSupported = True
+            self._isXYSupported = False
+        return self._isXYSupported
