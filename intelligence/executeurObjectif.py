@@ -41,6 +41,7 @@ class ExecuteurObjectif:
         self.fichierCarte = carte
         self.matchDuration = 90
         self.fenetre = fenetre
+        self.score = 0
 
         chercher = chercheurChemin
         lecteurObjectif = LecteurObjectif(self.fichierObjectifs, robot, self.matchDuration)
@@ -101,6 +102,9 @@ class ExecuteurObjectif:
                     break
                 if succes and objectif.isFini():
                     objectifFinished = True
+                    self.score += objectif.getPoints()
+                    if(self.robot):
+                        self.robot.displayScore(self.score)
                     if objectif.repetitions > 0:
                         objectif.repetitions -= 1
                         objectif.reset()

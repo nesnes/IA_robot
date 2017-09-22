@@ -29,6 +29,12 @@ class ControlPanel(Board):
                 return True
         return False
 
+    def setScore(self, score):
+        if self.isConnected():
+            self.sendMessage("score set"+str(score)+"\r\n")
+            return True
+        return False
+
     def displayMessage(self, message):
         if self.isConnected():
             self.sendMessage("#"+str(message)+"\r\n")

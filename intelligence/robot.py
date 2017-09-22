@@ -48,19 +48,23 @@ class Robot:
                     self.controlPanel = board
                 elif board.fonction == "collisionDetector":
                     self.collisionDetector = board
-        if not self.controlPanel:
+        if not self.controlPanel and any(board.fonction == "controlPanel" for board in self.listBoard):
             print("ERROR: No controlPanel found")
             self.isSimulated = True
-        if not self.movingBase:
+        if not self.movingBase and any(board.fonction == "movingBase" for board in self.listBoard):
             print("ERROR: No movingBase found")
             self.isSimulated = True
-        if not self.collisionDetector:
+        if not self.collisionDetector and any(board.fonction == "collisionDetector" for board in self.listBoard):
             print("ERROR: No collisionDetector found")
             self.isSimulated = True
         if self.isSimulated:
             print("WARNING: Simulation activated")
 
         if(simulate != self.isSimulated):
+            if(self.controlPanel):
+                self.controlPanel.displayMessage("ERROR: Boards not found.")
+                time.sleep(0.2)
+                self.controlPanel.displayMessage("Stopping robot...")
             print "HALT: Stopping"
             exit(0)
         return self.isSimulated
@@ -108,6 +112,7 @@ class Robot:
             return True
         else:
             oldColor=None
+            self.displayScore(0)
             while (self.controlPanel.getStartSignal()):
                 time.sleep(0.2)
             while(not self.controlPanel.getStartSignal()):
@@ -118,7 +123,7 @@ class Robot:
                     self.x = self.listPosition[color].x
                     self.y = self.listPosition[color].y
                     self.angle = self.listPosition[color].angle #0=3h 180=9h
-                    if self.movingBase.isXYSupported():
+                    if self.movingBase and self.movingBase.isXYSupported():
                         self.movingBase.setPosition(self.x, self.y, self.angle)
                     print("Le robot est " + self.couleur)
                     self.controlPanel.displayMessage("Color: " + self.couleur)
@@ -136,7 +141,7 @@ class Robot:
         return time.time() - self.startTime
 
     def attendreMilliseconde(self,duree):
-        time.sleep(float(duree)/1000.0);
+        time.sleep(float(duree)/1000.0)
         return True
 
     def getVariable(self, nom):
@@ -144,6 +149,11 @@ class Robot:
             if variable.nom == nom:
                 return variable
         return None
+
+    def displayScore(self, score):
+        if(self.controlPanel):
+            self.controlPanel.setScore(score)
+        print("Score= "+str(score))
 
     def telemetreDetectAdversaire(self):
         for telemetre in self.listTelemetre:
