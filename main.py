@@ -9,18 +9,18 @@ from intelligence.executeurObjectif import ExecuteurObjectif
 #X;SERVO;ANGINIT;ANGFIN;TEMPSSecondesFloat
 def main():
     #Detection du rapsberry
-    isRaspberry = "arm" in os.popen("uname -m").read()
+    isRaspberry = "arm" in os.uname()[4]
 
     if(isRaspberry): # raspberry
         screen = False
         robotConnected = True
     else:
         screen = True
-        robotConnected = True
+        robotConnected = False
 
     fichierCarte = "cartes/carte_2017.xml"
     fichierObjectif = "objectifs/2017/objectifsPrincipalSolo.xml"
-    fichierRobot = "robots/robotTest.xml"
+    fichierRobot = "robots/robotPrincipal2017.xml"
     #fichierObjectif = "objectifs/2017/objectifsSecondaireTest.xml"
     #fichierRobot = "robots/robotSecondaire2017.xml"
 

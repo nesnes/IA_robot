@@ -26,7 +26,7 @@ class LecteurObjectif:
 
     def __getObjectif(self,objectif):
         nom = objectif.get("nom")
-        points = objectif.get("points")
+        points = int(objectif.get("points"))
         temp = objectif.get("temp")
         repetitions = objectif.get("repetitions")
         if(repetitions == None):

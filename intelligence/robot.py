@@ -217,7 +217,7 @@ class Robot:
             return False
         for ligne in chemin:
             result = False
-            if not self.movingBase.isXYSupported:
+            if self.isSimulated or not self.movingBase.isXYSupported:
                 result = self.seDeplacerDistanceAngle(ligne.getlongeur(), self.getAngleToDo(ligne.getAngle()))
             else:
                 self.movingBase.startMovementXY(x, y, absoluteAngle, vitesse)
