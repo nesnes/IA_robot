@@ -1,6 +1,7 @@
 from boards.board import Board
 from intelligence.telemetre import Telemetre
 
+
 class CollisionDetector(Board):
 
     def __init__(self, nom, fonction, communication):
@@ -14,7 +15,7 @@ class CollisionDetector(Board):
             self.sendMessage("distances get\r\n")
             distances = ""
             while "distances" not in distances:
-                distances = self.receiveMessage() #"distances 0;1.2;0.4"... in the order of the IDs
+                distances = self.receiveMessage()  # "distances 0;1.2;0.4"... in the order of the IDs
             listDistances = distances.split(" ")[1].split(";")
             count = 0
             for value in listDistances:

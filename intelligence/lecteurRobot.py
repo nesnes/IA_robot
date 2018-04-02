@@ -4,7 +4,9 @@ from intelligence.variable import Variable
 from intelligence.position import Position
 from intelligence.telemetre import Telemetre
 from boards.board import Board
-from pydoc import locate
+import boards
+import robots
+
 
 class LecteurRobot:
 
@@ -17,6 +19,8 @@ class LecteurRobot:
         self.port2 = ""
         self.rayon = 0
         self.defaultColor = ""
+        self.available_boards = {board.__name__: board for board in boards.__all__}
+        self.available_robots = {robot.__name__: robot for robot in robots.__all__}
 
     def lire(self):
         root = self.tree.getroot()
@@ -29,12 +33,7 @@ class LecteurRobot:
             self.defaultColor = root.get("defaultColor")
 
             # find the requested Robot python class
-            robotClass = None
-            className = self.nom[0].upper() + self.nom[1:]
-            robotClass = locate("robots." + self.nom + "." + className)  # find a class with the board name
-
-            if robotClass is None:  # else use the default Board
-                robotClass = Robot
+            robotClass = self.available_robots.get(self.nom.title(), Robot)  # find a class with the board name else use the default Robot
 
             self.robot = robotClass(self.nom, self.rayon)
             self.robot.couleur = self.defaultColor
@@ -81,15 +80,11 @@ class LecteurRobot:
         communication = board.get("communication")
         newBoard = None
 
-        className = nom[0].upper() + nom[1:]
-        boardClass = locate("boards." + nom + "." + className)  #find a class with the board name
+        # find a class with the board name
+        boardClass = self.available_boards.get(nom.title())
 
-        if boardClass is None:  # else find a class with the function name
-            className = fonction[0].upper()+fonction[1:]
-            boardClass = locate("boards." + fonction + "." + className)
-
-        if boardClass is None:  # else use the default Board
-            boardClass = Board
+        if boardClass is None:  # else find a class with the function name else use default board
+            boardClass = self.available_boards.get(fonction.title(), Board)
 
         print "Class", boardClass
 

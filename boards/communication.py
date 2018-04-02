@@ -1,4 +1,6 @@
 import abc
+
+
 class Communication:
     __metaclass__ = abc.ABCMeta
 
