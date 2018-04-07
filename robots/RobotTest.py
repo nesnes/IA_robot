@@ -1,6 +1,5 @@
 from intelligence.robot import Robot
 
-
 class RobotTest(Robot):
 
     def __init__(self, nom, largeur):
