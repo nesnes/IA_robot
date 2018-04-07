@@ -1,5 +1,6 @@
 from boards.board import Board
 
+
 class MovingBase(Board):
 
     def __init__(self, nom, fonction, communication):
@@ -27,10 +28,10 @@ class MovingBase(Board):
 
     def setPosition(self, x, y, angle):
         if self.isConnected():
-            self.sendMessage("position set "+str(x)+";"+str(y)+";"+str(angle)+"\r\n")
+            self.sendMessage("position set {};{};{}\r\n".format(x, y, angle))
             echo = ""
             while "position OK" not in echo:
-                echo = self.receiveMessage() #"position OK"
+                echo = self.receiveMessage()  # "position OK"
             return True
 
     def getPositionXY(self):
@@ -38,7 +39,7 @@ class MovingBase(Board):
             self.sendMessage("position getXY\r\n")
             position = ""
             while "position" not in position:
-                position = self.receiveMessage() #"position x;y;angle;speed"
+                position = self.receiveMessage()  # "position x;y;angle;speed"
             values = position.split(" ")[1].split(";")
             x = float(values[0])
             y = float(values[1])
@@ -51,7 +52,7 @@ class MovingBase(Board):
             self.sendMessage("position getDA\r\n")
             position = ""
             while "position" not in position:
-                position = self.receiveMessage() #"position distance;angle;speed"
+                position = self.receiveMessage()  # "position distance;angle;speed"
             values = position.split(" ")[1].split(";")
             distance = float(values[0])
             angle = float(values[1])
@@ -103,7 +104,7 @@ class MovingBase(Board):
                 echo = self.receiveMessage()  # "move OK"
             return True
 
-    def startRepositioningMovement(self, distance, speed=0.2): #recallage. Movement where the robot is expected to be stuck
+    def startRepositioningMovement(self, distance, speed=0.2):  # recallage. Movement where the robot is expected to be stuck
         if self.isConnected():
             self.sendMessage("move setRM " + str(distance) + ";" + str(speed) + "\r\n")
             echo = ""

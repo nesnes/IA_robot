@@ -180,8 +180,12 @@ class ChercheurChemin:
             listPoint.append([x1, y1])
 
         tmpList = list(_listePointInteret)
+
         for elem in blockingElements:
-            tmpList.remove(elem)
+            try:    
+                tmpList.remove(elem)
+            except ValueError:
+                print(elem) 
 
         listPoint.reverse()
         listChemin = []
