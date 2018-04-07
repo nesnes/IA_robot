@@ -1,4 +1,3 @@
-import glob
 import time
 import serial.tools.list_ports
 from boards.communicationSerial import CommunicationSerial
@@ -24,10 +23,9 @@ class Board:
             for device in Board.serialConnectionList:
                 if device[0] == self.nom:
                     self.connection = device[1]
-                    print(self.nom+" connected")
+                    print(self.nom + " connected")
                     return True
         return False
-
 
     def disconnect(self):
         return self.connection.disconnect()
