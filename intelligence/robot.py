@@ -79,7 +79,7 @@ class Robot:
 
     def dessiner(self):
         from cartographie.cercle import Cercle
-        circle = Cercle(self.nom, self.x, self.y, self.largeur, "grey")
+        circle = Cercle(self.nom, self.x, self.y, self.largeur, "white")
         circle.dessiner(self.fenetre)
         line = Ligne("", self.x, self.y, self.x + self.largeur, self.y, "blue")
         line.rotate(self.angle)
@@ -88,13 +88,12 @@ class Robot:
             line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
             line.rotate(line.getAngle()+self.angle-90)
             line.dessiner(self.fenetre)
-            circle = Cercle(telemetre.nom, line.x2, line.y2, 10, "green")
+            circle = Cercle("", line.x2, line.y2, 10, "green")
             circle.dessiner(self.fenetre)
             lineTarget = Ligne("", line.x2, line.y2, line.x2*2, line.y2*2, "orange")
-            lineTarget.resize(50);
+            lineTarget.resize(75);
             lineTarget.rotate(self.angle+telemetre.angle)
             lineTarget.dessiner(self.fenetre)
-        self.telemetreDetectCollision()
 
     def attendreDepart(self):
         if self.isSimulated:

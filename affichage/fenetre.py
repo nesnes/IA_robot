@@ -26,8 +26,8 @@ class Fenetre:
         circle.draw(self.win)
         if len(nom) > 1:
             taille=rayon*2/len(nom)*self.ratio
-            if taille < 5:taille=5
-            if taille > 36:taille=36
+            if taille < 10:taille=10
+            if taille > 16:taille=16
             titre = Text(Point((x-len(nom)/taille)*self.ratio,y*self.ratio), nom)
             titre.setSize(int(taille))
             titre.draw(self.win)
@@ -42,8 +42,8 @@ class Fenetre:
         rect.draw(self.win)
         if len(nom) > 1:
             taille=(x2*self.ratio-x1*self.ratio)*2/len(nom)
-            if taille < 5:taille=5
-            if taille > 36:taille=36
+            if taille < 10:taille=10
+            if taille > 16:taille=16
             titre = Text(Point((x1*self.ratio+(x2*self.ratio-x1*self.ratio)/2)-len(nom)/taille,y1*self.ratio+(y2*self.ratio-y1*self.ratio)/2), nom)
             titre.setSize(int(taille))
             titre.draw(self.win)
@@ -58,8 +58,8 @@ class Fenetre:
         line.draw(self.win)
         if len(nom) > 1:
             taille=(x2*self.ratio-x1*self.ratio)*2/len(nom)
-            if taille < 5:taille=5
-            if taille > 36:taille=36
+            if taille < 10:taille=10
+            if taille > 16:taille=16
             titre = Text(Point((x1*self.ratio+(x2*self.ratio-x1*self.ratio)/2)-len(nom)/taille,y1*self.ratio+(y2*self.ratio-y1*self.ratio)/2), nom)
             titre.setSize(int(taille))
             titre.draw(self.win)
@@ -86,7 +86,7 @@ class Fenetre:
         poly.draw(self.win)
         if len(nom) > 1:
             taille=((maxX - minX)*self.ratio)*2/len(nom)
-            if taille < 5:taille=5
+            if taille < 10:taille=10
             if taille > 36:taille=36
             titre = Text(Point(center["x"]-(len(nom)/taille)*self.ratio, center["y"]), nom)
             titre.setSize(int(taille))
