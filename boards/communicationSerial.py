@@ -49,6 +49,9 @@ class CommunicationSerial(Communication):
         while self.portserie is not None and self.connected and self.portserie.isOpen():
             message = self.portserie.readline()
             message = message.replace('\r\n', '')
-            self.portserie.flushInput()  # ?
+            try:
+                self.portserie.flushInput()  # ?
+            except Exception as e:
+                pass
             if message:
                 self.addPendingMessage(message)

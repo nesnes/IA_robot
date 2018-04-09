@@ -19,8 +19,8 @@ class LecteurRobot:
         self.port2 = ""
         self.rayon = 0
         self.defaultColor = ""
-        self.available_boards = {board.__name__: board for board in boards.__all__}
-        self.available_robots = {robot.__name__: robot for robot in robots.__all__}
+        self.available_boards = {board.__name__.lower(): board for board in boards.__all__}
+        self.available_robots = {robot.__name__.lower(): robot for robot in robots.__all__}
 
     def lire(self):
         root = self.tree.getroot()
@@ -33,7 +33,7 @@ class LecteurRobot:
             self.defaultColor = root.get("defaultColor")
 
             # find the requested Robot python class
-            robotClass = self.available_robots.get(self.nom.title(), Robot)  # find a class with the board name else use the default Robot
+            robotClass = self.available_robots.get(self.nom.lower(), Robot)  # find a class with the board name else use the default Robot
 
             self.robot = robotClass(self.nom, self.rayon)
             self.robot.couleur = self.defaultColor
@@ -62,7 +62,13 @@ class LecteurRobot:
             x = float(equipement.get("x"))
             y = float(equipement.get("y"))
             angle = float(equipement.get("angle"))
-            telemetre = Telemetre(nom, id, x, y, angle)
+            min=0
+            max=0
+            if equipement.get("min") is not None:
+                min = float(equipement.get("min"))
+            if equipement.get("max") is not None:
+                max = float(equipement.get("max"))
+            telemetre = Telemetre(nom, id, x, y, angle, min, max)
             self.robot.listTelemetre.append(telemetre)
 
     def __getPosition(self, position):
@@ -81,12 +87,12 @@ class LecteurRobot:
         newBoard = None
 
         # find a class with the board name
-        boardClass = self.available_boards.get(nom.title())
+        boardClass = self.available_boards.get(nom.lower())
 
         if boardClass is None:  # else find a class with the function name else use default board
-            boardClass = self.available_boards.get(fonction.title(), Board)
+            boardClass = self.available_boards.get(fonction.lower(), Board)
 
-        print "Class", boardClass
+        print nom, "loaded as", boardClass
 
         newBoard = boardClass(nom, fonction, communication)
         self.robot.listBoard.append(newBoard)

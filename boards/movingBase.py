@@ -114,11 +114,11 @@ class MovingBase(Board):
 
     def isXYSupported(self):
         if self._isXYSupported is None and self.isConnected():
+            self._isXYSupported = False
             self.sendMessage("support XY\r\n")
             support = ""
             while "support" not in support:
                 support = self.receiveMessage()  # "support 0" or "support 1"
             if "1" in support:
                 self._isXYSupported = True
-            self._isXYSupported = False
         return self._isXYSupported

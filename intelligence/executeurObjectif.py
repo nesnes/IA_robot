@@ -39,7 +39,7 @@ class ExecuteurObjectif:
         self.robot = robot
         self.fichierObjectifs = ojectifs
         self.fichierCarte = carte
-        self.matchDuration = 90
+        self.matchDuration = 100
         self.fenetre = fenetre
         self.score = 0
 

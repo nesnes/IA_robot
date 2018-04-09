@@ -127,7 +127,7 @@ class ChercheurChemin:
         #Point contained in objects
         startElements = self.pointContenuListe(x1, y1, _listePointInteret)
         endElements = self.pointContenuListe(x2, y2, _listePointInteret)
-        blockingElements = startElements + endElements
+        blockingElements = startElements + list(set(endElements) - set(startElements)) #merge removing duplicates
 
         startNode = self.graph.trouverPointProche(x1,y1)
         endNode = self.graph.trouverPointProche(x2,y2)
@@ -185,7 +185,7 @@ class ChercheurChemin:
             try:    
                 tmpList.remove(elem)
             except ValueError:
-                print(elem) 
+                print "ChercheurChemin Err:"+elem.nom #shouldn't pop anymore
 
         listPoint.reverse()
         listChemin = []
@@ -206,7 +206,7 @@ class ChercheurChemin:
             l1 = tabchemin[i]
             l2 = tabchemin[i+1]
             line = Ligne("",l1.x1, l1.y1, l2.x2, l2.y2, "")
-            #line.setCouleur("white")
+            #line.setCouleur("red")
             #line.dessiner(self.fenetre)
             if not self.enCollisionCarte(line,listPointInteret):
                 tabchemin.insert(i,line)

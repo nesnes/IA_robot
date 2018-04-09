@@ -1,3 +1,4 @@
 __author__ = 'alexandrebrehmer'
-from RobotTest import RobotTest
-__all__ = [RobotTest]
+from robotTest import RobotTest
+from robotEpicNes import RobotEpicNes
+__all__ = [RobotTest, RobotEpicNes]

@@ -79,16 +79,17 @@ All the used (xml) files are declared in the main.py file. It is also where they
 All the previous map.xml files are contained in the corresponding folder. Just duplicate and rename the latest one, and edit the point of interest.
 
 ## Creating a new Robot
-To create a new robot, just duplicate a modify an existing robot file, and implement a class which inherits from the actual Robot.py class. It will contain all the custom functions of your robot like *openLeftStorage*, *moveRoboticArm*, *startCollectedObjectSorting* and so on. The default Robot.py class handles the more shared functions like *moveToXY* or *waitForStartSignal*. The name of the robot your xml file will be used to fing a corresponding python class. The default robot class will be loaded if not found.
+To create a new robot, just duplicate a modify an existing robot file, and implement a class which inherits from the actual Robot.py class. It will contain all the custom functions of your robot like *openLeftStorage*, *moveRoboticArm*, *startCollectedObjectSorting* and so on. The default Robot.py class handles the more shared functions like *moveToXY* or *waitForStartSignal*. The name of the robot your xml file will be used to find a corresponding python class. The default robot class will be loaded if not found.
 
-> `name=myRobot` in `robots/myRobot.xml` will load `robots.myRobot.MyRobot` from `robots/myRobot.py`
+> `name=myRobot` in `robots/myRobot.xml` will load `robots.myRobot.MyRobot` from `robots/myRobot.py` if it has been added in `robots/__init__.py`
 
 ## Creating new goals
 To create a new goal file, just duplicate a modify an existing one. Since it will be used with your own robot class, you can use your own robot functions and the ones from the root Robot class. You can also use conditions on the variables (storageLocations) on your robot.
 
 # Interfacing with your hardware robot
-Your robot.xml file list the boards connected to it. It can use the default existing ones like *controlPanel*, *movingBase*, or *collisionDetector*. The IA will look for these boards to execute the movements and recieve signals.The communication protocol is described in each files and in the root `board.py`.
+Your robot.xml file list the boards connected to it. It can use the default existing ones like *controlPanel*, *movingBase*, or *collisionDetector*. The IA will look for these boards to execute the movements and receive signals. The communication protocol is described in each files and in the root `board.py`.
 
+> To be loaded, your board must be added in `boards/__init__.py`
 
 # Feedback
 Please write an issue if any bug is found or if you want to discuss about an implmentation. Notice that the project is still under development (june 2017).
