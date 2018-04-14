@@ -4,8 +4,8 @@ import time
 
 class BrasRobotTheo(Board):
 
-    def __init__(self, nom, fonction, communication):
-        Board.__init__(self, nom, fonction, communication)
+    def __init__(self, nom, fonction, communication, param1=None, param2=None):
+        Board.__init__(self, nom, fonction, communication, param1, param2)
         self.nom = nom
         self.fonction = fonction
         self.communication = communication
@@ -13,8 +13,8 @@ class BrasRobotTheo(Board):
     def grabCube(self, x, y, angle):
         if self.isConnected():
             self.sendMessage("arm grab {} {} {}\r\n".format(x,y,angle))
-            return 1
-        return 0
+            return True
+        return False
 
     def setFindCubePosition(self):
         if self.isConnected():

@@ -157,9 +157,17 @@ class Robot:
             self.controlPanel.setScore(score)
         print("Score= "+str(score))
 
-    def telemetreDetectCollision(self):
+    def telemetreDetectCollision(self, speed=None):
+        if speed is None:
+            speed = self.speed
+        self.collisionDetector.updateTelemetre(self.listTelemetre)
         for telemetre in self.listTelemetre:
             if not telemetre.isValid():
+                continue
+            if speed < 0:
+                if -80 < telemetre.angle < 80:
+                    continue
+            elif not -80 < telemetre.angle < 80:
                 continue
             line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
             line.rotate(line.getAngle()+self.angle-90)
@@ -226,8 +234,16 @@ class Robot:
             if self.isSimulated or not self.movingBase.isXYSupported:
                 result = self.seDeplacerDistanceAngle(ligne.getlongeur(), self.getAngleToDo(ligne.getAngle()))
             else:
-                self.movingBase.startMovementXY(x, y, absoluteAngle, vitesse)
-                result = self.__waitForMovementFinished(True)
+                dirLine = Ligne("", self.x, self.y, x, y, "blue")
+                direction = 1
+                if abs(dirLine.getAngle() - self.angle) > 90:
+                    direction = -1
+                print "Direction", direction
+                if not self.telemetreDetectCollision(direction):
+                    self.movingBase.startMovementXY(x, y, absoluteAngle, vitesse)
+                    result = self.__waitForMovementFinished(True)
+                else:
+                    result = False
             if not result:
                 return False
         if not self.seDeplacerDistanceAngle(0, self.getAngleToDo(absoluteAngle), vitesse):
@@ -240,17 +256,20 @@ class Robot:
     def seDeplacerDistanceAngle(self,distance,angle,vitesse=0.3, retry=1):
         print "\t \tDeplacement: distance:", str(distance), " angle:", str(angle)
         if not self.isSimulated:
-            self.movingBase.startMovementDistanceAngle(distance, angle, vitesse)
-            direction = 1
-            if distance < 0:
-                direction = -1
-            self.speed = vitesse*direction
-            self.movingDA = True
-            self.movingDALastDist = 0
-            self.movingDALastAngle = 0
-            result = self.__waitForMovementFinished(False, direction)
-            self.movingDA = False
-            return result
+            if not self.telemetreDetectCollision(distance):
+                self.movingBase.startMovementDistanceAngle(distance, angle, vitesse)
+                direction = 1
+                if distance < 0:
+                    direction = -1
+                self.speed = vitesse*direction
+                self.movingDA = True
+                self.movingDALastDist = 0
+                self.movingDALastAngle = 0
+                result = self.__waitForMovementFinished(False, direction)
+                self.movingDA = False
+                return result
+            else:
+                return False
         else:
             self.updatePositionRelative(distance, angle)
             """#simulate collision
@@ -266,21 +285,24 @@ class Robot:
     def __waitForMovementFinished(self, xyMove, direction=1, doNotAvoid=False):
         errorObstacle = False
         errorStuck = False
-        time.sleep(0.1)  #wait 100ms before getting information on the movment
+        time.sleep(0.05)  #wait 50ms before getting information on the movment
+        print "waiting"
         status = self.movingBase.getMovementStatus()
+        print status
         while "running" in status:
             self.updatePosition()
             status = self.movingBase.getMovementStatus()
-            self.collisionDetector.updateTelemetre(self.listTelemetre)
             collision = self.telemetreDetectCollision()
             if type(collision) != bool:
                 collisionX, collisionY = collision
-                print "Stopping robot"
+                print "Obstacle, stopping robot"
                 self.movingBase.emergencyBreak()
                 errorObstacle = True
                 break
         if "stuck" in status:
             errorStuck = True
+            print "Stuck, stopping movement"
+            self.movingBase.emergencyBreak()
         if xyMove:
             newX, newY, newAngle, speed = self.movingBase.getPositionXY()
             self.x = newX
@@ -292,8 +314,8 @@ class Robot:
 
         if errorObstacle or errorStuck:
             if not doNotAvoid:
-                print "\t \tERROR: obstacle, starting avoidance"
-                self.eviterObstacle(self.angle, direction)
+                #self.eviterObstacle(self.angle, direction)
+                pass
             return False
         return True
 
@@ -311,11 +333,11 @@ class Robot:
         newy = yprev + 300*math.sin(newAngle*0.0174532925) #rad
         ligne = Ligne("", xprev, yprev, newx, newy, "purple")
         distance = -1 * direction * ligne.getlongeur()
-        self.aveugler()
+        #self.aveugler()
         time.sleep(0.2)
         self.seDeplacerDistanceAngle(distance, 0, 0.4, 0)
         time.sleep(0.2)
-        self.rendreVue()
+        #self.rendreVue()
         time.sleep(0.2)
         return True
         #search for a free opposed movment

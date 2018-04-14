@@ -1,19 +1,25 @@
 import serial
 import threading
+import time
 from boards.communication import Communication
 
 
 class CommunicationSerial(Communication):
 
-    def __init__(self):
+    def __init__(self, baudrate=115200):
         Communication.__init__(self, "serial")
         self.portserie = None
         self.address = ""
+        self.baudrate = baudrate
         if self.portserie == '':
             return
 
-    def connect(self, port, baudrate=115200, timeout=0.2):
+    def connect(self, port, baudrate=None, timeout=0.2):
         try:
+            if baudrate is None:
+                baudrate = self.baudrate
+            else:
+                self.baudrate = baudrate
             self.portserie = serial.Serial(port, baudrate, timeout=timeout, writeTimeout=timeout)
             self.portserie.flushInput()
             self.portserie.flushOutput()
@@ -40,6 +46,7 @@ class CommunicationSerial(Communication):
         if self.portserie.isOpen():
             try:
                 self.portserie.write(message)
+                print self.name, ">", message
             except:
                 print "Write timeout on " + self.address
         else:
@@ -55,3 +62,5 @@ class CommunicationSerial(Communication):
                 pass
             if message:
                 self.addPendingMessage(message)
+                print self.name, "<", message
+

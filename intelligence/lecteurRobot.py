@@ -84,6 +84,11 @@ class LecteurRobot:
         nom = board.get("nom")
         fonction = board.get("fonction")
         communication = board.get("communication")
+        baudrate = 115200
+        if "serial" in communication:
+            if board.get("baudrate"):
+                baudrate = board.get("baudrate")
+
         newBoard = None
 
         # find a class with the board name
@@ -94,5 +99,8 @@ class LecteurRobot:
 
         print nom, "loaded as", boardClass
 
-        newBoard = boardClass(nom, fonction, communication)
+        if "serial" in communication:
+            newBoard = boardClass(nom, fonction, communication, baudrate)
+        else:
+            newBoard = boardClass(nom, fonction, communication)
         self.robot.listBoard.append(newBoard)

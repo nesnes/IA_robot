@@ -13,12 +13,12 @@ class RobotEpicNes(Robot):
                 self.brasRobotTheo = board
             elif board.nom == "BallGatherAlex":
                 self.ballGatherAlex = board
-        if not self.brasRobotTheo or not self.brasRobotTheo.isConnected():
+        """if not self.brasRobotTheo or not self.brasRobotTheo.isConnected():
             print "ERROR: BrasRobotTheo not detected"
             self.isSimulated = True
         if not self.ballGatherAlex or not self.ballGatherAlex.isConnected():
             print "ERROR: BallGatherAlex not detected"
-            self.isSimulated = True
+            self.isSimulated = True"""
         print "init cube detection"
         self.cubeDetector = CubeDetector()
 

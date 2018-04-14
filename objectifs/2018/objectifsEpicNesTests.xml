@@ -9,16 +9,38 @@
         <action methode="funnyAction"/>
     </objectif>-->
 
-    <objectif nom="TestBras" points="0" temp="4">
+    <objectif nom="testDeplacement" points="0" temp="4">
         <conditions>
             <variable nom="tourCubes" condition="notMax"/>
         </conditions>
-        <action methode="avancer">
-            <param nom="distance" type="int" value="300"/>
-            <param nom="vitesse" type="float" value="0.2"/>
+        <action methode="seDeplacerXY" couleur="green">
+            <param nom="x" type="int" value="450"/>
+            <param nom="y" type="int" value="300"/>
+            <param nom="vitesse" type="float" value="1"/>
         </action>
-        <action methode="gatherCube">
+        <action methode="seDeplacerXY" couleur="orange">
+            <param nom="x" type="int" value="2550"/>
+            <param nom="y" type="int" value="300"/>
+            <param nom="vitesse" type="float" value="1"/>
         </action>
+        <!--<action methode="gatherCube">
+        </action>-->
+    </objectif><objectif nom="retourDepart" points="0" temp="4">
+        <conditions>
+            <variable nom="tourCubes" condition="notMax"/>
+        </conditions>
+        <action methode="seDeplacerXY" couleur="green">
+            <param nom="x" type="int" value="150"/>
+            <param nom="y" type="int" value="300"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="seDeplacerXY" couleur="orange">
+            <param nom="x" type="int" value="2850"/>
+            <param nom="y" type="int" value="300"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <!--<action methode="gatherCube">
+        </action>-->
     </objectif>
 
 </listeObjectif>

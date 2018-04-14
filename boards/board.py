@@ -6,14 +6,18 @@ from boards.communicationSerial import CommunicationSerial
 class Board:
 
     serialConnectionList = []
+    baudrate = 115200
 
-    def __init__(self, nom, fonction, communication):
+    def __init__(self, nom, fonction, communication, param1=None, param2=None):
         self.nom = nom
         self.fonction = fonction
         self.communication = communication
         self.connection = None
+        self.param1 = param1
+        self.param2 = param2
         if communication == "serial":
-            self.connection = CommunicationSerial()
+            Board.baudrate = param1
+            self.connection = CommunicationSerial(self.param1)
 
     def connect(self):
         if self.communication == "serial":
@@ -48,10 +52,10 @@ class Board:
         for port in ports:
             if all(s not in port[0] for s in ("tty", "usbmodem", "usbserial", "COM")):
                 continue
-            connection = CommunicationSerial()
+            connection = CommunicationSerial(Board.baudrate)
             found = False
-            if connection.connect(port[0]):
-                time.sleep(2)  # giving 2s to initiate the connection (that's a lot!)
+            if connection.connect(port[0],Board.baudrate):
+                time.sleep(2.5)  # giving 2s to initiate the connection (that's a lot!)
                 connection.sendMessage("id\r\n")
                 time.sleep(0.2)  # giving 200ms to answer (that's a lot too!)
                 while connection.isMessageAvailable():

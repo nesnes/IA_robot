@@ -1,5 +1,5 @@
 import abc
-
+import time
 
 class Communication:
     __metaclass__ = abc.ABCMeta
@@ -17,10 +17,14 @@ class Communication:
     def sendMessage(self, message):
         raise NotImplementedError("Please Implement this method")
 
-    def receiveMessage(self):
-        while not self.isMessageAvailable():
-            pass
-        return self.__getFirstPendingMessage()
+    def receiveMessage(self, maxTime=1):
+        timeout = 0
+        while not self.isMessageAvailable() and timeout < maxTime:
+            timeout += 0.1
+            time.sleep(0.1)
+        if self.isMessageAvailable():
+            return self.__getFirstPendingMessage()
+        return ""
 
     def isConnected(self):
         return self.connected
