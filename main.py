@@ -18,7 +18,7 @@ def main():
         drawGraph = False and screen
     else:
         screen = True
-        robotConnected = True
+        robotConnected = False
         drawGraph = False and screen
 
     fichierCarte = "cartes/carte_2018_EpicNes.xml"
@@ -67,8 +67,9 @@ def main():
     print "Running IA"
     IA.executerObjectifs()  # execution de l'IA
 
-    print("End of the match, closing board connections")
-    robot.closeConnections()
+    print("End of the match")
+    #Don't close connexions to keep score displayed
+    #robot.closeConnections()
 
     # Pour tester le pathfinding, cliquez a deux endroits sur la carte
     if screen:

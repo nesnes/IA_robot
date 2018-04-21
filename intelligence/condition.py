@@ -1,3 +1,5 @@
+from action import Action
+
 class Condition:
 
     def __init__(self, type, nom, robot):
@@ -6,10 +8,12 @@ class Condition:
         self.robot = robot
         self.condition = ""
         self.value = 0.0
+        self.inverted = False
         self.matchDuration = 0
         self.conditionList = []
 
     def isTrue(self):
+        result = False
         if self.type == "or":
             for condition in self.conditionList:
                 if condition.isTrue():
@@ -28,25 +32,35 @@ class Condition:
                 print("WARNING: variable "+self.nom+" not found in objectif conditions")
                 return False
             if self.condition == "max":
-                return variable.isMax()
+                result = variable.isMax()
             elif self.condition == "notMax":
-                return not variable.isMax()
+                result = not variable.isMax()
             elif self.condition == "notZero":
-                return variable.valeur != 0
+                result = variable.valeur != 0
 
         elif self.type == "tempsRestant":
             temps = self.robot.getRunningTime()
             tempsRetsant = self.matchDuration - temps
             if self.condition == "<":
-                return tempsRetsant < self.value
+                result = tempsRetsant < self.value
             elif self.condition == "<=":
-                return tempsRetsant <= self.value
+                result = tempsRetsant <= self.value
             elif self.condition == ">":
-                return tempsRetsant > self.value
+                result = tempsRetsant > self.value
             elif self.condition == ">=":
-                return tempsRetsant >= self.value
+                result = tempsRetsant >= self.value
             elif self.condition == "=":
-                return tempsRetsant == self.value
+                result = tempsRetsant == self.value
 
-        print("WARNING: Unkonwn condition type: "+self.type)
-        return False
+        elif self.type == "function":
+            action = Action(self.nom,"",[],[])
+            result = self.robot.executer(action)
+
+        else:
+            print("WARNING: Unkonwn condition type: " + self.type)
+            return False
+
+        if self.inverted:
+            return not result
+        else:
+            return result

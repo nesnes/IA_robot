@@ -3,14 +3,14 @@ import numpy as np
 import cv2
 import math
 import time
+if "arm" in os.popen("uname -m").read():
+    from picamera.array import PiRGBArray
+    from picamera import PiCamera
 
 class CubeDetector:
 
     def __init__(self):
         self.isRaspberry = "arm" in os.popen("uname -m").read()
-        if self.isRaspberry:
-            from picamera.array import PiRGBArray
-            from picamera import PiCamera
         self.camera = None
         self.cameraBuffer = None
         self.cameraImage = None
@@ -22,21 +22,26 @@ class CubeDetector:
                              "orange": [19, 81, 82, 5]}
         self.initCamera()
 
-    def getCubeList(self):
-        for i in range(0,10):
-            self.readCameraImage()
-        #self.cameraImage = cv2.imread("../../imageArea.jpg".format(random.randint(1, 4)))
+    def getCubeList(self,preview=False,fromFile=""):
+        if fromFile != "":
+            self.cameraImage = cv2.imread(fromFile)
+        else:
+            for i in range(0,2):
+                self.readCameraImage()
         self.cameraImage = cv2.resize(self.cameraImage, (255, 255))
-        #self.previewArmCoordinates(self.cameraImage)
+        cv2.imwrite("img_{}.jpg".format(time.time()), self.cameraImage)
+        if preview:
+            self.previewArmCoordinates(self.cameraImage)
         imgCubeColor, maskCubeColor = self.filterColors(self.cameraImage)
-        cubes = self.findCubes(imgCubeColor, maskCubeColor, self.cameraImage)
+        cubes = self.findCubes(imgCubeColor, maskCubeColor, self.cameraImage, preview)
         for c in cubes:
             c["position"] = self.transformPointInArmReferential(c["position"])
-        #cv2.imshow('final', cameraImage)
+        if preview:
+            cv2.imshow('final', self.cameraImage)
         return cubes
 
     def initCamera(self):
-        if (self.isRaspberry):
+        if self.isRaspberry:
             self.camera = PiCamera()
             self.camera.resolution = (640, 480)
             self.cameraBuffer = PiRGBArray(self.camera, size=(640, 480))
@@ -81,7 +86,7 @@ class CubeDetector:
         pt = np.array([[point[0], point[1]]], dtype="float32")
         pt = np.array([pt])
         result = cv2.perspectiveTransform(pt, M)
-        return [result[0][0][0], 100 - result[0][0][1]]
+        return [result[0][0][0], 100 - result[0][0][1] + 10]# +10 on Y helps -> yolo
 
     def previewArmCoordinates(self, img):
         xRatio = 255.0 / 640.0  # srcPoint are in a VGA referential
@@ -96,9 +101,8 @@ class CubeDetector:
         cv2.line(imgPrev, (srcPoints[3][0], srcPoints[3][1]), (srcPoints[0][0], srcPoints[0][1]), (0, 255, 0), 2)
         cv2.imshow("preview", imgPrev)
 
-    def findCubes(self, img, mask, rawImage):
+    def findCubes(self, img, mask, rawImage, draw=False):
         cubeList = []
-        draw = False
         contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = contours[1]
         for c in cnts:
@@ -171,3 +175,18 @@ class CubeDetector:
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
                 cv2.imshow("cubes", img)
         return cubeList
+
+
+
+if __name__ == '__main__':
+    detector = CubeDetector()
+    cubeList = detector.getCubeList(True, "/Users/alexandrebrehmer/Desktop/img_1523122502.87.jpg")
+    selectedCube = None
+    for cube in cubeList:
+        if cube["position"][0] >= 0 and cube["position"][0] <= 100 and cube["position"][1] >= 0 and cube["position"][
+            1] <= 100:
+            selectedCube = cube
+    if selectedCube:
+        print "Getting", selectedCube["color"], "cube at", selectedCube["position"][0], selectedCube["position"][1], \
+        selectedCube["rotation"]
+    cv2.waitKey()

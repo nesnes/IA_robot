@@ -43,8 +43,8 @@ class Board:
     def isMessageAvailable(self):
         return self.connection.isMessageAvailable()
 
-    def receiveMessage(self):
-        return self.connection.receiveMessage()
+    def receiveMessage(self, timeout=1):
+        return self.connection.receiveMessage(timeout)
 
     @staticmethod
     def updateSerialConnectionList():
@@ -57,9 +57,9 @@ class Board:
             if connection.connect(port[0],Board.baudrate):
                 time.sleep(2.5)  # giving 2s to initiate the connection (that's a lot!)
                 connection.sendMessage("id\r\n")
-                time.sleep(0.2)  # giving 200ms to answer (that's a lot too!)
+                time.sleep(0.5)  # giving 500ms to answer (that's a lot too!)
                 while connection.isMessageAvailable():
-                    id = connection.receiveMessage()
+                    id = connection.receiveMessage(1)
                     print("Found " + id + " on " + port[0])
                     Board.serialConnectionList.append([id, connection])
                     found = True

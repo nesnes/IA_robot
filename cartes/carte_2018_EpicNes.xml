@@ -66,12 +66,18 @@
     <forme>
       <rectangle x1="894" y1="1750" x2="1500" y2="2000"/>
     </forme>
+    <zoneAcces angle="-145">
+        <cercle x="750" y="1600" rayon="20"/>
+    </zoneAcces>
   </PointInteret>
 
   <PointInteret nom="Station Epuration orange" type="stationEpuration" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
       <rectangle x1="1500" y1="1750" x2="2106" y2="2000"/>
     </forme>
+    <zoneAcces angle="-45">
+        <cercle x="2252" y="1600" rayon="20"/>
+    </zoneAcces>
   </PointInteret>
 
 

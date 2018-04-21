@@ -77,10 +77,13 @@ class LecteurObjectif:
 
         condition = noeud.get("condition")
         value = noeud.get("value")
+        inverted = noeud.get("inverted")
         if condition != None:
             newCondition.condition = condition
         if value != None:
             newCondition.value = float(value)
+        if inverted != None:
+            newCondition.inverted = True
 
         for subCondition in noeud:
             newCondition.conditionList.append(self._getCondition(subCondition))

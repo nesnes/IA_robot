@@ -9,38 +9,121 @@
         <action methode="funnyAction"/>
     </objectif>-->
 
-    <objectif nom="testDeplacement" points="0" temp="4">
+    <!--<objectif nom="testDeplacement" points="0" temp="4">
         <conditions>
             <variable nom="tourCubes" condition="notMax"/>
         </conditions>
         <action methode="seDeplacerXY" couleur="green">
-            <param nom="x" type="int" value="450"/>
+            <param nom="x" type="int" value="250"/>
             <param nom="y" type="int" value="300"/>
+            <param nom="angle" type="float" value="0"/>
             <param nom="vitesse" type="float" value="1"/>
         </action>
         <action methode="seDeplacerXY" couleur="orange">
             <param nom="x" type="int" value="2550"/>
             <param nom="y" type="int" value="300"/>
+            <param nom="angle" type="float" value="180"/>
             <param nom="vitesse" type="float" value="1"/>
         </action>
-        <!--<action methode="gatherCube">
-        </action>-->
-    </objectif><objectif nom="retourDepart" points="0" temp="4">
+        <action methode="identifyCubeOrder">
+        </action>
+        <action methode="gatherCubes">
+        </action>
+        <action methode="releaseCubes">
+        </action>
+    </objectif>
+    <objectif nom="retourDepart" points="0" temp="4">
         <conditions>
-            <variable nom="tourCubes" condition="notMax"/>
+            <variable nom="tourCubes" condition="notZero"/>
         </conditions>
         <action methode="seDeplacerXY" couleur="green">
             <param nom="x" type="int" value="150"/>
             <param nom="y" type="int" value="300"/>
+            <param nom="angle" type="float" value="0"/>
             <param nom="vitesse" type="float" value="1"/>
         </action>
         <action methode="seDeplacerXY" couleur="orange">
             <param nom="x" type="int" value="2850"/>
             <param nom="y" type="int" value="300"/>
+            <param nom="angle" type="float" value="180"/>
             <param nom="vitesse" type="float" value="1"/>
         </action>
-        <!--<action methode="gatherCube">
-        </action>-->
+        <action methode="gatherCubes">
+        </action>
+    </objectif>-->
+
+    <objectif nom="RecolteEauHaut" points="0" temp="4">
+        <conditions>
+            <function nom="shouldWeGatherBalls"/>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="distributeurHaut"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="lowerBallsBac" />
+        <action methode="avancer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="gatherBalls" />
+        <action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="closeBallsBac" />
+    </objectif>
+
+    <objectif nom="RecolteEauBas" points="0" temp="4">
+        <conditions>
+            <function nom="shouldWeGatherBalls"/>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="distributeurBas"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="lowerBallsBac" />
+        <action methode="avancer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="gatherBalls" />
+        <action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="closeBallsBac" />
+    </objectif>
+
+    <objectif nom="DeposerEauPotable" points="0" temp="4" repetitions="10">
+        <conditions>
+            <and>
+                <function nom="shouldWeGatherBalls" inverted=""/>
+                <variable nom="roueBallesValides" condition="notZero"/>
+            </and>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="chateauEau"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="throwBalls" />
+    </objectif>
+
+    <objectif nom="DeposerEauNonPotable" points="0" temp="4" repetitions="10">
+        <conditions>
+            <and>
+                <function nom="shouldWeGatherBalls" inverted=""/>
+                <variable nom="roueBallesInvalides" condition="notZero"/>
+            </and>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="stationEpuration"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="releaseBalls" />
     </objectif>
 
 </listeObjectif>

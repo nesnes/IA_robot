@@ -11,34 +11,172 @@ class BallGatherAlex(Board):
 
     def getColor(self):
         if self.isConnected():
-            self.sendMessage("color get\r\n")
-            color = self.receiveMessage()  # "color 0" or "color 1"
+            self.sendMessage("ball color get\r\n")
+            color = self.receiveMessage()  # "ball color 0" or "ball color 1"
             if "color" not in color:
                 time.sleep(0.1)
                 return self.getColor()
             if "1" in color:
                 return 1
+            if "2" in color:
+                return 2
+            if "3" in color:
+                return 3
             return 0
 
-    def getStartSignal(self):
+    def getTrapColor(self):
         if self.isConnected():
-            self.sendMessage("start get\r\n")
-            start = self.receiveMessage()  # "start 1" or "start 0"
-            if "start" not in start:
+            self.sendMessage("trap color get\r\n")
+            color = self.receiveMessage()  # "ball color 0" or "ball color 1"
+            if "color" not in color:
                 time.sleep(0.1)
-                return self.getStartSignal()
-            if "1" in start:
-                return True
-        return False
+                return self.getTrapColor()
+            if "1" in color:
+                return 1
+            if "2" in color:
+                return 2
+            if "3" in color:
+                return 3
+            return 0
 
-    def setScore(self, score):
+    def getCannonColor(self):
         if self.isConnected():
-            self.sendMessage("score set" + str(score) + "\r\n")
+            self.sendMessage("cannon color get\r\n")
+            color = self.receiveMessage()  # "ball color 0" or "ball color 1"
+            if "color" not in color:
+                time.sleep(0.1)
+                return self.getCannonColor()
+            if "1" in color:
+                return 1
+            if "2" in color:
+                return 2
+            if "3" in color:
+                return 3
+            return 0
+
+    def getGatherColor(self):
+        if self.isConnected():
+            self.sendMessage("gather color get\r\n")
+            color = self.receiveMessage()  # "ball color 0" or "ball color 1"
+            if "color" not in color:
+                time.sleep(0.1)
+                return self.getCannonColor()
+            if "1" in color:
+                return 1
+            if "2" in color:
+                return 2
+            if "3" in color:
+                return 3
+            return 0
+
+    def bacOpen(self):
+        if self.isConnected():
+            self.sendMessage("bac open\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.bacOpen()
             return True
         return False
 
-    def displayMessage(self, message):
+    def bacEmpty(self):
         if self.isConnected():
-            self.sendMessage("#" + str(message) + "\r\n")
+            self.sendMessage("bac empty\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.bacEmpty()
+            return True
+        return False
+
+    def bacGather(self):
+        if self.isConnected():
+            self.sendMessage("bac gather\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.bacGather()
+            return True
+        return False
+
+    def bacClose(self):
+        if self.isConnected():
+            self.sendMessage("bac close\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.bacClose()
+            return True
+        return False
+
+    def trapOpen(self):
+        if self.isConnected():
+            self.sendMessage("trap open\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.trapOpen()
+            return True
+        return False
+
+    def trapClose(self):
+        if self.isConnected():
+            self.sendMessage("trap close\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.trapClose()
+            return True
+        return False
+
+    def cannonOpen(self):
+        if self.isConnected():
+            self.sendMessage("cannon open\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.cannonOpen()
+            return True
+        return False
+
+    def cannonClose(self):
+        if self.isConnected():
+            self.sendMessage("cannon close\r\n")
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.cannonOpen()
+            return True
+        return False
+
+    def setCannonSpeed(self, speed):
+        if self.isConnected():
+            self.sendMessage("cannon speed {}\r\n".format(speed))
+            ack = self.receiveMessage()  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.setCannonSpeed(speed)
+            if speed > 0:
+                time.sleep(0.5)
+            return True
+        return False
+
+    def stepperSlot(self):
+        if self.isConnected():
+            self.sendMessage("stepper slot\r\n")
+            ack = self.receiveMessage(3)  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.stepperSlot()
+            return True
+        return False
+
+    def stepperGather(self):
+        if self.isConnected():
+            self.sendMessage("stepper gather\r\n")
+            ack = self.receiveMessage(4)  # "OK"
+            if "OK" not in ack:
+                time.sleep(0.1)
+                return self.stepperGather()
             return True
         return False

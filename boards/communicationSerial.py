@@ -46,21 +46,27 @@ class CommunicationSerial(Communication):
         if self.portserie.isOpen():
             try:
                 self.portserie.write(message)
-                print self.name, ">", message
+                #print self.name, ">", message
             except:
                 print "Write timeout on " + self.address
+                self.disconnect()
+                self.connect(self.address,self.baudrate, 1)
+                if self.connected:
+                    print "reconnected"
+
         else:
             print "ERREUR: Impossible d'acceder au port serie"
 
     def __receiveLoop(self):
         while self.portserie is not None and self.connected and self.portserie.isOpen():
-            message = self.portserie.readline()
-            message = message.replace('\r\n', '')
+            message = ""
             try:
+                message = self.portserie.readline()
+                message = message.replace('\r\n', '')
                 self.portserie.flushInput()  # ?
             except Exception as e:
                 pass
             if message:
                 self.addPendingMessage(message)
-                print self.name, "<", message
+                #print self.name, "<", message
 

@@ -17,7 +17,7 @@ class Communication:
     def sendMessage(self, message):
         raise NotImplementedError("Please Implement this method")
 
-    def receiveMessage(self, maxTime=1):
+    def receiveMessage(self, maxTime):
         timeout = 0
         while not self.isMessageAvailable() and timeout < maxTime:
             timeout += 0.1
