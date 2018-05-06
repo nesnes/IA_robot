@@ -50,11 +50,13 @@ class Board:
     def updateSerialConnectionList():
         ports = serial.tools.list_ports.comports()
         for port in ports:
-            if all(s not in port[0] for s in ("tty", "usbmodem", "usbserial", "COM")):
+            print port
+            if all(s not in port[0] for s in ("ttyAM", "ttyUSB"
+                                              , "usbmodem", "usbserial", "COM")):
                 continue
             connection = CommunicationSerial(Board.baudrate)
             found = False
-            if connection.connect(port[0],Board.baudrate):
+            if connection.connect(port[0],Board.baudrate, 1.5):
                 time.sleep(2.5)  # giving 2s to initiate the connection (that's a lot!)
                 connection.sendMessage("id\r\n")
                 time.sleep(0.5)  # giving 500ms to answer (that's a lot too!)

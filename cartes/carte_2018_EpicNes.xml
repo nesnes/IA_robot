@@ -44,16 +44,27 @@
     </forme>
   </PointInteret>
 
+
+
+
+
+    <!--======================Zone de construction========================-->
   <PointInteret nom="Zone construction green" type="zoneConstruction" valeur="0" action="" temp="0"  couleur="green">
     <forme>
       <rectangle x1="400" y1="0" x2="950" y2="180"/>
     </forme>
+    <zoneAcces angle="-90">
+        <cercle x="590" y="400" rayon="20"/>
+    </zoneAcces>
   </PointInteret>
 
   <PointInteret nom="Zone construction orange" type="zoneConstruction" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
       <rectangle x1="2050" y1="0" x2="2600" y2="180"/>
     </forme>
+    <zoneAcces angle="-90">
+        <cercle x="2410" y="400" rayon="20"/>
+    </zoneAcces>
   </PointInteret>
 
 

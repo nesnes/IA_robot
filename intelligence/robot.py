@@ -33,6 +33,7 @@ class Robot:
         self.movingDALastAngle = 0
         self.movingXY = False
         self.startTime = time.time()
+        self.matchDuration = 0
 
     def __del__(self):
         self.closeConnections()
@@ -299,10 +300,11 @@ class Robot:
     def __waitForMovementFinished(self, xyMove, rotationOnly=False, doNotAvoid=False):
         errorObstacle = False
         errorStuck = False
+        errorOutOfTime = False
         time.sleep(0.1)  #wait 100ms before getting information on the movment
-        print "waiting"
+        print "\t \t waiting"
         status = self.movingBase.getMovementStatus()
-        print status
+        print "\t \t " + status
         while "running" in status:
             self.updatePosition()
             status = self.movingBase.getMovementStatus()
@@ -310,13 +312,17 @@ class Robot:
                 collision = self.telemetreDetectCollision()
                 if type(collision) != bool:
                     collisionX, collisionY = collision
-                    print "Obstacle, stopping robot"
+                    print "\t \t Obstacle, stopping robot"
                     self.movingBase.emergencyBreak()
                     errorObstacle = True
                     break
+            if self.getRunningTime() > self.matchDuration:
+                self.movingBase.emergencyBreak()
+                errorOutOfTime = True
+                break
         if "stuck" in status:
             errorStuck = True
-            print "Stuck, stopping movement"
+            print "\t \t Stuck, stopping movement"
             self.movingBase.emergencyBreak()
         if xyMove:
             newX, newY, newAngle, speed = self.movingBase.getPositionXY()
@@ -331,7 +337,12 @@ class Robot:
             if not doNotAvoid:
                 #self.eviterObstacle(self.angle, direction)
                 pass
+            print "\t \t Movement error"
             return False
+        if errorOutOfTime:
+            print "\t \t Movement out of time"
+            return False
+        print "\t \t Movement finished"
         return True
 
     def eviterObstacle(self, absoluteObstacleAngle, direction=1):

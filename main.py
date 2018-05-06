@@ -22,7 +22,7 @@ def main():
         drawGraph = False and screen
 
     fichierCarte = "cartes/carte_2018_EpicNes.xml"
-    fichierObjectif = "objectifs/2018/objectifsEpicNesTests.xml"
+    fichierObjectif = "objectifs/2018/objectifsEpicNesHomologation.xml"
     fichierRobot = "robots/robotEpicNes.xml"
 
     fenetre = None

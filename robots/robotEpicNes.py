@@ -56,11 +56,35 @@ class RobotEpicNes(Robot):
             self.brasRobotTheo.openTower()
             self.currentCubeOrder = []
             self.resetVariable("tourCubes")
-            if not self.seDeplacerDistanceAngle(-250,0,0.4):
+            if not self.reculer(150,0.4):
                 return False
             self.brasRobotTheo.closeTower()
         return True
 
+
+    def homologationAddGoldenCube1(self):
+        if self.isSimulated:
+            self.incrementerVariable("tourCubes")
+            self.decrementerVariable("goldenCube1")
+            return True
+        if self.brasRobotTheo:
+            if self.brasRobotTheo.addGolden1():
+                self.incrementerVariable("tourCubes")
+                self.decrementerVariable("goldenCube1")
+                return True
+        return False
+
+    def homologationAddGoldenCube2(self):
+        if self.isSimulated:
+            self.incrementerVariable("tourCubes")
+            self.decrementerVariable("goldenCube2")
+            return True
+        if self.brasRobotTheo:
+            if self.brasRobotTheo.addGolden2():
+                self.incrementerVariable("tourCubes")
+                self.decrementerVariable("goldenCube2")
+                return True
+        return False
 
     def gatherCubes(self):
         if self.isSimulated:
@@ -155,6 +179,7 @@ class RobotEpicNes(Robot):
                     self.ballGatherAlex.bacGather()
                     if i == self.getVariable("roueBallesValides").getMax()-1:
                         self.ballGatherAlex.bacEmpty()
+                    time.sleep(0.8)
                     self.ballGatherAlex.bacOpen()
                     self.ballGatherAlex.stepperGather()
                     gatherColor = self.ballGatherAlex.getGatherColor()

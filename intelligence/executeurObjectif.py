@@ -40,6 +40,7 @@ class ExecuteurObjectif:
         self.fichierObjectifs = ojectifs
         self.fichierCarte = carte
         self.matchDuration = 100
+        self.robot.matchDuration = self.matchDuration
         self.fenetre = fenetre
         self.score = 0
 
@@ -103,7 +104,7 @@ class ExecuteurObjectif:
                 if succes and objectif.isFini():
                     objectifFinished = True
                     self.score += objectif.getPoints()
-                    if(self.robot):
+                    if self.robot:
                         self.robot.displayScore(self.score)
                     if objectif.repetitions > 0:
                         objectif.repetitions -= 1

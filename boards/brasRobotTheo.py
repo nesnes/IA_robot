@@ -70,7 +70,7 @@ class BrasRobotTheo(Board):
             time.sleep(0.3)
             ack = self.receiveMessage(5)
             if "OK" not in ack:  # if ERROR is received, retry
-                time.sleep(0.1)
+                time.sleep(0.5)
                 return self.addGolden1()
             return True
         return False
@@ -81,8 +81,8 @@ class BrasRobotTheo(Board):
             time.sleep(0.3)
             ack = self.receiveMessage(5)
             if "OK" not in ack:  # if ERROR is received, retry
-                time.sleep(0.1)
-                return self.addGolden1()
+                time.sleep(0.5)
+                return self.addGolden2()
             return True
         return False
 

@@ -37,6 +37,16 @@ class Condition:
                 result = not variable.isMax()
             elif self.condition == "notZero":
                 result = variable.valeur != 0
+            if self.condition == "<":
+                result = variable.valeur < self.value
+            elif self.condition == "<=":
+                result = variable.valeur <= self.value
+            elif self.condition == ">":
+                result = variable.valeur > self.value
+            elif self.condition == ">=":
+                result = variable.valeur >= self.value
+            elif self.condition == "=":
+                result = variable.valeur == self.value
 
         elif self.type == "tempsRestant":
             temps = self.robot.getRunningTime()
