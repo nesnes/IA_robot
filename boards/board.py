@@ -51,7 +51,7 @@ class Board:
         ports = serial.tools.list_ports.comports()
         for port in ports:
             print port
-            if all(s not in port[0] for s in ("ttyAM", "ttyUSB"
+            if all(s not in port[0] for s in ("ttyAC", "ttyUSB"
                                               , "usbmodem", "usbserial", "COM")):
                 continue
             connection = CommunicationSerial(Board.baudrate)

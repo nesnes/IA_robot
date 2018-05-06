@@ -5,11 +5,11 @@
     <position nom="PositionDepartA" couleur="green" x="150" y="300" angle="0"/>
     <position nom="PositionDepartB" couleur="orange" x="2850" y="300" angle="180"/>
 
-    <board nom="MovingBaseAlexandreV2" fonction="movingBase" communication="serial" baudrate="19200"/><!--Baudrate must be shared for board discovery-->
-    <board nom="ControlPanelAlexV1" fonction="controlPanel" communication="serial" baudrate="19200" />
-    <board nom="CollisionDetectionTheo" fonction="collisionDetector" communication="serial" baudrate="19200" />
-    <board nom="BrasRobotTheo" fonction="other" communication="serial" baudrate="19200" />
-    <board nom="BallGatherAlex" fonction="other" communication="serial" baudrate="19200" />
+    <board nom="MovingBaseAlexandreV2" fonction="movingBase" communication="serial" baudrate="9600"/><!--Baudrate must be shared for board discovery-->
+    <board nom="ControlPanelAlexV1" fonction="controlPanel" communication="serial" baudrate="9600" />
+    <board nom="CollisionDetectionTheo" fonction="collisionDetector" communication="serial" baudrate="9600" />
+    <board nom="BrasRobotTheo" fonction="other" communication="serial" baudrate="9600" />
+    <board nom="BallGatherAlex" fonction="other" communication="serial" baudrate="9600" />
 
     <equipement nom="tourCubes"   type="variable" valeur="0" max="5"/>
     <equipement nom="goldenCube1" type="variable" valeur="1" max="1"/>
