@@ -19,6 +19,7 @@ class MovingBase(Board):
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo: #if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+echo+")"
                 return self.enableMovements()
             return True
 
@@ -29,6 +30,7 @@ class MovingBase(Board):
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo: #if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+echo+")"
                 return self.disableMovements()
             return True
 
@@ -39,6 +41,7 @@ class MovingBase(Board):
             echo = self.receiveMessage()  # "position OK"
             if "position OK" not in echo: #if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+echo+")"
                 return self.setPosition(x, y, angle)
             return True
 
@@ -49,6 +52,7 @@ class MovingBase(Board):
             position = self.receiveMessage()  # "position x;y;angle;speed"
             if "position" not in position: #if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+position+")"
                 return self.getPositionXY()
             values = position.split(" ")[1].split(";")
             x = float(values[0])
@@ -64,6 +68,7 @@ class MovingBase(Board):
             position = self.receiveMessage()  # "position distance;angle;speed"
             if "position" not in position: #if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+position+")"
                 return self.getPositionDistanceAngle()
             values = position.split(" ")[1].split(";")
             distance = float(values[0])
@@ -79,6 +84,7 @@ class MovingBase(Board):
                 echo = self.receiveMessage()  # "move OK"
                 if "move OK" not in echo:  # if ERROR is received, retry
                     time.sleep(0.1)
+                    print "retry ("+echo+")"
                     return self.startMovementXY(x, y, angle, speed)
                 return True
             else:
@@ -92,6 +98,7 @@ class MovingBase(Board):
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+echo+")"
                 return self.startMovementDistanceAngle(distance, angle, speed)
             return True
 
@@ -102,6 +109,7 @@ class MovingBase(Board):
             status = self.receiveMessage()  # "move running" "move stuck" "move finished"
             if "move" not in status:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+status+")"
                 return self.getMovementStatus()
             return status.split(" ")[1]
 
@@ -112,6 +120,7 @@ class MovingBase(Board):
             speed = self.receiveMessage()  # "speed 0.3"
             if "speed" not in speed:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+speed+")"
                 return self.getSpeed()
             value = float(speed.split(" ")[1])
             return value
@@ -123,6 +132,7 @@ class MovingBase(Board):
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+echo+")"
                 return self.emergencyBreak()
             return True
 
@@ -133,6 +143,7 @@ class MovingBase(Board):
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+echo+")"
                 return self.startRepositioningMovement(distance, speed)
             return True
 
@@ -144,6 +155,7 @@ class MovingBase(Board):
             support = self.receiveMessage()  # "support 0" or "support 1"
             if "support" not in support:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+support+")"
                 return self.isXYSupported()
             if "1" in support:
                 self._isXYSupported = True
@@ -157,6 +169,7 @@ class MovingBase(Board):
             support = self.receiveMessage()  # "support 0" or "support 1"
             if "support" not in support:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+support+")"
                 return self.isPathSupported()
             if "1" in support:
                 self._isPathSupported = True
@@ -173,6 +186,7 @@ class MovingBase(Board):
                 echo = self.receiveMessage()  # "move OK"
                 if "move OK" not in echo:  # if ERROR is received, retry
                     time.sleep(0.1)
+                    print "retry ("+echo+")"
                     return self.startMovementPath(pathArray)
                 return True
             else:

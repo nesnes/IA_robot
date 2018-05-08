@@ -16,6 +16,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage(5)
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.grabCube(x, y, angle)
             return True
         return False
@@ -27,6 +28,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage()
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.setFindCubePosition()
             return True
         return False
@@ -38,6 +40,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage()
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.setDefaultPosition()
             return True
         return False
@@ -49,6 +52,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage()
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.openTower()
             return True
         return False
@@ -60,6 +64,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage()
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.closeTower()
             return True
         return False
@@ -71,6 +76,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage(5)
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.5)
+                print "retry ("+ack+")"
                 return self.addGolden1()
             return True
         return False
@@ -82,6 +88,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage(5)
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.5)
+                print "retry ("+ack+")"
                 return self.addGolden2()
             return True
         return False
@@ -93,6 +100,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage(5)
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.openBall()
             return True
         return False
@@ -104,6 +112,7 @@ class BrasRobotTheo(Board):
             ack = self.receiveMessage(5)
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.openBallRetract()
             return True
         return False

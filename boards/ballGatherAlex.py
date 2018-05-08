@@ -15,6 +15,7 @@ class BallGatherAlex(Board):
             color = self.receiveMessage()  # "ball color 0" or "ball color 1"
             if "color" not in color:
                 time.sleep(0.1)
+                print "retry ("+color+")"
                 return self.getColor()
             if "1" in color:
                 return 1
@@ -30,6 +31,7 @@ class BallGatherAlex(Board):
             color = self.receiveMessage()  # "ball color 0" or "ball color 1"
             if "color" not in color:
                 time.sleep(0.1)
+                print "retry ("+color+")"
                 return self.getTrapColor()
             if "1" in color:
                 return 1
@@ -45,6 +47,7 @@ class BallGatherAlex(Board):
             color = self.receiveMessage()  # "ball color 0" or "ball color 1"
             if "color" not in color:
                 time.sleep(0.1)
+                print "retry ("+color+")"
                 return self.getCannonColor()
             if "1" in color:
                 return 1
@@ -60,7 +63,8 @@ class BallGatherAlex(Board):
             color = self.receiveMessage()  # "ball color 0" or "ball color 1"
             if "color" not in color:
                 time.sleep(0.1)
-                return self.getCannonColor()
+                print "retry ("+color+")"
+                return self.getGatherColor()
             if "1" in color:
                 return 1
             if "2" in color:
@@ -75,6 +79,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.bacOpen()
             return True
         return False
@@ -85,6 +90,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.bacEmpty()
             return True
         return False
@@ -95,6 +101,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.bacGather()
             return True
         return False
@@ -105,6 +112,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.bacClose()
             return True
         return False
@@ -115,6 +123,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.trapOpen()
             return True
         return False
@@ -125,6 +134,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.trapClose()
             return True
         return False
@@ -135,6 +145,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.cannonOpen()
             return True
         return False
@@ -145,6 +156,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.cannonOpen()
             return True
         return False
@@ -155,6 +167,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage()  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.setCannonSpeed(speed)
             if speed > 0:
                 time.sleep(0.5)
@@ -167,6 +180,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage(3)  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.stepperSlot()
             return True
         return False
@@ -177,6 +191,7 @@ class BallGatherAlex(Board):
             ack = self.receiveMessage(4)  # "OK"
             if "OK" not in ack:
                 time.sleep(0.1)
+                print "retry ("+ack+")"
                 return self.stepperGather()
             return True
         return False

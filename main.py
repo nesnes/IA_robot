@@ -18,7 +18,7 @@ def main():
         drawGraph = False and screen
     else:
         screen = True
-        robotConnected = True
+        robotConnected = False
         drawGraph = False and screen
 
     fichierCarte = "cartes/carte_2018_EpicNes.xml"
