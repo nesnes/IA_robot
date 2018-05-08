@@ -41,14 +41,10 @@
             <param nom="type" type="string" value="zoneConstruction"/>
             <param nom="vitesse" type="float" value="1"/>
         </action>
-        <action methode="avancer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="0.5"/>
-        </action>
-        <action methode="releaseCubes" />
         <action methode="seDeplacerVersUnElement">
-            <param nom="type" type="string" value="zoneConstruction"/>
+            <param nom="type" type="string" value="zoneConstructionMilieu"/>
             <param nom="vitesse" type="float" value="1"/>
         </action>
+        <action methode="releaseCubes" />
     </objectif>
 </listeObjectif>

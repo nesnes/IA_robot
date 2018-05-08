@@ -78,10 +78,10 @@
       <cercle x="440" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="440" y="275" rayon="20"/>
+        <cercle x="440" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="440" y="275" rayon="1"/>
+        <cercle x="440" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
@@ -90,10 +90,10 @@
       <cercle x="640" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="640" y="275" rayon="20"/>
+        <cercle x="640" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="640" y="275" rayon="1"/>
+        <cercle x="640" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
@@ -102,10 +102,10 @@
       <cercle x="840" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="840" y="275" rayon="20"/>
+        <cercle x="840" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="840" y="275" rayon="1"/>
+        <cercle x="840" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
@@ -115,10 +115,10 @@
       <cercle x="2530" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="2530" y="275" rayon="20"/>
+        <cercle x="2530" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="2530" y="275" rayon="1"/>
+        <cercle x="2530" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
@@ -127,10 +127,10 @@
       <cercle x="2330" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="2330" y="275" rayon="20"/>
+        <cercle x="2330" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="2330" y="275" rayon="1"/>
+        <cercle x="2330" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
@@ -139,10 +139,10 @@
       <cercle x="2130" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="2130" y="275" rayon="20"/>
+        <cercle x="2130" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="2130" y="275" rayon="1"/>
+        <cercle x="2130" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
     <!--======================Stations Epuration========================-->
