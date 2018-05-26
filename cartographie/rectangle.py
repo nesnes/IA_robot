@@ -16,3 +16,16 @@ class Rectangle(Forme):
 
     def dessiner(self, fenetre):
         fenetre.drawRectangle(self.nom, self.x1, self.y1, self.x2, self.y2, self.couleur)
+
+
+    def toJson(self):
+        str = u'{'
+        str += u'"type":"rect",'
+        str += u'"name":"{}",'.format(self.nom)
+        str += u'"x":{},'.format(self.x1)
+        str += u'"y":{},'.format(self.y1)
+        str += u'"width":{},'.format(self.x2-self.x1)
+        str += u'"height":{},'.format(self.y2-self.y1)
+        str += u'"color":"{}"'.format(self.couleur)
+        str += u'}'
+        return str

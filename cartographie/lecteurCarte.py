@@ -14,18 +14,23 @@ class LecteurCarte:
     def __init__(self,fichier, largeurRobot):
         self.fichier = fichier
         self.hash = self.computeHash()
+        if self.hash == "":
+            return
         self.tree = ET.parse(fichier)
         self.distanceEvitement = largeurRobot
 
     def computeHash(self):
         BLOCKSIZE = 2048 #small blocks for low memory devices like RaspberryPi
         hasher = hashlib.md5()
-        with open(self.fichier, 'rb') as afile:
-            buf = afile.read(BLOCKSIZE)
-            while len(buf) > 0:
-                hasher.update(buf)
+        try:
+            with open(self.fichier, 'rb') as afile:
                 buf = afile.read(BLOCKSIZE)
-        return hasher.hexdigest()
+                while len(buf) > 0:
+                    hasher.update(buf)
+                    buf = afile.read(BLOCKSIZE)
+            return hasher.hexdigest()
+        except:
+            return ""
 
     def getHash(self):
         return self.hash
@@ -34,12 +39,16 @@ class LecteurCarte:
         return [self.tree.getroot().get("largeur"),self.tree.getroot().get("hauteur")]
 
     def getFond(self):
+        if self.hash == "":
+            return ""
         if "fond" in self.tree.getroot().attrib:
             return self.tree.getroot().get("fond")
         else:
             return ""
 
     def lire(self):
+        if self.hash == "":
+            return []
         root = self.tree.getroot()
         listePointInteret = []
 

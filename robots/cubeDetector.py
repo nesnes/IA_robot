@@ -15,11 +15,16 @@ class CubeDetector:
         self.cameraBuffer = None
         self.cameraImage = None
 
-        self.cubeColorsHSV = {"yellow": [44, 100, 97, 10],  # H,S,V,Range
-                             "green": [96, 61, 60, 20],
-                             "blue": [198, 100, 69, 20],
-                             "black": [240, 13, 6, 10],
-                             "orange": [19, 81, 82, 5]}
+        """self.cubeColorsHSV = {"yellow": [50, 100, 97, 15],  # H,S,V,Range
+                             "green": [96, 61, 60, 25],
+                             "blue": [198, 100, 69, 25],
+                             #"black": [240, 13, 30, 10],
+                             "orange": [10, 93, 96, 10]}"""
+        self.cubeColorsHSV = {"yellow": [56, 89, 77, 10],  # H,S,V,Range
+                              "green": [114, 61, 56, 10],
+                              "blue": [207, 83, 66, 10],
+                              "black": [185, 35, 22, 10],
+                              "orange": [20, 66, 70, 15]}
         self.initCamera()
 
     def getCubeList(self,preview=False,fromFile=""):
@@ -66,11 +71,16 @@ class CubeDetector:
         kernel = np.ones((5, 5), np.uint8)
         for key in self.cubeColorsHSV:
             color = self.cubeColorsHSV[key]
-            lower = np.array([max(0, color[0] / 2 - color[3]), 140, 50])
+            lower = np.array([max(0, color[0] / 2 - color[3]), 120, 2])
             upper = np.array([min(255, color[0] / 2 + color[3]), 255, 255])
+            if key == "black":
+                lower = np.array([0, 0, 0])
+                upper = np.array([255, 255, 60])
+
             mask = cv2.inRange(hsv, lower, upper)
             mask = cv2.erode(mask, kernel, iterations=2)
             finalMask = cv2.add(finalMask, mask)
+            #cv2.imshow(key, mask)
         img = cv2.bitwise_and(img, img, mask=finalMask)
         return img, finalMask
 
@@ -145,6 +155,9 @@ class CubeDetector:
                 color = self.cubeColorsHSV[key]
                 lower = np.array([max(0, color[0] / 2 - color[3]), 140, 50])
                 upper = np.array([min(255, color[0] / 2 + color[3]), 255, 255])
+                if key == "black":
+                    lower = np.array([0, 0, 0])
+                    upper = np.array([255, 255, 60])
                 lookupSize = 30
                 height, width, channels = rawImage.shape
                 subImage = rawImage[max(0, grabPoint[1] - lookupSize / 2)
@@ -171,7 +184,7 @@ class CubeDetector:
                 cv2.drawContours(img, [box], -1, (0, 255, 0), 2)
                 cv2.circle(img, grabPoint, 5, (0, 255, 0), 2)
                 cv2.line(img, grabPoint, orientationPoint, (0, 255, 0), 2)
-                cv2.putText(img, "{0} {1}".format(np.int0(rotation), cubeColor), (cubeX - 20, cubeY - 20),
+                cv2.putText(img, "{0} {1}".format(np.int0(rotation), cubeColor), (cubeX - 25, cubeY - 2),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
                 cv2.imshow("cubes", img)
         return cubeList
@@ -180,7 +193,7 @@ class CubeDetector:
 
 if __name__ == '__main__':
     detector = CubeDetector()
-    cubeList = detector.getCubeList(True, "/Users/alexandrebrehmer/Desktop/img_1523122502.87.jpg")
+    cubeList = detector.getCubeList(True, "/Users/alexandrebrehmer/Desktop/imgCube/img_1525760757.49.jpg")
     selectedCube = None
     for cube in cubeList:
         if cube["position"][0] >= 0 and cube["position"][0] <= 100 and cube["position"][1] >= 0 and cube["position"][

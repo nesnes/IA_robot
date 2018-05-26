@@ -52,6 +52,27 @@
         </action>
     </objectif>-->
 
+    <!--<objectif nom="RecolteEauBas" points="0" temp="4">
+        <conditions>
+            <function nom="shouldWeGatherBalls"/>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="distributeurBas"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="lowerBallsBac" />
+        <action methode="avancer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="gatherBalls" />
+        <action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="closeBallsBac" />
+    </objectif>-->
+
     <objectif nom="RecolteEauHaut" points="0" temp="4">
         <conditions>
             <function nom="shouldWeGatherBalls"/>
@@ -73,31 +94,11 @@
         <action methode="closeBallsBac" />
     </objectif>
 
-    <objectif nom="RecolteEauBas" points="0" temp="4">
-        <conditions>
-            <function nom="shouldWeGatherBalls"/>
-        </conditions>
-        <action methode="seDeplacerVersUnElement">
-            <param nom="type" type="string" value="distributeurBas"/>
-            <param nom="vitesse" type="float" value="1"/>
-        </action>
-        <action methode="lowerBallsBac" />
-        <action methode="avancer">
-            <param nom="distance" type="int" value="100"/>
-            <param nom="vitesse" type="float" value="0.5"/>
-        </action>
-        <action methode="gatherBalls" />
-        <action methode="reculer">
-            <param nom="distance" type="int" value="100"/>
-            <param nom="vitesse" type="float" value="0.5"/>
-        </action>
-        <action methode="closeBallsBac" />
-    </objectif>
 
-    <objectif nom="DeposerEauPotable" points="0" temp="4" repetitions="10">
+    <objectif nom="DeposerEauPotable" points="100" temp="4" repetitions="10">
         <conditions>
             <and>
-                <function nom="shouldWeGatherBalls" inverted=""/>
+                <!--<function nom="shouldWeGatherBalls" inverted=""/>-->
                 <variable nom="roueBallesValides" condition="notZero"/>
             </and>
         </conditions>
@@ -108,7 +109,7 @@
         <action methode="throwBalls" />
     </objectif>
 
-    <objectif nom="DeposerEauNonPotable" points="0" temp="4" repetitions="10">
+    <!--<objectif nom="DeposerEauNonPotable" points="0" temp="4" repetitions="10">
         <conditions>
             <and>
                 <function nom="shouldWeGatherBalls" inverted=""/>
@@ -124,6 +125,6 @@
             <param nom="vitesse" type="float" value="0.5"/>
         </action>
         <action methode="releaseBalls" />
-    </objectif>
+    </objectif>-->
 
 </listeObjectif>

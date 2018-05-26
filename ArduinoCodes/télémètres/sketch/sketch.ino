@@ -10,7 +10,7 @@ int tabSensor[5][2] = {
  };
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void getDistanceMultipleSRF05(float* outMeasure) {

@@ -5,7 +5,7 @@ Intelligence artificielle pour robot destiné à participer à la Coupe De Franc
 
 # Installation
  - Install python 2.7 on your windows/mac/linux
- - Install the `numpy` and the `pyserial` python package
+ - Install the `numpy` and `pyserial` python packages
     - `python -m pip install numpy pyserial`
  - On Raspberry, disable serial Boot console:
     - `sudo raspi-config [enter] [5]InterfaceOptions->[P6]->disable bootSerial, enable hardware`
@@ -73,7 +73,7 @@ All the aspect are described from the following architecture:
             - x, y, angle `In the robot`
 
 # Customize
-All the used (xml) files are declared in the main.py file. It is also where they are loaded and used by the IA. The main.py file is self documented.
+All the used (xml) files are selected in web interface. You can edit files and start simulations or live match from the web interface. (No internet connection required)
 
 ## Creating a new map
 All the previous map.xml files are contained in the corresponding folder. Just duplicate and rename the latest one, and edit the point of interest.
@@ -92,4 +92,4 @@ Your robot.xml file list the boards connected to it. It can use the default exis
 > To be loaded, your board must be added in `boards/__init__.py`
 
 # Feedback
-Please write an issue if any bug is found or if you want to discuss about an implmentation. Notice that the project is still under development (june 2017).
+Please write an issue if any bug is found or if you want to discuss about an implmentation. Notice that the project is still under development (May 2018).

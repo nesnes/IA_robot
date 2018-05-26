@@ -19,3 +19,20 @@ class Polygone(Forme):
     def dessiner(self, fenetre):
         if len(self.pointList) > 1 :
             fenetre.drawPoly(self.nom, self.pointList, self.couleur)
+
+    def toJson(self):
+        str = u'{'
+        str += u'"type":"poly",'
+        str += u'"name":"{}",'.format(self.nom)
+        str += u'"points":['
+        for i in range(0, len(self.pointList)):
+            str += u'{'
+            str += u'"x":{},'.format(self.pointList[i]["x"])
+            str += u'"y":{}'.format(self.pointList[i]["y"])
+            str += u'}'
+            if i < len(self.pointList)-1:
+                str += u','
+        str += u'],'
+        str += u'"color":"{}"'.format(self.couleur)
+        str += u'}'
+        return str

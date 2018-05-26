@@ -6,8 +6,15 @@
     </objectif>
     <objectif nom="Posseder un panneau" points="5" temp="0">
     </objectif>
+    <objectif nom="Reculer pour mieux homologuer" points="0" temp="4">
+        <action methode="seDeplacerDistanceAngle">
+            <param nom="distance" type="int" value="-300"/>
+            <param nom="angle"  type="int" value="0"/>
+            <param nom="vitesse" type="float" value="0.6"/>
+        </action>
+    </objectif>
 
-    <objectif nom="Charger cube 1" points="0" temp="4">
+    <!--<objectif nom="Charger cube 1" points="0" temp="4">
         <conditions>
             <and>
                 <variable nom="goldenCube1" condition="notZero"/>
@@ -39,12 +46,12 @@
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="zoneConstruction"/>
-            <param nom="vitesse" type="float" value="1"/>
+            <param nom="vitesse" type="float" value="0.5"/>
         </action>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="zoneConstructionMilieu"/>
-            <param nom="vitesse" type="float" value="1"/>
+            <param nom="vitesse" type="float" value="0.5"/>
         </action>
         <action methode="releaseCubes" />
-    </objectif>
+    </objectif>-->
 </listeObjectif>

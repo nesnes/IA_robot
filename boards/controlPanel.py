@@ -16,7 +16,7 @@ class ControlPanel(Board):
             color = self.receiveMessage()  # "color 0" or "color 1"
             if "color" not in color: #if ERROR is received, retry
                 time.sleep(0.1)
-                print "retry ("+color+")"
+                print "retry color("+color+")", self.connection.isMessageAvailable()
                 return self.getColor()
             if "1" in color:
                 return 1
@@ -29,7 +29,7 @@ class ControlPanel(Board):
             start = self.receiveMessage()  # "start 1" or "start 0"
             if "start" not in start: #if ERROR is received, retry
                 time.sleep(0.1)
-                print "retry ("+start+")"
+                print "retry start("+start+")", self.connection.isMessageAvailable()
                 return self.getStartSignal()
             if "1" in start:
                 return True

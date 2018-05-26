@@ -4,20 +4,14 @@ from intelligence.lecteurObjectif import LecteurObjectif
 from intelligence.robot import Robot
 from threading import Thread
 import time
+import __builtin__
 import signal
 import sys
+import webInterface
+from webInterface.interface import RunningState
 
-stopThread=False
-def signal_handler(signal, frame):
-    global stopThread
-    stopThread=True
-    print("Exit requested, stopping IA...")
-    time.sleep(0.5)
-    print("Done.")
-    exit()
 
 def waitForFunnyAction(executeurObjectif):
-    global stopThread
     print "Funny Action thread running"
     objectifFunnyAction = None
     for objectif in executeurObjectif.listeObjectifs:
@@ -26,9 +20,11 @@ def waitForFunnyAction(executeurObjectif):
     if objectifFunnyAction == None:
         print("WARNING, no Funny Action found in objectif list. The objectif name must be \"Funny Action\"")
         return
-    while executeurObjectif.robot.getRunningTime() <= executeurObjectif.matchDuration and not stopThread:
+    while executeurObjectif.robot.getRunningTime() <= executeurObjectif.matchDuration and not __builtin__.stopThread:
+        if webInterface.instance and webInterface.instance.runningState != RunningState.PLAY:
+            return
         time.sleep(0.5)
-    if(stopThread):
+    if(__builtin__.stopThread):
         return
     print("Starting Funny Action...")
     objectifFunnyAction.executer(executeurObjectif.robot)
@@ -68,7 +64,6 @@ class ExecuteurObjectif:
 
     def executerObjectifs(self):
         #thread de funny Action
-        signal.signal(signal.SIGINT, signal_handler)
         self.funnyThread = Thread(target=waitForFunnyAction, args=(self,))
         self.funnyThread.start()
 
@@ -83,12 +78,18 @@ class ExecuteurObjectif:
                 listeObjectifEchoue = []
                 objectif = self.selectionnerObjectif(listeObjectifs)
             if objectif == None:
+                if webInterface.instance and webInterface.instance.runningState != RunningState.PLAY:
+                    return
                 print("No possible Objectif for the moment... time="+str(self.robot.getRunningTime())+"s")
                 time.sleep(1)
                 continue
-            print "\n-------",objectif.nom,"-------"
+            print "\n-------",objectif.nom,"------- ",self.robot.getRunningTime(),"s"
             objectifFinished = False
             while not objectifFinished and self.robot.getRunningTime() < self.matchDuration: #tant que les actions de l'objectif n'ont pas ete faites
+                if webInterface.instance and webInterface.instance.runningState != RunningState.PLAY:
+                    print "Stop requested"
+                    return
+                self.robot.objectifEnCours = objectif
                 objectifFinished = False
                 succes = objectif.executerActionSuivante(self.robot)    #executer l'action suivante
                 time.sleep(0.05)

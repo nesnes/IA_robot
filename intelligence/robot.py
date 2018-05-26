@@ -4,7 +4,8 @@ import time
 from cartographie.cercle import Cercle
 from cartographie.ligne import Ligne
 from boards.movingBase import MovingBase
-
+from webInterface.interface import RunningState
+import webInterface
 
 class Robot:
 
@@ -34,15 +35,26 @@ class Robot:
         self.movingXY = False
         self.startTime = time.time()
         self.matchDuration = 0
+        self.objectifEnCours = None
+        self.forme = None
+        self.simulationSpeed = 0.002
+        if webInterface.instance:
+            webInterface.instance.addMapElement(self)
 
     def __del__(self):
         self.closeConnections()
+
+    def updateInterfaceMap(self):
+        if webInterface.instance:
+            for p in self.listPointInteret:
+                webInterface.instance.addMapElement(p)
 
     def initialiser(self, chercher, listPointInteret, fenetre=None, simulate=False):
         self.isSimulated = simulate
         self.fenetre = fenetre
         self.chercher = chercher
         self.listPointInteret = listPointInteret
+        self.updateInterfaceMap()
         if not self.isSimulated:
             for board in self.listBoard:
                 if not board.connect():
@@ -71,11 +83,21 @@ class Robot:
                 time.sleep(0.2)
                 self.controlPanel.displayMessage("Stopping robot...")
             print "HALT: Stopping"
-            exit(0)
+            self.isSimulated = True
+            return self.isSimulated
         if self.isSimulated:
             self.movingBase = MovingBase("dummyBase","movingBase","")
             self.movingBase._isXYSupported = True
         return self.isSimulated
+
+    def setPosition(self, x, y, angle):
+        self.x = x
+        self.y = y
+        self.angle = angle
+        if webInterface.instance:
+            self.forme = Ligne("robot", self.x, self.y, self.x+self.largeur, self.y, "violet")
+            self.forme.rotate(self.angle)
+            webInterface.instance.addDynamicElement(self)
 
     def closeConnections(self):
         for board in self.listBoard:
@@ -110,9 +132,7 @@ class Robot:
                 elif self.couleur == self.listPosition[1].couleur:
                     defaultValues = self.listPosition[1]
             self.couleur = defaultValues.couleur
-            self.x = defaultValues.x
-            self.y = defaultValues.y
-            self.angle = defaultValues.angle #0 degres =3 heures
+            self.setPosition(defaultValues.x, defaultValues.y, defaultValues.angle) #0 degres =3 heures
             if self.fenetre != None:
                 self.dessiner()
             print("Le robot virtuel est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
@@ -125,17 +145,20 @@ class Robot:
             while(not self.controlPanel.getStartSignal()):
                 self.startTime = time.time()
                 color = self.controlPanel.getColor() #get the color
-                if color != oldColor:
-                    self.couleur = self.listPosition[color].couleur
-                    self.x = self.listPosition[color].x
-                    self.y = self.listPosition[color].y
-                    self.angle = self.listPosition[color].angle #0=3h 180=9h
-                    if self.movingBase and self.movingBase.isXYSupported():
-                        self.movingBase.setPosition(self.x, self.y, self.angle)
-                    print("Le robot est " + self.couleur)
-                    self.controlPanel.displayMessage("Color: " + self.couleur)
-                    oldColor = color
-                time.sleep(0.2)
+                if color is not None:
+                    print "Color",self.listPosition[color].couleur, "(", color,")", "at X", self.listPosition[color].x, " Y", self.listPosition[color].y, " A:", self.listPosition[color].angle
+                #for board in self.listBoard:
+                #    print board.nom, board.getId()
+
+
+            self.couleur = self.listPosition[color].couleur
+            self.setPosition(self.listPosition[color].x, self.listPosition[color].y, self.listPosition[color].angle)
+            if self.movingBase and self.movingBase.isXYSupported():
+                self.movingBase.setPosition(self.x, self.y, self.angle)
+            print("Le robot est " + self.couleur)
+            self.controlPanel.displayMessage("Color: " + self.couleur)
+            oldColor = color
+            time.sleep(0.2)
 
             #Set the initial positions
             print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
@@ -163,6 +186,7 @@ class Robot:
         print("Score= "+str(score))
 
     def telemetreDetectCollision(self, speed=None):
+        #return False
         if self.isSimulated:
             return False
         if speed is None:
@@ -187,6 +211,7 @@ class Robot:
                 continue # Rejecting detections out of the map
             #lineTarget.dessiner(self.fenetre)
             if 5 < telemetre.value < 500:
+                #return True
                 #Only test telemeter if the reported value is bellow 500mm
                 containingElements = self.chercher.pointContenuListe(lineTarget.x1, lineTarget.y1, self.listPointInteret)
                 listPointDetection = list(self.listPointInteret)
@@ -223,43 +248,87 @@ class Robot:
             return True
         return False
 
+    def normalizeAngle(self, angle):
+        if angle > 180:
+            angle = -360 + angle
+        if angle < -180:
+            angle = 360 + angle
+        return angle
+
     def getAngleToDo(self,angle):
         res = angle - self.angle
-        if res > 180:
-            res = -360 + res
-        if res < -180:
-            res = 360 + res
+        self.normalizeAngle(res)
         return res
 
-    def seDeplacerXY(self, x, y, absoluteAngle, vitesse=1.0):
-        print "\t \t Deplacement: x:", x, " y:", y, " angle:", absoluteAngle
+    def rectifyPosition(self,x=-1, y=-1, angle=-1):
+        if x != -1:
+            self.x = x
+        if y != -1:
+            self.y = y
+        if angle != -1:
+            self.angle = angle
+        self.setPosition(self.x, self.y, self.angle) #update interface
+        if not self.isSimulated and self.movingBase and self.movingBase.isXYSupported():
+            self.movingBase.setPosition(self.x, self.y, self.angle)
+        print "\t \t New rectified position: x:", self.x, " y:", self.y, " angle:", self.angle
+        return True
+
+    def simulateMovement(self, x, y, nextAngle, direction):
+        ligne = Ligne("", self.x, self.y, x, y, "purple")
+        # simulate movement
+        movingAngle = self.normalizeAngle(ligne.getAngle() + (180 if direction < 0 else 0))
+        for p in range(0, (int)(ligne.getlongeur())):
+            ratio = (1.0 / ligne.getlongeur()) * p
+            ratioDest = 1 - ratio
+            self.setPosition(ligne.x1 * ratioDest + ligne.x2 * ratio, ligne.y1 * ratioDest + ligne.y2 * ratio, movingAngle)
+            if webInterface.instance and webInterface.instance.runningState == RunningState.STOP:
+                return False
+            time.sleep(self.simulationSpeed)
+        self.setPosition(ligne.x2, ligne.y2, nextAngle)
+
+
+    def seDeplacerXY(self, x, y, absoluteAngle, vitesse=1.0, forceStraight=False):
         self.updatePosition()
-        chemin = self.chercher.trouverChemin(self.x,self.y,x,y,self.listPointInteret)
+        print "\t \t From: x:{:.2f} y:{:.2f} angel:{:.2f}".format(self.x, self.y, self.angle)
+        print "\t \t Deplacement: x:{:.2f} y:{:.2f} angel:{:.2f}".format(x, y, absoluteAngle)
+        chemin = None
+        if not forceStraight:
+            chemin = self.chercher.trouverChemin(self.x,self.y,x,y,self.listPointInteret)
+        else:
+            chemin = []
+            chemin.append(Ligne("",self.x,self.y,x,y))
         if chemin == None:
             print "\t \t Chemin non trouve"
             return False
-        for ligne in chemin:
+        for i in range(0,len(chemin)):
+            ligne = chemin[i]
+            print "\t \t path {}/{} from {:.2f},{:.2f} to {:.2f} {:.2f} at angle {:.2f}".format(i+1, len(chemin), ligne.x1, ligne.y1, ligne.x2, ligne.y2, ligne.getAngle())
             result = False
-            if not self.movingBase.isXYSupported:
+            if self.movingBase and not self.movingBase.isXYSupported:
                 result = self.seDeplacerDistanceAngle(ligne.getlongeur(), self.getAngleToDo(ligne.getAngle()))
                 if not self.seDeplacerDistanceAngle(0, self.getAngleToDo(absoluteAngle), vitesse):
                     return False
             else:
-                dirLine = Ligne("", self.x, self.y, x, y, "purple")
+                dirLine = Ligne("", self.x, self.y, ligne.x2, ligne.y2, "purple")
                 direction = 1
                 if abs(dirLine.getAngle() - self.angle) > 90:
                     direction = -1
                 #print "Direction", direction
                 if not self.telemetreDetectCollision(direction):
                     if not self.isSimulated:
-                        self.movingBase.startMovementXY(x, y, absoluteAngle, vitesse)
+                        nextAngle = absoluteAngle
+                        if i < len(chemin)-1:
+                            nextAngle = chemin[i+1].getAngle()
+                        self.movingBase.startMovementXY(ligne.x2, ligne.y2, nextAngle, vitesse)
                         result = self.__waitForMovementFinished(True)
                     else:
-                        if self.fenetre:
-                            dirLine.dessiner(self.fenetre)
-                        self.x = x
-                        self.y = y
-                        self.angle = absoluteAngle
+                        #if self.fenetre:
+                        #    dirLine.dessiner(self.fenetre)
+                        nextAngle = absoluteAngle
+                        if i < len(chemin) - 1:
+                            nextAngle = chemin[i + 1].getAngle()
+                        self.simulateMovement(ligne.x2, ligne.y2, nextAngle, direction)
+                        self.setPosition(ligne.x2, ligne.y2, nextAngle)
                         result = True
                 else:
                     result = False
@@ -270,14 +339,14 @@ class Robot:
         else:
             return True
 
-    def seDeplacerDistanceAngle(self,distance,angle,vitesse=1.0, retry=1):
+    def seDeplacerDistanceAngle(self,distance,angle,vitesse=1.0, retry=1, forceLine=False):
         print "\t \tDeplacement: distance:", str(distance), " angle:", str(angle)
 
         if self.movingBase.isXYSupported:
             lineTarget = Ligne("", self.x, self.y, self.x*2, self.y*2, "purple")
             lineTarget.resize(distance)
             lineTarget.rotate(self.angle + angle)
-            return self.seDeplacerXY(lineTarget.x2, lineTarget.y2,self.angle + angle, vitesse)
+            return self.seDeplacerXY(lineTarget.x2, lineTarget.y2,self.angle + angle, vitesse,forceLine)
         if distance == 0 or not self.telemetreDetectCollision(distance):
             if not self.isSimulated:
                 self.movingBase.startMovementDistanceAngle(distance, angle, vitesse)
@@ -316,19 +385,26 @@ class Robot:
                     self.movingBase.emergencyBreak()
                     errorObstacle = True
                     break
+                elif collision:
+                    print "\t \t Obstacle, stopping robot"
+                    self.movingBase.emergencyBreak()
+                    errorObstacle = True
+                    break
+            if webInterface.instance and webInterface.instance.runningState == RunningState.STOP:
+                self.movingBase.emergencyBreak()
+                return False
             if self.getRunningTime() > self.matchDuration:
                 self.movingBase.emergencyBreak()
                 errorOutOfTime = True
                 break
+            time.sleep(0.1)
         if "stuck" in status:
             errorStuck = True
             print "\t \t Stuck, stopping movement"
             self.movingBase.emergencyBreak()
         if xyMove:
             newX, newY, newAngle, speed = self.movingBase.getPositionXY()
-            self.x = newX
-            self.y = newY
-            self.angle = newAngle
+            self.setPosition(newX, newY, newAngle)
         else:
             distanceDone, angleDone, currentSpeed = self.movingBase.getPositionDistanceAngle()
             self.updatePositionRelative(distanceDone, angleDone)
@@ -409,15 +485,14 @@ class Robot:
             ligne = Ligne("",xprev,yprev,self.x,self.y,"green")
             ligne.dessiner(self.fenetre)
             self.fenetre.win.redraw()
+        self.setPosition(self.x, self.y, self.angle) #update interface
 
     def updatePosition(self):
         if self.isSimulated:
             return
         if self.movingBase.isXYSupported:
             newX, newY, newAngle, speed = self.movingBase.getPositionXY()
-            self.x = newX
-            self.y = newY
-            self.angle = newAngle
+            self.setPosition(newX, newY, newAngle)
             self.speed = speed
         elif self.movingDA:
             distance, angle, speed = self.movingBase.getPositionDistanceAngle()
@@ -440,6 +515,7 @@ class Robot:
         if element == None:
             print "\t \tElement non trouve!!!!" + type
             return False
+        print "\t \tDeplacement vers " + type
         zoneAcces = element.zoneAcces
         if zoneAcces == None:
             print "\t \tL'element \""+element.nom+"\" n'a pas de zone d'acces"
@@ -457,10 +533,12 @@ class Robot:
                 element = obj
                 break
         if element == None:
-            print "Element non trouve!!!!"
-            return False
+            print "Element",type ," non trouve!!!!"
+            return True
         self.chercher.updateNodesRemovingElement(element, self.listPointInteret)
         self.listPointInteret.remove(element)
+        if webInterface.instance:
+            webInterface.instance.removeMapElement(element)
         if self.fenetre:
             element.zoneEvitement.forme.couleur = "white"
             element.zoneEvitement.dessiner(self.fenetre)
@@ -468,14 +546,19 @@ class Robot:
         return True
 
     def avancer(self,distance,vitesse=0.5):
+        #return self.seDeplacerDistanceAngle(distance,0, vitesse,1, True)
         newx = self.x + distance * math.cos(self.angle * 0.0174532925)  # rad
         newy = self.y + distance * math.sin(self.angle * 0.0174532925)  # rad
-        return self.seDeplacerXY(newx, newy, self.angle, vitesse)
+        return self.seDeplacerXY(newx, newy, self.angle, vitesse, True)
 
     def reculer(self,distance,vitesse=0.5):
+        #return self.seDeplacerDistanceAngle(-distance,0, vitesse, 1, True)
         newx = self.x + -distance * math.cos(self.angle * 0.0174532925)  # rad
         newy = self.y + -distance * math.sin(self.angle * 0.0174532925)  # rad
-        return self.seDeplacerXY(newx, newy, self.angle, vitesse)
+        return self.seDeplacerXY(newx, newy, self.angle, vitesse, True)
+
+    def tournerAbsolue(self,angle,vitesse=0.5):
+        return self.seDeplacerXY(self.x, self.y, angle, vitesse)
 
     def recaler(self, distance, axe, coordinate, angle, vitesse=0.2, coordinate2=None):
         success = True
@@ -496,6 +579,7 @@ class Robot:
             self.x = coordinate
             self.y = coordinate2
         self.angle = angle
+        self.setPosition(self.x, self.y, self.angle) # update interface
         return success
 
     def incrementerVariable(self, variable):

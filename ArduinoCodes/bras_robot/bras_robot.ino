@@ -39,8 +39,20 @@ int servoPositionGetGolden2Final[NB_SERVO] = {108,110,140,105,110,30,120};
 int servoPositionOpenBallsPrepare[NB_SERVO] = {100,50,25,150,145,90,60};
 int servoPositionOpenBallsFinal[NB_SERVO] = {120,50,25,150,150,90,15};
 
+int servoPositionInterrupteurPrepare[NB_SERVO] = {90,45,45,140,90,20,180};
+int servoPositionInterrupteurFinal[NB_SERVO] = {90,45,45,140,90,90,180};
+
+int servoPositionDistriteurPrepare[NB_SERVO] = {120,160,45,0,90,0,180};
+int servoPositionDistriteurFinal[NB_SERVO] = {80,160,45,0,90,0,180};
+
+int servoPositionAbeillePrepareGreen[NB_SERVO] = {85,120,45,0,90,170,180};
+int servoPositionAbeilleFinalGreen[NB_SERVO] = {125,120,45,0,90,170,180};
+int servoPositionAbeilleHigh[NB_SERVO] = {85,125,45,90,90,90,180};
+int servoPositionAbeillePrepare[NB_SERVO] = {125,142,45,0,90,90,180};
+int servoPositionAbeilleFinal[NB_SERVO] = {90,145,45,0,90,90,180};
+
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(PUMP_PIN, OUTPUT); 
   digitalWrite(PUMP_PIN, HIGH);
@@ -526,7 +538,45 @@ void loop() {
       moveArmXYZ(50,50,140, angle, 300);
       addCurrentCube(false);
       Serial.print("OK\r\n");
-    }
+    }     
+    else if(!strcmp(inputString, "arm inter push")){
+      setServoRecordedPosition(servoPositionInterrupteurPrepare, 300);
+      setServoRecordedPosition(servoPositionInterrupteurFinal, 500);
+      setServoRecordedPosition(servoPositionInterrupteurPrepare, 300);
+      setServoRecordedPosition(servoPositionDefault,50);
+      Serial.print("OK\r\n");
+    }       
+    else if(!strcmp(inputString, "arm abeille prepare")){
+      setServoRecordedPosition(servoPositionAbeilleHigh, 600);
+      setServoRecordedPosition(servoPositionAbeillePrepare, 500);
+      Serial.print("OK\r\n");
+    }         
+    else if(!strcmp(inputString, "arm abeille pregreen")){
+      setServoRecordedPosition(servoPositionAbeilleHigh, 600);
+      setServoRecordedPosition(servoPositionAbeillePrepareGreen, 500);
+      Serial.print("OK\r\n");
+    }         
+    else if(!strcmp(inputString, "arm abeille fingreen")){
+      setServoRecordedPosition(servoPositionAbeilleFinalGreen, 50);
+      Serial.print("OK\r\n");
+    }            
+    else if(!strcmp(inputString, "arm abeille final")){
+      setServoRecordedPosition(servoPositionAbeilleFinal, 50);
+      Serial.print("OK\r\n");
+    }        
+    else if(!strcmp(inputString, "arm abeille close")){
+      setServoRecordedPosition(servoPositionAbeilleHigh, 600);
+      setServoRecordedPosition(servoPositionDefault, 500);
+      Serial.print("OK\r\n");
+    }         
+    else if(!strcmp(inputString, "arm distributeur prepare")){
+      setServoRecordedPosition(servoPositionDistriteurPrepare, 400);
+      Serial.print("OK\r\n");
+    }        
+    else if(!strcmp(inputString, "arm distributeur final")){
+      setServoRecordedPosition(servoPositionDistriteurFinal, 400);
+      Serial.print("OK\r\n");
+    } 
     else{
       Serial.print("ERROR\r\n");
     }

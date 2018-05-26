@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart"/>
+    </objectif>
+
+    <objectif nom="Posseder un panneau" points="5" temp="0">
+    </objectif>
+
+    <objectif nom="Posseder une abeille" points="5" temp="0">
+    </objectif>
+
+
+    <objectif nom="Appuyer Interrupeur" points="25" temp="10">
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="interrupteur"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="150"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="rectifyPosition">
+            <param nom="x" type="float" value="-1"/>
+            <param nom="y" type="float" value="150"/>
+            <param nom="angle" type="float" value="-90"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="activerInterrupteur">
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+    </objectif>
+
+
+    <objectif nom="Lancer abeille" points="50" temp="10">
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="abeille"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+        <!-- Recalage X angle-->
+        <action methode="avancer">
+            <param nom="distance" type="float" value="400"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="rectifyPosition" couleur="orange">
+            <param nom="x" type="float" value="2850"/>
+            <param nom="y" type="float" value="-1"/>
+            <param nom="angle" type="float" value="0"/>
+        </action>
+        <action methode="rectifyPosition" couleur="green">
+            <param nom="x" type="float" value="150"/>
+            <param nom="y" type="float" value="-1"/>
+            <param nom="angle" type="float" value="180"/>
+        </action>
+
+        <action methode="reculer">
+            <param nom="distance" type="float" value="50"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="tournerAbsolue" couleur="green">
+            <param nom="angle" type="int" value="90"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+        <action methode="tournerAbsolue" couleur="orange">
+            <param nom="angle" type="int" value="85"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+        <action methode="abeillePrepare" couleur="orange">
+        </action>
+
+        <!-- Recalage Y angle-->
+        <action methode="avancer">
+            <param nom="distance" type="int" value="350"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="rectifyPosition">
+            <param nom="x" type="float" value="-1"/>
+            <param nom="y" type="float" value="1850"/>
+            <param nom="angle" type="float" value="90"/>
+        </action>
+
+
+        <action methode="abeilleFinal" couleur="orange">
+        </action>
+
+        <action methode="reculer">
+            <param nom="distance" type="int" value="60"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <!-- Green rotation-->
+        <action methode="tournerAbsolue" couleur="green">
+            <param nom="angle" type="int" value="120"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="abeillePrepare" couleur="green">
+        </action>
+        <action methode="abeilleFinal" couleur="green">
+        </action>
+        <action methode="abeilleClose">
+        </action>
+
+        <!-- forward recallage -->
+        <!--<action methode="tournerAbsolue">
+            <param nom="angle" type="int" value="90"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="150"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="rectifyPosition">
+            <param nom="x" type="float" value="-1"/>
+            <param nom="y" type="float" value="1850"/>
+            <param nom="angle" type="float" value="90"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>-->
+
+        <!-- side recallage -->
+        <action methode="tournerAbsolue" couleur="green">
+            <param nom="angle" type="int" value="180"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="tournerAbsolue" couleur="orange">
+            <param nom="angle" type="int" value="0"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="rectifyPosition" couleur="orange">
+            <param nom="x" type="float" value="2850"/>
+            <param nom="y" type="float" value="-1"/>
+            <param nom="angle" type="float" value="0"/>
+        </action>
+        <action methode="rectifyPosition" couleur="green">
+            <param nom="x" type="float" value="150"/>
+            <param nom="y" type="float" value="-1"/>
+            <param nom="angle" type="float" value="180"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+    </objectif>
+
+
+
+
+
+    <objectif nom="RecolteEauHaut" points="10" temp="4">
+        <conditions>
+            <function nom="shouldWeGatherBalls"/>
+        </conditions>
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="cubesMilieu"/>
+        </action>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="distributeurHaut"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+        <action methode="armDistributeurPrepare" />
+
+        <action methode="avancer">
+            <param nom="distance" type="int" value="120"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+
+        <action methode="armDistributeurFinal" />
+        <action methode="resetArm" />
+        <!--<action methode="reculer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="closeBallsBac" />-->
+    </objectif>
+
+
+    <!--<objectif nom="Cube Haut" points="0" temp="4">
+        <conditions>
+            <variable nom="tourCubes" condition="notMax"/>
+        </conditions>
+        <action methode="closeBallsBac" />
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="cubesHaut"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="identifyCubeOrder">
+        </action>
+        <action methode="gatherCubes">
+            <onError>
+                <action methode="resetArm" />
+            </onError>
+        </action>
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="cubesHaut"/>
+        </action>
+        <action methode="resetArm">
+        </action>
+    </objectif>-->
+
+    <objectif nom="Depose Cubes Interrupteur" points="3" temp="10">
+        <conditions>
+            <variable nom="tourCubes" condition="notZero"/>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="zoneConstructionBase"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="releaseCubes">
+        </action>
+    </objectif>
+
+
+</listeObjectif>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>IA interface</title>
+<head>
+    <script src="js/jquery.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/pointInteret.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<html>
+<body>
+<div class="flexContainer">
+    <div id="mapPanel">
+        <svg id="liveMap" width="400" height="300" viewbox="-250 -250 3500 2500" unit="mm"></svg>
+        <div id="playButtonContainer">
+            <button id="AIPlayButton" onclick="onPlayButtonClicked();">Play</button>
+            <button id="ManualPlayButton" onclick="onManualPlayButtonClicked();">Manual</button>
+        </div>
+        <table>
+        <tr>
+            <td class="fileTitle"><span>Map</span></td>
+            <td><input id="mapFilePath" type="text" value="cartes/carte_2018_EpicNes.xml"/></<td>
+        </tr>
+        <tr>
+            <td class="fileTitle"><span>Robot</span></td>
+            <td><input id="robotFilePath" type="text" value="robots/robotEpicNes.xml"/></td>
+        </tr>
+        <tr>
+            <td class="fileTitle"><span>Objective</span></td>
+            <td><input id="objectiveFilePath" type="text" value="objectifs/2018/objectifsEpicNesMatch1.xml"/></td>
+        </tr>
+        <tr>
+            <td class="fileTitle"><span>Robot Connected</span></td>
+            <td><label class="switch">
+              <input id="robotConnectedSelection" type="checkbox" value="0" onclick="setPlayButtonText()"/>
+              <span class="slider"></span>
+            </label></td>
+            
+        </tr>
+        </table>
+        <div id="fileButtonContainer">
+            <button id="loadFileButton" onclick="onLoadFileButtonClicked();">Load files</button>
+            <button id="saveFileButton" onclick="onSaveFileButtonClicked();">Save files</button>
+            <span id="fileSelectorContainer">
+                <select id="fileSelector" onchange="openFile('')"></select>
+            </span>
+        </div>
+        <textarea id="logOutput"></textarea>
+    </div>
+    <div id="editionPanel">
+        <div id="fileEditorTabContainer"></div>
+        <div id="fileEditorContainer"></div>
+
+        <div id="callableObjectsContainer">
+        </div>
+    </div>
+</div>
+</body>
+</html>

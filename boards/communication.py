@@ -20,11 +20,12 @@ class Communication:
     def receiveMessage(self, maxTime):
         timeout = 0
         while not self.isMessageAvailable() and timeout < maxTime:
-            timeout += 0.1
-            time.sleep(0.1)
+            timeout += 0.02
+            time.sleep(0.02)
+        message = ""
         if self.isMessageAvailable():
-            return self.__getFirstPendingMessage()
-        return ""
+            message = self.__getFirstPendingMessage()
+        return message
 
     def isConnected(self):
         return self.connected

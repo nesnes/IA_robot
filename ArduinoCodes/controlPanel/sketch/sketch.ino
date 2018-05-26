@@ -136,7 +136,7 @@ void updateScreen(){
 }
 
 void setup()   {                
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(START_BTN_PIN, INPUT_PULLUP);
   pinMode(COLOR_BTN_PIN, INPUT_PULLUP);
   #ifdef DISPLAY_ON

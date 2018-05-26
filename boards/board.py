@@ -31,6 +31,17 @@ class Board:
                     return True
         return False
 
+    def getId(self):
+        if self.isConnected():
+            self.sendMessage("id\r\n")
+            echo = ""
+            echo = self.receiveMessage()
+            if "ERROR" in echo:  # if ERROR is received, retry
+                time.sleep(0.1)
+                print "retry getId("+echo+")"
+                return self.getId()
+            return echo
+
     def disconnect(self):
         return self.connection.disconnect()
 
@@ -38,20 +49,25 @@ class Board:
         return self.connection.isConnected()
 
     def sendMessage(self, message):
-        return self.connection.sendMessage(message)
+        result = self.connection.sendMessage(message)
+        #print "\t \t ----> ("+self.nom+") " + message
+        return result
+
 
     def isMessageAvailable(self):
         return self.connection.isMessageAvailable()
 
     def receiveMessage(self, timeout=1):
-        return self.connection.receiveMessage(timeout)
+        msg = self.connection.receiveMessage(timeout)
+        #print "\t \t <---- " + msg + "("+self.nom+")"
+        return msg
 
     @staticmethod
     def updateSerialConnectionList():
         ports = serial.tools.list_ports.comports()
         for port in ports:
             print port
-            if all(s not in port[0] for s in ("ttyAC", "ttyUSB"
+            if all(s not in port[0] for s in ("ttyUSB"
                                               , "usbmodem", "usbserial", "COM")):
                 continue
             connection = CommunicationSerial(Board.baudrate)

@@ -79,3 +79,15 @@ class Ligne(Forme):
         angle = self.getAngle()
         self.x2 = self.x1+size*math.cos(angle)
         self.y2 = self.y1+size*math.sin(angle)
+
+    def toJson(self):
+        str = u'{'
+        str += u'"type":"line",'
+        str += u'"name":"{}",'.format(self.nom)
+        str += u'"x1":{},'.format(self.x1)
+        str += u'"y1":{},'.format(self.y1)
+        str += u'"x2":{},'.format(self.x2)
+        str += u'"y2":{},'.format(self.y2)
+        str += u'"color":"{}"'.format(self.couleur)
+        str += u'}'
+        return str

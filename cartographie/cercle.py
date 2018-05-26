@@ -16,6 +16,17 @@ class Cercle(Forme):
     def dessiner(self,fenetre):
         fenetre.drawCircle(self.nom,self.x,self.y, self.rayon,self.couleur)
 
+    def toJson(self):
+        str = u'{'
+        str += u'"type":"circle",'
+        str += u'"name":"{}",'.format(self.nom)
+        str += u'"x":{},'.format(self.x)
+        str += u'"y":{},'.format(self.y)
+        str += u'"radius":{},'.format(self.rayon)
+        str += u'"color":"{}"'.format(self.couleur)
+        str += u'}'
+        return str
+
     """def enCollision(self, forme):
         if isinstance(forme, Cercle):
             return self.__enCollisionCercle(forme)

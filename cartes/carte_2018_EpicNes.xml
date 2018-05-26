@@ -62,6 +62,9 @@
     <zoneAcces angle="-90">
         <cercle x="590" y="400" rayon="20"/>
     </zoneAcces>
+    <zoneEvitement>
+      <rectangle x1="0" y1="0" x2="1100" y2="330"/>
+    </zoneEvitement>
   </PointInteret>
 
   <PointInteret nom="Zone construction orange" type="zoneConstruction" valeur="0" action="" temp="0"  couleur="orange">
@@ -71,78 +74,81 @@
     <zoneAcces angle="-90">
         <cercle x="2410" y="400" rayon="20"/>
     </zoneAcces>
+    <zoneEvitement>
+      <rectangle x1="1900" y1="0" x2="3000" y2="330"/>
+    </zoneEvitement>
   </PointInteret>
 
   <PointInteret nom="Zone construction base green" type="zoneConstructionBase" valeur="0" action="" temp="0"  couleur="green">
     <forme>
-      <cercle x="440" y="150" rayon="30"/>
+      <cercle x="390" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="440" y="240" rayon="20"/>
+        <cercle x="390" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="440" y="240" rayon="1"/>
+        <cercle x="390" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
   <PointInteret nom="Zone construction milieu green" type="zoneConstructionMilieu" valeur="0" action="" temp="0"  couleur="green">
     <forme>
-      <cercle x="640" y="150" rayon="30"/>
+      <cercle x="590" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="640" y="240" rayon="20"/>
+        <cercle x="590" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="640" y="240" rayon="1"/>
+        <cercle x="590" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
   <PointInteret nom="Zone construction interrupteur green" type="zoneConstructionInterrupteur" valeur="0" action="" temp="0"  couleur="green">
     <forme>
-      <cercle x="840" y="150" rayon="30"/>
+      <cercle x="790" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="840" y="240" rayon="20"/>
+        <cercle x="790" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="840" y="240" rayon="1"/>
+        <cercle x="790" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
 
   <PointInteret nom="Zone construction base orange" type="zoneConstructionBase" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
-      <cercle x="2530" y="150" rayon="30"/>
+      <cercle x="2480" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="2530" y="240" rayon="20"/>
+        <cercle x="2480" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="2530" y="240" rayon="1"/>
+        <cercle x="2480" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
   <PointInteret nom="Zone construction milieu orange" type="zoneConstructionMilieu" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
-      <cercle x="2330" y="150" rayon="30"/>
+      <cercle x="2280" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="2330" y="240" rayon="20"/>
+        <cercle x="2280" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="2330" y="240" rayon="1"/>
+        <cercle x="2280" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
 
   <PointInteret nom="Zone construction interrupteur orange" type="zoneConstructionInterrupteur" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
-      <cercle x="2130" y="150" rayon="30"/>
+      <cercle x="2080" y="150" rayon="30"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="2130" y="240" rayon="20"/>
+        <cercle x="2080" y="240" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-        <cercle x="2130" y="240" rayon="1"/>
+        <cercle x="2080" y="240" rayon="1"/>
     </zoneEvitement>
   </PointInteret>
     <!--======================Stations Epuration========================-->
@@ -171,7 +177,7 @@
 
   <PointInteret nom="Distributeur Haut green" type="distributeurHaut" valeur="0" action="" temp="0"  couleur="green">
     <zoneAcces angle="180">
-        <cercle x="300" y="840" rayon="20"/>
+        <cercle x="360" y="760" rayon="20"/>
     </zoneAcces>
     <forme>
       <rectangle x1="0" y1="813" x2="100" y2="867"/>
@@ -180,7 +186,7 @@
 
   <PointInteret nom="Distributeur Haut orange" type="distributeurHaut" valeur="0" action="" temp="0"  couleur="orange">
     <zoneAcces angle="0">
-        <cercle x="2700" y="840" rayon="20"/>
+        <cercle x="2640" y="920" rayon="20"/>
     </zoneAcces>
     <forme>
       <rectangle x1="2900" y1="813" x2="3000" y2="867"/>
@@ -210,8 +216,8 @@
     <!--======================Cubes========================-->
 
   <PointInteret nom="Cube Haut green" type="cubesHaut" valeur="0" action="" temp="0"  couleur="green">
-    <zoneAcces angle="180">
-        <cercle x="1150" y="540" rayon="20"/>
+    <zoneAcces angle="135">
+        <cercle x="1100" y="350" rayon="20"/>
     </zoneAcces>
     <forme>
       <polygone>
@@ -235,8 +241,8 @@
   </PointInteret>
 
   <PointInteret nom="Cube Haut orange" type="cubesHaut" valeur="0" action="" temp="0"  couleur="orange">
-    <zoneAcces angle="0">
-        <cercle x="1850" y="540" rayon="20"/>
+    <zoneAcces angle="45">
+        <cercle x="1900" y="350" rayon="20"/>
     </zoneAcces>
     <forme>
       <polygone>
@@ -364,8 +370,8 @@
     <!--======================Abeille========================-->
 
   <PointInteret nom="Abeille green" type="abeille" valeur="0" action="" temp="0"  couleur="green">
-    <zoneAcces angle="90">
-        <cercle x="200" y="1800" rayon="20"/>
+    <zoneAcces angle="180">
+        <cercle x="400" y="1600" rayon="20"/>
     </zoneAcces>
     <forme>
       <rectangle x1="0" y1="2128" x2="250" y2="2150"/>
@@ -376,8 +382,8 @@
   </PointInteret>
 
   <PointInteret nom="Abeille orange" type="abeille" valeur="0" action="" temp="0"  couleur="orange">
-    <zoneAcces angle="90">
-        <cercle x="2800" y="1800" rayon="20"/>
+    <zoneAcces angle="0">
+        <cercle x="2600" y="1600" rayon="20"/>
     </zoneAcces>
     <forme>
       <rectangle x1="2750" y1="2128" x2="3000" y2="2150"/>
@@ -393,25 +399,25 @@
 
   <PointInteret nom="Chateau d'eau green" type="chateauEau" valeur="0" action="" temp="0"  couleur="green">
     <zoneAcces angle="155">
-        <cercle x="500" y="500" rayon="20"/>
+        <cercle x="600" y="500" rayon="20"/>
     </zoneAcces>
     <forme>
-      <rectangle x1="0" y1="-44" x2="370" y2="-414"/>
+      <rectangle x1="0" y1="-414" x2="370" y2="-44"/>
     </forme>
     <zoneEvitement>
-      <rectangle x1="0" y1="-44" x2="370" y2="-414"/>
+      <rectangle x1="0" y1="-414" x2="370" y2="-44"/>
     </zoneEvitement>
   </PointInteret>
 
   <PointInteret nom="Chateau d'eau orange" type="chateauEau" valeur="0" action="" temp="0"  couleur="orange">
     <zoneAcces angle="-155">
-        <cercle x="2500" y="500" rayon="20"/>
+        <cercle x="2400" y="500" rayon="20"/>
     </zoneAcces>
     <forme>
-      <rectangle x1="2630" y1="-44" x2="3000" y2="-414"/>
+      <rectangle x1="2630" y1="-414" x2="3000" y2="-44"/>
     </forme>
     <zoneEvitement>
-      <rectangle x1="2630" y1="-44" x2="3000" y2="-414"/>
+      <rectangle x1="2630" y1="-414" x2="3000" y2="-44"/>
     </zoneEvitement>
   </PointInteret>
 
@@ -421,7 +427,7 @@
 
   <PointInteret nom="interrupteur green" type="interrupteur" valeur="0" action="" temp="0"  couleur="green">
     <zoneAcces angle="-90">
-        <cercle x="1130" y="200" rayon="20"/>
+        <cercle x="1130" y="270" rayon="20"/>
     </zoneAcces>
     <forme>
       <rectangle x1="1100" y1="-22" x2="1160" y2="0"/>
@@ -433,13 +439,37 @@
 
   <PointInteret nom="interrupteur orange" type="interrupteur" valeur="0" action="" temp="0"  couleur="orange">
     <zoneAcces angle="-90">
-        <cercle x="1870" y="200" rayon="20"/>
+        <cercle x="1870" y="270" rayon="20"/>
     </zoneAcces>
     <forme>
       <rectangle x1="1840" y1="-22" x2="1900" y2="0"/>
     </forme>
     <zoneEvitement>
       <rectangle x1="1840" y1="-22" x2="1900" y2="0"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="interrupteur green Fin" type="interrupteurFin" valeur="0" action="" temp="0"  couleur="green">
+    <zoneAcces angle="-90">
+        <cercle x="1130" y="200" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="1130" y="200" rayon="40"/>
+    </forme>
+    <zoneEvitement>
+      <cercle x="1130" y="200" rayon="40"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="interrupteur orange Fin" type="interrupteurFin" valeur="0" action="" temp="0"  couleur="orange">
+    <zoneAcces angle="-90">
+        <cercle x="1870" y="200" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="1870" y="200" rayon="40"/>
+    </forme>
+    <zoneEvitement>
+      <cercle x="1870" y="200" rayon="40"/>
     </zoneEvitement>
   </PointInteret>
 

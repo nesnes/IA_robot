@@ -18,3 +18,7 @@ class Forme:
     @abstractmethod
     def dessiner(self, fenetre):
         pass
+
+    @abstractmethod
+    def toJson(self):
+        pass

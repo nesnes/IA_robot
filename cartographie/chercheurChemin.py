@@ -155,6 +155,7 @@ class ChercheurChemin:
                         self.graph.setPere(noeud, currentNode)
                         self.graph.marquer(noeud)
                         listnoeud.append(noeud)
+
         listPoint = []
         lastNode = endNode
         currentNode = self.graph.getPere(endNode)
