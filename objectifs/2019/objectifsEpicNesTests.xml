@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart"/>
+    </objectif>
+
+	<!--<objectif nom="Funny Action" points="0" temp="0">
+        <action methode="funnyAction"/>
+    </objectif>-->
+
+    <objectif nom="testDeplacement" points="0" temp="4">
+        <action methode="avancer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+        <action methode="reculer">
+            <param nom="distance" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="1"/>
+        </action>
+    </objectif>
+
+</listeObjectif>

@@ -10,7 +10,7 @@
     <board nom="MovingBaseAlexandreV2" fonction="movingBase" communication="serial" baudrate="115200"/><!--Baudrate must be shared for board discovery-->
     <board nom="ControlPanelAlexV1" fonction="controlPanel" communication="serial" baudrate="115200" />
     <board nom="CollisionDetectionTheo" fonction="collisionDetector" communication="serial" baudrate="115200" />
-    <board nom="BrasRobotTheo" fonction="other" communication="serial" baudrate="115200" />
+    <!--<board nom="BrasRobotTheo" fonction="other" communication="serial" baudrate="115200" />-->
     <!--<board nom="BallGatherAlex" fonction="other" communication="serial" baudrate="115200" />-->
 
     <equipement nom="tourCubes"   type="variable" valeur="2" max="5"/>

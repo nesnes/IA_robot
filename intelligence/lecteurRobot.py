@@ -12,7 +12,11 @@ class LecteurRobot:
 
     def __init__(self, fichier):
         self.fichier = fichier
-        self.tree = ET.parse(fichier)
+        try:
+            self.tree = ET.parse(fichier)
+        except:
+            print "Can't open ", fichier
+            self.tree = None
         self.robot = None
         self.nom = ""
         self.port = ""

@@ -1,4 +1,4 @@
-var wsAddress = "ws://localhost:8090/"
+var wsAddress = "ws://"+window.location.hostname+":8090/"
 var websocket = null
 var map = new Map();
 var editor = new Editor();

@@ -42,10 +42,15 @@ class ExecuteurObjectif:
 
         chercher = chercheurChemin
         lecteurObjectif = LecteurObjectif(self.fichierObjectifs, robot, self.matchDuration)
+
+
         carte = LecteurCarte(self.fichierCarte, robot.largeur)
 
         self.listePointInteret  = carte.lire()
-        self.listeObjectifs = lecteurObjectif.lire()
+        if lecteurObjectif.tree is not None:
+            self.listeObjectifs = lecteurObjectif.lire()
+        else:
+            self.listeObjectifs = []
 
     def selectionnerObjectif(self, listObjectif):
         listPossible = []

@@ -64,6 +64,9 @@ def startIA():
     # creation du robot
     print "Reading robot file"
     lecteurRobot = LecteurRobot(fichierRobot)
+    if lecteurRobot.tree is None:
+        print "ERROR: Can't find robot file"
+        return
     robot = lecteurRobot.lire()
     if webInterface.instance:
         webInterface.instance.addCallableObject(robot)
@@ -109,7 +112,9 @@ def startIA():
     if not webInterface.instance or (webInterface.instance and webInterface.instance.runningState == RunningState.PLAY):
         print "Creating IA"
         IA = ExecuteurObjectif(robot, fichierObjectif, fichierCarte, chercher, fenetre)  # creation de l'IA
-
+        if len(IA.listeObjectifs) == 0:
+            print "ERROR: Empty objective list"
+            return
         IA.afficherObjectifs()
         print "Running IA"
         IA.executerObjectifs()  # execution de l'IA

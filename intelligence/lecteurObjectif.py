@@ -10,7 +10,11 @@ class LecteurObjectif:
 
     def __init__(self,fichier, robot, matchDuration):
         self.fichier = fichier
-        self.tree = ET.parse(fichier)
+        try:
+            self.tree = ET.parse(fichier)
+        except:
+            print "Can't open ", fichier
+            self.tree = None
         self.robot = robot
         self.matchDuration = matchDuration
 
