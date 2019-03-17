@@ -1,6 +1,6 @@
 from intelligence.robot import Robot
-from robots.cubeDetector import CubeDetector
-import time
+#from robots.cubeDetector import CubeDetector
+#import time
 
 class RobotEpicNes(Robot):
 

@@ -22,23 +22,28 @@ function onClose(evt){
 
 function onMessage(evt){
     //console.log("response: " + evt.data + '\n');
-    message = JSON.parse(evt.data)
-    if(message.function == "getMapElements")
-        displayMapElements(message.data)
-    else if(message.function == "getMapBackground")
-        displayMapBackground(message.data)
-    else if(message.function == "getDynamicElements")
-        displayDynamicElements(message.data)
-    else if(message.function == "getFileContent")
-        updateFileContent(message.data)
-    else if(message.function == "getCallableElements")
-        displayCallableElements(message.data)
-    else if(message.function == "getOutputLines")
-        displayOutputLines(message.data)
-    else if(message.function == "getFileList")
-        displayFileList(message.data)
-    else
-        console.log(message)
+    try{
+        message = JSON.parse(evt.data)
+        if(message.function == "getMapElements")
+            displayMapElements(message.data)
+        else if(message.function == "getMapBackground")
+            displayMapBackground(message.data)
+        else if(message.function == "getDynamicElements")
+            displayDynamicElements(message.data)
+        else if(message.function == "getFileContent")
+            updateFileContent(message.data)
+        else if(message.function == "getCallableElements")
+            displayCallableElements(message.data)
+        else if(message.function == "getOutputLines")
+            displayOutputLines(message.data)
+        else if(message.function == "getFileList")
+            displayFileList(message.data)
+        else
+            console.log(message)
+    }
+    catch(e){
+        console.log("Error: ", e, " in ", evt.data)
+    }
 }
 
 function onError(evt){
@@ -76,6 +81,7 @@ function displayOutputLines(messages){
     }
     if(messages.length)
         $("#logOutput").scrollTop($("#logOutput")[0].scrollHeight);
+    setTimeout(requestOutputLines,300)
 }
 
 function displayMapElements(elements){
@@ -88,6 +94,7 @@ function displayMapElements(elements){
         map.removeMapElement(diff[i])
     }
     map.drawMapElement()
+    setTimeout(requestMapElements,1000)
 }
 
 function displayDynamicElements(elements){
@@ -100,6 +107,7 @@ function displayDynamicElements(elements){
         map.removeDynamicElement(diff[i])
     }
     map.drawDynamicElement()
+    setTimeout(requestDynamicElements,200)
 }
 
 function getCallableElementId(objectName, functionName){
@@ -146,46 +154,42 @@ function displayCallableElements(elements){
                 $("#"+funcId).append(str)
             }
         }
-
     }
+    setTimeout(requestCallableElements,1000)
 }
 
 function displayMapBackground(path){
     if(path != ""){
         map.background = path
     }
+    setTimeout(requestMapBackground,2000)
 }
 
 function requestMapElements(){
     if(websocket.readyState == WebSocket.OPEN)
         doSend("getMapElements");
-    setTimeout(requestMapElements,1000)
 }
 
 function requestDynamicElements(){
     if(websocket.readyState == WebSocket.OPEN)
         doSend("getDynamicElements");
-    setTimeout(requestDynamicElements,100)
 }
 
 function requestMapBackground(){
     if(map.background == ""){
         if(websocket.readyState == WebSocket.OPEN)
             doSend("getMapBackground");
-        setTimeout(requestMapBackground,1000)
     }
 }
 
 function requestCallableElements(){
     if(websocket.readyState == WebSocket.OPEN)
         doSend("getCallableElements")
-    setTimeout(requestCallableElements,1000)
 }
 
 function requestOutputLines(){
     if(websocket.readyState == WebSocket.OPEN)
         doSend("getOutputLines")
-    setTimeout(requestOutputLines,300)
 }
 
 function updateFileContent(data){
@@ -328,3 +332,7 @@ $(document).ready(function(){
     setTimeout(requestOutputLines, 100)
     loadRunningParametersFromCache()
 });
+
+window.onbeforeunload = function() {
+       return "Leave the page? Make sure that files are saved.";
+};

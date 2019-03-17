@@ -1,3 +1,9 @@
+
+#define MODE_I2C
+#ifndef MODE_I2C
+  #define MODE_SERIAL
+#endif
+
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -135,16 +141,87 @@ void updateScreen(){
   #endif
 }
 
-void setup()   {                
-  Serial.begin(115200);
+/* I2C communication */
+#ifdef MODE_I2C
+  #define I2C_BUFFER_IN_SIZE 40
+  #define I2C_BUFFER_OUT_SIZE 30
+  
+  volatile char i2cInBuffer[I2C_BUFFER_IN_SIZE];
+  volatile char i2cOutBuffer[I2C_BUFFER_OUT_SIZE];
+  volatile boolean i2cReceiveFlag = false;
+  volatile boolean i2cSendFlag = false;
+  void i2cReceiveEvent(int howMany) {
+    if(howMany>1){
+      Wire.read();//ignore first byte
+      Wire.readBytes((char*)i2cInBuffer, howMany-1);
+      i2cInBuffer[howMany-1]='\0';
+      i2cReceiveFlag = true;
+    }
+    else if(howMany==1)
+      Wire.read();
+  }
+  
+  void i2cRequestEvent() {
+    if(i2cSendFlag){
+      Wire.write((char*)i2cOutBuffer);
+      memset(i2cOutBuffer, '\0', I2C_BUFFER_OUT_SIZE);
+      i2cSendFlag = false;
+    }
+    else
+      Wire.write("");
+  }
+#endif
+
+/* Serial communication */
+#ifdef MODE_SERIAL
+  #define SERIAL_BUFFER_IN_SIZE 32
+  #define SERIAL_BUFFER_OUT_SIZE 32
+  volatile char serialInBuffer[SERIAL_BUFFER_IN_SIZE];
+  volatile char serialOutBuffer[SERIAL_BUFFER_OUT_SIZE];
+  volatile boolean serialReadFlag = false;
+  volatile boolean serialSendFlag = false;
+  
+  void readSerial() {
+    int i=0;
+    while (Serial.available()) {
+      delay(3);
+      char inChar = (char)Serial.read();
+      if (inChar == '\r' || inChar == '\n' || i>SERIAL_BUFFER_IN_SIZE-2) {
+        break;
+      }
+      serialInBuffer[i++] = inChar;
+    }
+    serialInBuffer[i+1] = '\0';
+    serialReadFlag = i > 0;
+  }
+  
+  void sendSerial(){
+    if(serialSendFlag){
+      Serial.print((char*)serialOutBuffer);
+      serialSendFlag=false;
+    }
+  }
+#endif
+
+void setup()   { 
+  #ifdef MODE_I2C
+    Wire.begin(5);                //i2c address
+    Wire.onRequest(i2cRequestEvent);
+    Wire.onReceive(i2cReceiveEvent);
+  #endif
+
+  #ifdef MODE_SERIAL               
+    Serial.begin(115200);
+  #endif
+  
   pinMode(START_BTN_PIN, INPUT_PULLUP);
   pinMode(COLOR_BTN_PIN, INPUT_PULLUP);
   #ifdef DISPLAY_ON
-  display.begin(SSD1306_SWITCHCAPVCC);
-  display.clearDisplay();
-  display.setRotation(2);
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
+    display.begin(SSD1306_SWITCHCAPVCC);
+    display.clearDisplay();
+    display.setRotation(2);
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
   #endif
   for( int i=0;i<7;i++){
       memset(messages[i], '\0', LINE_CHAR_SIZE);
@@ -154,59 +231,49 @@ void setup()   {
   updateScreen();
 }
 
-#define INPUT_STR_SIZE 32
-#define OUPUT_STR_SIZE 32
-char inputString[INPUT_STR_SIZE];
-char outputString[OUPUT_STR_SIZE];
-boolean stringReady = false;
-
-void readSerial() {
-  int i=0;
-  while (Serial.available()) {
-    delay(3);
-    char inChar = (char)Serial.read();
-    if (inChar == '\r' || inChar == '\n' || i>INPUT_STR_SIZE-2) {
-      break;
+void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolean &writeReady, char* writeBuffer, int readBufferSize){
+  if(readReady){
+    if(readBuffer[0] == '#' && readBuffer[1] != '\0'){ 
+      addMessage(readBuffer+1);
+      updateScreen();
     }
-    inputString[i++] = inChar;
+    else if(strstr(readBuffer, "color get")){
+      sprintf(writeBuffer, "color %i\r\n", colorStatus);
+      writeReady = true;
+    }
+    else if(strstr(readBuffer, "start get")){
+      sprintf(writeBuffer, "start %i\r\n", startStatus);
+      writeReady = true;
+    }
+    else if(strstr(readBuffer, "score set") != NULL){
+      sscanf(readBuffer, "score set %i", &score);
+    }
+    else if(strstr(readBuffer, "id")){
+      sprintf(writeBuffer, "ControlPanelAlexV1\r\n"); //max 32 bit (with \r\n)
+      writeReady = true;
+    }
+    else{
+      sprintf(writeBuffer, "ERROR\r\n");
+      writeReady = true;
+    }
+    memset(readBuffer, '\0', readBufferSize);
+    readReady=false;
   }
-  inputString[i+1] = '\0';
-  stringReady = i > 0;
-}
-
-void resetOutputString(){
-  memset(outputString, '\0', OUPUT_STR_SIZE);
 }
 
 void loop() {
   int lastScore = score;
-  readSerial();
-  if(stringReady){
-    if(inputString[0] == '#' && inputString[1] != '\0'){ //Print debug message
-      addMessage(inputString+1); //+1 on the pointer to move after the #
-      updateScreen();
-    }
-    else if(!strcmp(inputString, "color get")){
-      sprintf(outputString, "color %i\r\n", colorStatus);
-      Serial.print(outputString);
-    }
-    else if(!strcmp(inputString, "start get")){
-      sprintf(outputString, "start %i\r\n", startStatus);
-      Serial.print(outputString);
-    }
-    else if(strstr(inputString, "score set") != NULL){
-      sscanf(inputString, "score set %i", &score);
-    }
-    else if(!strcmp(inputString, "id")){
-      sprintf(outputString, "ControlPanelAlexV1\r\n"); //max 32 bit (with \r\n)
-      Serial.print(outputString);
-    }
-    else{
-      Serial.print("ERROR\r\n");
-    }
-    memset(inputString, '\0', INPUT_STR_SIZE);
-    stringReady = false;
-  }
+
+  #ifdef MODE_I2C
+    executeOrder(i2cReceiveFlag, i2cInBuffer, i2cSendFlag, i2cOutBuffer, I2C_BUFFER_IN_SIZE);
+  #endif
+  
+  #ifdef MODE_SERIAL
+    readSerial();
+    executeOrder(serialReadFlag, serialInBuffer, serialSendFlag, serialOutBuffer, SERIAL_BUFFER_IN_SIZE);
+    sendSerial();
+  #endif
+  
   int color = getColor();
   int start = getStart();
   if(color != colorStatus || start != startStatus || lastScore != score){

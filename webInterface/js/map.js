@@ -63,10 +63,10 @@ var Map = class {
             this.drawImage(this.background, "mapBackground")
         for(var i=0;i<this.mapElementList.length;i++)
             if(this.mapElementList[i].avoidShape)
-                this.drawShape(this.mapElementList[i].avoidShape, "avoid_"+this.mapElementList[i].id)
+                this.drawShape(this.mapElementList[i].avoidShape, "avoid_"+this.mapElementList[i].id, 0.15)
         for(var i=0;i<this.mapElementList.length;i++)
             if(this.mapElementList[i].shape)
-                this.drawShape(this.mapElementList[i].shape, "shape_"+this.mapElementList[i].id)
+                this.drawShape(this.mapElementList[i].shape, "shape_"+this.mapElementList[i].id, 0.9)
         for(var i=0;i<this.mapElementList.length;i++)
             if(this.mapElementList[i].accessPoint){
                 //add circle
@@ -119,7 +119,7 @@ var Map = class {
         $("#liveMap").prepend(svg)
     }
 
-    drawShape(shape, id){
+    drawShape(shape, id, opacity=1){
         var id = "mapElem_"+id
         var svg = null
         if(shape.type == "circle"){
@@ -127,6 +127,7 @@ var Map = class {
             svg.setAttribute('cx', shape.x);
             svg.setAttribute('cy', shape.y);
             svg.setAttribute('r', shape.radius);
+            svg.setAttribute('opacity', opacity);
             svg.setAttribute('style', "stroke-width:2; stroke:#000000; fill:"+shape.color+";");
         }
         if(shape.type == "rect"){
@@ -135,6 +136,7 @@ var Map = class {
             svg.setAttribute('y', shape.y);
             svg.setAttribute('width', shape.width);
             svg.setAttribute('height', shape.height);
+            svg.setAttribute('opacity', opacity);
             svg.setAttribute('style', "stroke-width:2; stroke:#000000; fill:"+shape.color+";");
         }
         if(shape.type == "line"){
@@ -143,6 +145,7 @@ var Map = class {
             svg.setAttribute('y1', shape.y1);
             svg.setAttribute('x2', shape.x2);
             svg.setAttribute('y2', shape.y2);
+            svg.setAttribute('opacity', opacity);
             svg.setAttribute('style', "stroke-width:10; stroke:"+shape.color+";");
         }
         if(shape.type == "poly"){
@@ -154,6 +157,7 @@ var Map = class {
                     str += " "
             }
             svg.setAttribute('points', str);
+            svg.setAttribute('opacity', opacity);
             svg.setAttribute('style', "stroke-width:2; stroke:#000000; fill:"+shape.color+";");
         }
         if(svg){

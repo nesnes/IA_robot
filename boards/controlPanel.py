@@ -16,7 +16,7 @@ class ControlPanel(Board):
             color = self.receiveMessage()  # "color 0" or "color 1"
             if "color" not in color: #if ERROR is received, retry
                 time.sleep(0.1)
-                print "retry color("+color+")", self.connection.isMessageAvailable()
+                print "retry color(",color,")", self.connection.isMessageAvailable()
                 return self.getColor()
             if "1" in color:
                 return 1

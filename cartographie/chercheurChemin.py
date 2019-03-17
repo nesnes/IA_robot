@@ -195,7 +195,9 @@ class ChercheurChemin:
             p2 = listPoint[i]
             line = Ligne("", p1[0], p1[1], p2[0], p2[1])
             listChemin.append(line)
+        print "Chemin len ", len(listChemin)
         self.simplifierChemin(listChemin, tmpList)
+        print "Chemin Simplified len ", len(listChemin)
 
         return listChemin
 

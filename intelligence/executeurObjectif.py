@@ -88,7 +88,7 @@ class ExecuteurObjectif:
                 print("No possible Objectif for the moment... time="+str(self.robot.getRunningTime())+"s")
                 time.sleep(1)
                 continue
-            print "\n-------",objectif.nom,"------- ",self.robot.getRunningTime(),"s"
+            print "\n------- {} ------- {:.2f}s".format(objectif.nom, self.robot.getRunningTime())
             objectifFinished = False
             while not objectifFinished and self.robot.getRunningTime() < self.matchDuration: #tant que les actions de l'objectif n'ont pas ete faites
                 if webInterface.instance and webInterface.instance.runningState != RunningState.PLAY:

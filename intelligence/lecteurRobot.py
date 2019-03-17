@@ -89,9 +89,13 @@ class LecteurRobot:
         fonction = board.get("fonction")
         communication = board.get("communication")
         baudrate = 115200
+        adresse = 0x00
         if "serial" in communication:
             if board.get("baudrate"):
                 baudrate = board.get("baudrate")
+        elif "i2c" in communication:
+            if board.get("adresse"):
+                adresse = board.get("adresse")
 
         newBoard = None
 
@@ -105,6 +109,8 @@ class LecteurRobot:
 
         if "serial" in communication:
             newBoard = boardClass(nom, fonction, communication, baudrate)
+        elif "i2c" in communication:
+            newBoard = boardClass(nom, fonction, communication, adresse)
         else:
             newBoard = boardClass(nom, fonction, communication)
         self.robot.listBoard.append(newBoard)

@@ -1,0 +1,332 @@
+<?xml version="1.0"?>
+<carte largeur="3000" hauteur="2000" fond="cartes/fond2017.gif">
+
+  <!--=============================BORDS DE LA TABLE======================-->
+  <PointInteret nom="BordHaut" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="3022" y2="0"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordBas" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="2000" x2="3022" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordGauche" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="0" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="BordDroit" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="3000" y1="-22" x2="3022" y2="2022"/>
+    </forme>
+    <zoneEvitement>
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Zone de depart========================-->
+
+  <PointInteret nom="Depart Bleu" type="depart" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="0" y1="0" x2="1070" y2="360"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Depart Jaune" type="depart" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="1930" y1="0" x2="3000" y2="360"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Bordure Depart Bleu" type="" valeur="0" action="" temp="0"  couleur="white">
+    <forme>
+      <rectangle x1="0" y1="360" x2="710" y2="382"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Bordure Depart Jaune" type="" valeur="0" action="" temp="0"  couleur="white">
+    <forme>
+      <rectangle x1="2290" y1="360" x2="3000" y2="382"/>
+    </forme>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Base Lunaire========================-->
+
+  <PointInteret nom="Centre Base Lunaire" type="" valeur="0" action="" temp="0"  couleur="white">
+    <forme>
+      <cercle x="1500" y="2000" rayon="200"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Base Lunaire Bleue" type="baseLunaire" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <polygone>
+        <point x="887" y="1493" />
+        <point x="984" y="1397" />
+        <point x="1408" y="1822" />
+        <point x="1312" y="1917" />
+      </polygone>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Base Lunaire Centre" type="baseLunaire" valeur="0" action="" temp="0"  couleur="white">
+    <forme>
+      <rectangle x1="1432" y1="1200" x2="1568" y2="1800"/>
+    </forme>
+  </PointInteret>
+
+   <PointInteret nom="Base Lunaire Jaune" type="baseLunaire" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <polygone>
+        <point x="2016" y="1397" />
+        <point x="2113" y="1493" />
+        <point x="1688" y="1917" />
+        <point x="1592" y="1822" />
+      </polygone>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Base Lunaire Bleu Centre" type="baseLunaire" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="0" y1="670" x2="110" y2="1180"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Base Lunaire Jaune Centre" type="baseLunaire" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="2890" y1="670" x2="3000" y2="1180"/>
+    </forme>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Crateres========================-->
+
+  <PointInteret nom="Grand Cratere Bleu" type="grandCratere" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="135">
+        <cercle x="550" y="1450" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="0" y="2000" rayon="540"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Grand Cratere Jaune" type="grandCratere" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="45">
+        <cercle x="2450" y="1450" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="3000" y="2000" rayon="540"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Petit Cratere Bleu Haut" type="petitCratereDepart" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="-130">
+        <cercle x="850" y="780" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="650" y="540" rayon="115"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Petit Cratere Jaune Haut" type="petitCratereDepart" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="-50">
+        <cercle x="2150" y="780" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="2350" y="540" rayon="115"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Petit Cratere Bleu Bas" type="petitCratereConstruction" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="45">
+        <cercle x="870" y="1720" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="1052" y="1870" rayon="115"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Petit Cratere Jaune Bas" type="petitCratereConstruction" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="135">
+        <cercle x="2130" y="1720" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="1949" y="1870" rayon="115"/>
+    </forme>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Fusee========================-->
+
+  <PointInteret nom="Fusee Bleu Haut" type="fusee" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <cercle x="1150" y="40" rayon="40"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Fusee Jaune Haut" type="fusee" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <cercle x="1850" y="40" rayon="40"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Fusee Bleu Bas" type="fusee" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <cercle x="40" y="1350" rayon="40"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Fusee Jaune Bas" type="fusee" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <cercle x="2960" y="1350" rayon="40"/>
+    </forme>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Zone de depart========================-->
+
+  <PointInteret nom="Panier Bleu" type="panier" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="-100">
+        <cercle x="360" y="600" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="50" y1="-222" x2="450" y2="0"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Panier Jaune" type="panier" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="-80">
+        <cercle x="2640" y="600" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <rectangle x1="2550" y1="-222" x2="2950" y2="0"/>
+    </forme>
+  </PointInteret>
+
+
+
+
+
+
+
+    <!--======================Module lunaire========================-->
+
+  <PointInteret nom="Module Bleu Haut" type="moduleHautCoin" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="-135">
+        <cercle x="400" y="800" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="200" y="600" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Jaune Haut" type="moduleHautCoin" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="-45">
+        <cercle x="2600" y="800" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="2800" y="600" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Bleu Bas" type="moduleBasCentre" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="60">
+        <cercle x="675" y="1600" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="800" y="1850" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Jaune Bas" type="moduleBasCentre" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="120">
+        <cercle x="2325" y="1600" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="2200" y="1850" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Haut G" type="moduleHautBase" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="-90">
+        <cercle x="1000" y="800" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="1000" y="600" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Haut D" type="moduleHautBase" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="-90">
+        <cercle x="2000" y="800" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="2000" y="600" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Millieu G" type="moduleMillieuCote" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="90">
+        <cercle x="500" y="800" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="500" y="1100" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Millieu D" type="moduleMillieuCote" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="90">
+        <cercle x="2500" y="800" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="2500" y="1100" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Bas G" type="moduleBaseLunaire" valeur="0" action="" temp="0"  couleur="blue">
+    <zoneAcces angle="45">
+        <cercle x="700" y="1200" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="900" y="1400" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Module Bas D" type="moduleBaseLunaire" valeur="0" action="" temp="0"  couleur="yellow">
+    <zoneAcces angle="135">
+        <cercle x="2300" y="1200" rayon="20"/>
+    </zoneAcces>
+    <forme>
+      <cercle x="2100" y="1400" rayon="32"/>
+    </forme>
+  </PointInteret>
+
+
+</carte>

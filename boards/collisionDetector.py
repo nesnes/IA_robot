@@ -14,7 +14,7 @@ class CollisionDetector(Board):
         if self.isConnected():
             self.sendMessage("distances get\r\n")
             distances = self.receiveMessage()  # "distances 0;1.2;0.4"... in the order of the IDs
-            if "distances" not in distances: #if ERROR is received, retry
+            if "dist" not in distances: #if ERROR is received, retry
                 time.sleep(0.1)
                 print "retry updateTelemetre("+distances+")"
                 return self.updateTelemetre(listTelemetre)

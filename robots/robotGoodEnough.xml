@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot nom="RobotGoodEnough" rayon="160" defaultColor="orange">
+
+
+    <!--<position nom="PositionDepartA" couleur="green" x="250" y="497" angle="0"/>
+    <position nom="PositionDepartB" couleur="orange" x="2850" y="300" angle="180"/>-->
+    <position nom="PositionDepartA" couleur="orange" x="234" y="600" angle="0"/>
+    <position nom="PositionDepartB" couleur="violet" x="2766" y="600" angle="180"/>
+
+    <board nom="MovingBaseAlexandreV3" fonction="movingBase" communication="i2c" adresse="0x07"/> <!--Baudrate must be shared for board discovery-->
+    <board nom="ControlPanelAlexV1" fonction="controlPanel" communication="i2c" adresse="0x05"/>
+    <board nom="CollisionDetectionTheo" fonction="collisionDetector" communication="i2c" adresse="0x08"/>
+    <board nom="BrasRobotTheo" fonction="other" communication="i2c" adresse="0x06"/>
+    <!--<board nom="BallGatherAlex" fonction="other" communication="serial" baudrate="115200" />-->
+
+    <equipement nom="paletsLeft"   type="variable" valeur="0" max="3"/>
+    <equipement nom="paletsMiddle" type="variable" valeur="0" max="2"/>
+    <equipement nom="paletsRight"  type="variable" valeur="0" max="3"/>
+    <equipement nom="accelerateur"  type="variable" valeur="0" max="9"/>
+
+    <equipement nom="telemetreArriereCubes"  type="telemetre" id="1" x="70"  y="-30" angle="180" min="150"  max="350"/>
+    <equipement nom="telemetreArriereBalles" type="telemetre" id="4" x="-55" y="-45" angle="180" min="150"  max="350"/>
+    <equipement nom="telemetreAvant"         type="telemetre" id="3" x="0"   y="30"  angle="0"   min="170" max="102"/>
+    <equipement nom="telemetreAvantBalles"   type="telemetre" id="2" x="-55" y="15"  angle="0" min="175"  max="350"/>
+    <equipement nom="telemetreAvantCubes"    type="telemetre" id="0" x="70"  y="0"   angle="0"   min="200" max="350"/>
+
+</robot>

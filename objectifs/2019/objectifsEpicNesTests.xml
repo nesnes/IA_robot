@@ -9,14 +9,48 @@
         <action methode="funnyAction"/>
     </objectif>-->
 
-    <objectif nom="testDeplacement" points="0" temp="4">
+    <objectif nom="distributeurDepart" points="0" temp="5">
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="distributeurDepart"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
         <action methode="avancer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="1"/>
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="wallGrab">
+        </action>
+    </objectif>
+
+    <objectif nom="distributeurCentre" points="0" temp="5">
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="distributeurCentre"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+        <action methode="wallGrab">
+        </action>
+    </objectif>
+
+    <objectif nom="deposeAccelerateur" points="0" temp="5">
+        <conditions>
+            <variable nom="accelerateur" condition="notMax"/>
+            <or>
+                <variable nom="paletsLeft" condition="notZero"/>
+                <variable nom="paletsMiddle" condition="notZero"/>
+                <variable nom="paletsRight" condition="notZero"/>
+            </or>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="accelerateur"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.4"/>
         </action>
         <action methode="reculer">
-            <param nom="distance" type="int" value="200"/>
-            <param nom="vitesse" type="float" value="1"/>
+            <param nom="distance" type="int" value="100"/>
+            <param nom="vitesse" type="float" value="0.4"/>
         </action>
     </objectif>
 

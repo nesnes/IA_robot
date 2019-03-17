@@ -169,9 +169,10 @@ class Interface():
                 str += u']}'
                 if i < len(functions) - 1:
                     str += u','
+            str += u']'
+            str += u'}'
             if e < len(self.callableElementList) - 1:
                 str += u','
-            str += u']}'
         str += u']'
         return str
 
@@ -289,6 +290,9 @@ class Interface():
             fileList += glob.glob("intelligence/*.py")
             fileList += glob.glob("cartographie/*.py")
             fileList += glob.glob("boards/*.py")
+            fileList += glob.glob("cartes/*.xml")
+            fileList += glob.glob("objectifs/*.xml")
+            fileList += glob.glob("objectifs/*/*.xml")
             msg = self.createMessage("getFileList", self.stringify(fileList))
             client.sendMessage(msg)
 

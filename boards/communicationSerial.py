@@ -22,11 +22,13 @@ class CommunicationSerial(Communication):
             else:
                 self.baudrate = baudrate
             self.timeout = timeout
+            print "opening"
             self.portserie = serial.Serial(port, baudrate, timeout=timeout, writeTimeout=timeout)
             self.portserie.flushInput()
             self.portserie.flushOutput()
             self.address = port
             self.connected = self.portserie.isOpen()
+            print "connected", self.connected
             self.thread = threading.Thread(target=self.__receiveLoop)
             self.thread.start()
             return self.connected

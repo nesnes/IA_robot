@@ -44,15 +44,13 @@ def startIA():
         robotConnected = True
         drawGraph = False and screen
     else:
-        screen = True
+        screen = False
         robotConnected = False
-
         drawGraph = False and screen
 
-    fichierCarte = ""#"cartes/carte_2018_EpicNes.xml"
-    fichierObjectif = ""#"objectifs/2018/objectifsEpicNesMatch1.xml"
-    # fichierObjectif = "objectifs/2018/objectifsEpicNesTests.xml"
-    fichierRobot = ""#"robots/robotEpicNes.xml"
+    fichierCarte = ""
+    fichierObjectif = ""
+    fichierRobot = ""
     if webInterface.instance and webInterface.instance.runningParameters:
         fichierCarte = webInterface.instance.runningParameters.mapFile
         fichierObjectif = webInterface.instance.runningParameters.objectiveFile
@@ -164,7 +162,7 @@ def signal_handler(signal, frame):
     time.sleep(0.5)
     print("Done.")
     exit()
-
+import traceback
 def main():
     signal.signal(signal.SIGINT, signal_handler)
     # create web interface
@@ -173,7 +171,11 @@ def main():
         while True:
             while webInterface.instance.runningState == RunningState.STOP:
                 time.sleep(0.5)
-            startIA()
+            try:
+                startIA()
+            except Exception as e:
+                print "Execution error: {} \n {}".format(e.args, traceback.format_exc())
+
             webInterface.instance.runningState = RunningState.STOP
             webInterface.instance.clearCallableObjectList()
 

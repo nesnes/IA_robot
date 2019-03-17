@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<carte largeur="3000" hauteur="2000" fond="cartes/fond2017.gif">
+
+
+
+  <PointInteret nom="Base Lunaire Bleue" type="baseLunaire" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <polygone>
+        <point x="600" y="1493" />
+        <point x="984" y="1397" />
+        <point x="1408" y="1822" />
+        <point x="1312" y="1917" />
+      </polygone>
+    </forme>
+  </PointInteret>
+
+
+
+
+</carte>

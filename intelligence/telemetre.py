@@ -11,6 +11,8 @@ class Telemetre:
         self.value = 0
         self.minValue = minValue
         self.maxValue = maxValue
+        self.forme = None
+        self.color = "green"
 
     def setValue(self, value):
         self.value = value

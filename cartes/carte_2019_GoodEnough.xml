@@ -1,0 +1,331 @@
+<?xml version="1.0"?>
+<carte largeur="3000" hauteur="2000" fond="cartes/fond2019.gif">
+
+  <!--=============================BORDS DE LA TABLE======================-->
+  <PointInteret nom="BordHaut" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="3022" y2="0"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordBas" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="2000" x2="3022" y2="2022"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordGauche" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="0" y2="2022"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordDroit" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="3000" y1="-22" x2="3022" y2="2022"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordBalanceH" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="450" y1="1578" x2="2550" y2="1600"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordBalanceV" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="1480" y1="1378" x2="1520" y2="2000"/>
+    </forme>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Zone de depart========================-->
+
+  <PointInteret nom="Depart orange" type="depart" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="0" y1="300" x2="450" y2="1200"/>
+    </forme>
+    <zoneEvitement>
+      <rectangle x1="0" y1="300" x2="450" y2="1200"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Depart violet" type="depart" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="2550" y1="300" x2="3000" y2="1200"/>
+    </forme>
+    <zoneEvitement>
+      <rectangle x1="2550" y1="300" x2="3000" y2="1200"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <!--<PointInteret nom="Blueium orange" type="blueium" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="0" y1="900" x2="450" y2="1200"/>
+    </forme>
+    <zoneEvitement>
+      <rectangle x1="0" y1="900" x2="450" y2="1200"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <PointInteret nom="Blueium violet" type="blueium" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="2550" y1="900" x2="3000" y2="1200"/>
+    </forme>
+    <zoneEvitement>
+      <rectangle x1="2550" y1="900" x2="3000" y2="1200"/>
+    </zoneEvitement>
+  </PointInteret>-->
+
+
+
+
+
+    <!--======================Zone de chaos========================-->
+  <PointInteret nom="Zone chaos orange" type="zoneChaos" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <cercle x="1000" y="1050" rayon="150"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="1000" y="700" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="1000" y="1050" rayon="250"/>
+    </zoneEvitement>
+  </PointInteret>
+
+  <PointInteret nom="Zone chaos violet" type="zoneChaos" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <cercle x="2000" y="1050" rayon="150"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="2000" y="700" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="2000" y="1050" rayon="250"/>
+    </zoneEvitement>
+  </PointInteret>
+
+
+
+    <!--======================Distributeurs========================-->
+
+  <PointInteret nom="Distributeur Depart orange" type="distributeurDepart" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="450" y1="1543" x2="750" y2="1578"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="600" y="1300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+
+  <PointInteret nom="Distributeur Centre orange" type="distributeurCentre" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="750" y1="1543" x2="1050" y2="1578"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="900" y="1300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+
+  <PointInteret nom="Distributeur Bas orange" type="distributeurBas" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="75" y1="2000" x2="375" y2="2035"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="225" y="1757" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  <PointInteret nom="Distributeur Depart violet" type="distributeurDepart" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="1950" y1="1543" x2="2250" y2="1578"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="2100" y="1300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+
+  <PointInteret nom="Distributeur Centre violet" type="distributeurCentre" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="2250" y1="1543" x2="2550" y2="1578"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="2400" y="1300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+
+  <PointInteret nom="Distributeur Bas violet" type="distributeurBas" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="2625" y1="2000" x2="2925" y2="2035"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="2775" y="1757" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+
+
+
+    <!--======================Accelerateurs========================-->
+
+  <PointInteret nom="Accelerateur orange" type="accelerateur" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="500" y1="0" x2="1250" y2="22"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="1150" y="300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  <PointInteret nom="Accelerateur violet" type="accelerateur" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="1750" y1="0" x2="2500" y2="22"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="1850" y="300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  
+  
+    <!--======================Atomes========================-->
+
+  <PointInteret nom="Atome Haut orange" type="atomeHaut" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <cercle x="500" y="450" rayon="75"/>
+    </forme>
+    <zoneAcces angle="180">
+        <cercle x="800" y="450" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="500" y="450" rayon="175"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Milieu orange" type="atomeMilieu" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <cercle x="500" y="750" rayon="75"/>
+    </forme>
+    <zoneAcces angle="180">
+        <cercle x="800" y="750" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="500" y="750" rayon="175"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Bas orange" type="atomeBas" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <cercle x="500" y="1050" rayon="75"/>
+    </forme>
+    <zoneAcces angle="180">
+        <cercle x="800" y="1050" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="500" y="1050" rayon="175"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Haut violet" type="atomeHaut" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <cercle x="2500" y="450" rayon="75"/>
+    </forme>
+    <zoneAcces angle="0">
+        <cercle x="2200" y="450" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="2500" y="450" rayon="175"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Milieu violet" type="atomeMilieu" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <cercle x="2500" y="750" rayon="75"/>
+    </forme>
+    <zoneAcces angle="0">
+        <cercle x="2200" y="750" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="2500" y="750" rayon="175"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Bas violet" type="atomeBas" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <cercle x="2500" y="1050" rayon="75"/>
+    </forme>
+    <zoneAcces angle="0">
+        <cercle x="2200" y="1050" rayon="20"/>
+    </zoneAcces>
+    <zoneEvitement>
+      <cercle x="2500" y="1050" rayon="175"/>
+    </zoneEvitement>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Accelerateur orange" type="atomeAccelerateur" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="1250" y1="0" x2="1330" y2="22"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="1290" y="300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Accelerateur violet" type="atomeAccelerateur" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="1680" y1="0" x2="1750" y2="22"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="1710" y="300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Gold orange" type="atomeGold" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="735" y1="0" x2="815" y2="22"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="775" y="300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  <PointInteret nom="Atome Gold violet" type="atomeGold" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="2185" y1="0" x2="2265" y2="22"/>
+    </forme>
+    <zoneAcces angle="-90">
+        <cercle x="2225" y="300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+
+
+
+    <!--======================Balances========================-->
+
+  <PointInteret nom="Balance orange" type="balance" valeur="0" action="" temp="0"  couleur="orange">
+    <forme>
+      <rectangle x1="1250" y1="1578" x2="1470" y2="2000"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="1360" y="1300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  <PointInteret nom="Balance violet" type="balance" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="1530" y1="1578" x2="1750" y2="2000"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="1640" y="1300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+  
+  
+  
+  
+
+
+</carte>

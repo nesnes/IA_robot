@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<listeObjectif>
+
+	<objectif nom="Attente du GO" points="0" temp="5">
+        <action methode="attendreDepart"/>
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="1000"/>
+        </action>
+    </objectif>
+
+	<objectif nom="RamenerModule" points="0" temp="4">
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="moduleHautBase"/>
+            <param nom="vitesse" type="float" value="0.3"/>
+        </action>
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="moduleHautBase"/>
+        </action>
+        <action methode="attendreMilliseconde">
+            <param nom="duree" type="int" value="50000"/>
+        </action>
+        <action methode="seDeplacerXY" couleur="yellow">
+            <param nom="x" type="int" value="2000"/>
+            <param nom="y" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.3"/>
+        </action>
+        <action methode="seDeplacerXY" couleur="blue">
+            <param nom="x" type="int" value="1000"/>
+            <param nom="y" type="int" value="200"/>
+            <param nom="vitesse" type="float" value="0.3"/>
+        </action>
+    </objectif>
+
+</listeObjectif>

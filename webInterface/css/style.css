@@ -162,7 +162,12 @@ input[type='text']{
   border: none;
   min-width: 400px;
   min-height: 210px;
+  max-height: 210px;
+  word-wrap: break-word;
+  white-space: pre-wrap; 
   margin-top: 5px !important;
+  overflow:scroll;
+  padding-left: 5px;
 }
 
 #fileButtonContainer{min-width: 100%;vertical-align:  middle;display:  flex;}
