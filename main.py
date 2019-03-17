@@ -46,7 +46,7 @@ def startIA():
     else:
         screen = False
         robotConnected = False
-        drawGraph = False and screen
+        drawGraph = True and screen
 
     fichierCarte = ""
     fichierObjectif = ""

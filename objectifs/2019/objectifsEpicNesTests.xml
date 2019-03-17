@@ -14,10 +14,6 @@
             <param nom="type" type="string" value="distributeurDepart"/>
             <param nom="vitesse" type="float" value="0.8"/>
         </action>
-        <action methode="avancer">
-            <param nom="distance" type="int" value="100"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
         <action methode="wallGrab">
         </action>
     </objectif>

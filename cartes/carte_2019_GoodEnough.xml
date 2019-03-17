@@ -140,7 +140,7 @@
     </zoneAcces>
   </PointInteret>
   
-  <PointInteret nom="Distributeur Depart violet" type="distributeurDepart" valeur="0" action="" temp="0"  couleur="violet">
+  <PointInteret nom="Distributeur Centre violet" type="distributeurCentre" valeur="0" action="" temp="0"  couleur="violet">
     <forme>
       <rectangle x1="1950" y1="1543" x2="2250" y2="1578"/>
     </forme>
@@ -149,7 +149,7 @@
     </zoneAcces>
   </PointInteret>
 
-  <PointInteret nom="Distributeur Centre violet" type="distributeurCentre" valeur="0" action="" temp="0"  couleur="violet">
+  <PointInteret nom="Distributeur Depart violet" type="distributeurDepart" valeur="0" action="" temp="0"  couleur="violet">
     <forme>
       <rectangle x1="2250" y1="1543" x2="2550" y2="1578"/>
     </forme>
@@ -171,7 +171,7 @@
 
     <!--======================Accelerateurs========================-->
 
-  <PointInteret nom="Accelerateur orange" type="accelerateur" valeur="0" action="" temp="0"  couleur="orange">
+  <PointInteret nom="Accelerateur violet" type="accelerateur" valeur="0" action="" temp="0"  couleur="violet">
     <forme>
       <rectangle x1="500" y1="0" x2="1250" y2="22"/>
     </forme>
@@ -180,7 +180,7 @@
     </zoneAcces>
   </PointInteret>
   
-  <PointInteret nom="Accelerateur violet" type="accelerateur" valeur="0" action="" temp="0"  couleur="violet">
+  <PointInteret nom="Accelerateur orange" type="accelerateur" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
       <rectangle x1="1750" y1="0" x2="2500" y2="22"/>
     </forme>
@@ -265,7 +265,7 @@
     </zoneEvitement>
   </PointInteret>
   
-  <PointInteret nom="Atome Accelerateur orange" type="atomeAccelerateur" valeur="0" action="" temp="0"  couleur="orange">
+  <PointInteret nom="Atome Accelerateur violet" type="atomeAccelerateur" valeur="0" action="" temp="0"  couleur="violet">
     <forme>
       <rectangle x1="1250" y1="0" x2="1330" y2="22"/>
     </forme>
@@ -274,7 +274,7 @@
     </zoneAcces>
   </PointInteret>
   
-  <PointInteret nom="Atome Accelerateur violet" type="atomeAccelerateur" valeur="0" action="" temp="0"  couleur="violet">
+  <PointInteret nom="Atome Accelerateur orange" type="atomeAccelerateur" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
       <rectangle x1="1680" y1="0" x2="1750" y2="22"/>
     </forme>
@@ -283,7 +283,7 @@
     </zoneAcces>
   </PointInteret>
   
-  <PointInteret nom="Atome Gold orange" type="atomeGold" valeur="0" action="" temp="0"  couleur="orange">
+  <PointInteret nom="Atome Gold violet" type="atomeGold" valeur="0" action="" temp="0"  couleur="violet">
     <forme>
       <rectangle x1="735" y1="0" x2="815" y2="22"/>
     </forme>
@@ -292,7 +292,7 @@
     </zoneAcces>
   </PointInteret>
   
-  <PointInteret nom="Atome Gold violet" type="atomeGold" valeur="0" action="" temp="0"  couleur="violet">
+  <PointInteret nom="Atome Gold orange" type="atomeGold" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
       <rectangle x1="2185" y1="0" x2="2265" y2="22"/>
     </forme>

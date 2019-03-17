@@ -40,23 +40,22 @@ class RobotGoodEnough(Robot):
             
     
     def wallGrab(self):
-        return True
-        if self.brasRobotTheo:
-            self.brasRobotTheo.armWallGrab("A");
-            self.brasRobotTheo.pumpOn("A");
+        #if self.brasRobotTheo:
+        #    self.brasRobotTheo.armWallGrab("A");
+        #    self.brasRobotTheo.pumpOn("A");
         if not self.avancer(100, 0.4):
             if self.brasRobotTheo:
                 self.brasRobotTheo.pumpOff("A");
                 self.brasRobotTheo.armDefault("A");
             return False
         self.reculer(100, 0.4) #ignore fails as palets are probably OK
-        if self.brasRobotTheo:
-            self.brasRobotTheo.armDepositPrepare("A");
-            self.brasRobotTheo.armStock("L", self.__getStockPosition("paletsLeft"))
-            self.brasRobotTheo.armStock("M", self.__getStockPosition("paletsMiddle"))
-            self.brasRobotTheo.armStock("R", self.__getStockPosition("paletsRight"))
-            self.brasRobotTheo.pumpOff("A");
-            self.brasRobotTheo.armDefault("A");
+        #if self.brasRobotTheo:
+        #    self.brasRobotTheo.armDepositPrepare("A");
+        #    self.brasRobotTheo.armStock("L", self.__getStockPosition("paletsLeft"))
+        #    self.brasRobotTheo.armStock("M", self.__getStockPosition("paletsMiddle"))
+        #    self.brasRobotTheo.armStock("R", self.__getStockPosition("paletsRight"))
+        #    self.brasRobotTheo.pumpOff("A");
+        #    self.brasRobotTheo.armDefault("A");
         self.incrementerVariable("paletsLeft")
         self.incrementerVariable("paletsMiddle")
         self.incrementerVariable("paletsRight")

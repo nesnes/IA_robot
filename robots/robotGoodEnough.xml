@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot nom="RobotGoodEnough" rayon="160" defaultColor="orange">
+<robot nom="RobotGoodEnough" rayon="160" defaultColor="violet">
 
 
     <!--<position nom="PositionDepartA" couleur="green" x="250" y="497" angle="0"/>

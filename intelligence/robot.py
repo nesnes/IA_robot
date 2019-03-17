@@ -341,12 +341,16 @@ class Robot:
         else:
             chemin = []
             chemin.append(Ligne("",self.x,self.y,x,y))
-        if chemin == None:
+        if chemin == None or len(chemin) == 0:
             print "\t \t Chemin non trouve"
+            #if self.fenetre:
+            #    Ligne("", self.x, self.y, x, y, "red").dessiner(self.fenetre)
             return False
-        print len(chemin)
         for i in range(0,len(chemin)):
             ligne = chemin[i]
+            if self.fenetre:
+                ligne.setCouleur("green")
+                ligne.dessiner(self.fenetre)
             print "\t \t path {}/{} from {:.2f},{:.2f} to {:.2f} {:.2f} at angle {:.2f}".format(i+1, len(chemin), ligne.x1, ligne.y1, ligne.x2, ligne.y2, ligne.getAngle())
             result = False
             if self.movingBase and not self.movingBase.isXYSupported:
