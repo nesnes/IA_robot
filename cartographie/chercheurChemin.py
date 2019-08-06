@@ -120,19 +120,14 @@ class ChercheurChemin:
 
 
     def trouverChemin(self,x1,y1,x2,y2,_listePointInteret):
+        directLine = Ligne("",x1,y1,x2,y2)
+        if not self.enCollisionCarte(directLine,_listePointInteret):
+            return [directLine]
         self.graph.nettoyer()
         #Point contained in objects
         startElements = self.pointContenuListe(x1, y1, _listePointInteret)
         endElements = self.pointContenuListe(x2, y2, _listePointInteret)
         blockingElements = startElements + list(set(endElements) - set(startElements)) #merge removing duplicates
-
-        notBlockingElements = list(set(_listePointInteret) - set(blockingElements))
-        directLine = Ligne("", x1, y1, x2, y2)
-        if not self.enCollisionCarte(directLine, notBlockingElements):
-            return [directLine]
-        elif self.fenetre:
-            directLine.setCouleur("violet")
-            directLine.dessiner(self.fenetre)
 
         startNode = self.graph.trouverPointProche(x1,y1)
         endNode = self.graph.trouverPointProche(x2,y2)
@@ -214,9 +209,8 @@ class ChercheurChemin:
             l1 = tabchemin[i]
             l2 = tabchemin[i+1]
             line = Ligne("",l1.x1, l1.y1, l2.x2, l2.y2, "")
-            #if self.fenetre:
-            #    line.setCouleur("red")
-            #    line.dessiner(self.fenetre)
+            #line.setCouleur("red")
+            #line.dessiner(self.fenetre)
             if not self.enCollisionCarte(line,listPointInteret):
                 tabchemin.insert(i,line)
                 tabchemin.remove(l1)

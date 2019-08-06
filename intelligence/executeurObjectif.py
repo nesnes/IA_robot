@@ -26,7 +26,7 @@ def waitForFunnyAction(executeurObjectif):
         time.sleep(0.5)
     if(__builtin__.stopThread):
         return
-    print("Starting Funny Action...")
+    print("Starting Funny Action... {}s".format(executeurObjectif.robot.getRunningTime()))
     objectifFunnyAction.executer(executeurObjectif.robot)
 
 class ExecuteurObjectif:

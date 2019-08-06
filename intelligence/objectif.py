@@ -3,6 +3,7 @@ class Objectif:
     def __init__(self,nom,point,temp,repetitions,tabActions,tabConditions):
         self.nom = nom
         self.points = point
+        self.initalPoints = point
         self.temp = temp
         self.repetitions = repetitions
         self.tabActions = tabActions
@@ -24,6 +25,7 @@ class Objectif:
     def reset(self):
         self.etat=0
         self.actionCourante=0
+        self.points = self.initalPoints
     def isEnPause(self):
         return self.etat == 0
     def fini(self):

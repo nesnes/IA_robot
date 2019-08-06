@@ -51,6 +51,9 @@
     <zoneEvitement>
       <rectangle x1="0" y1="300" x2="450" y2="1200"/>
     </zoneEvitement>
+    <zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>
   </PointInteret>
 
   <PointInteret nom="Depart violet" type="depart" valeur="0" action="" temp="0"  couleur="violet">
@@ -60,6 +63,9 @@
     <zoneEvitement>
       <rectangle x1="2550" y1="300" x2="3000" y2="1200"/>
     </zoneEvitement>
+    <zoneAcces angle="0">
+        <cercle x="2700" y="950" rayon="20"/>
+    </zoneAcces>
   </PointInteret>
   
   <!--<PointInteret nom="Blueium orange" type="blueium" valeur="0" action="" temp="0"  couleur="orange">
@@ -85,7 +91,7 @@
 
 
     <!--======================Zone de chaos========================-->
-  <PointInteret nom="Zone chaos orange" type="zoneChaos" valeur="0" action="" temp="0"  couleur="orange">
+  <!--<PointInteret nom="Zone chaos orange" type="zoneChaos" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
       <cercle x="1000" y="1050" rayon="150"/>
     </forme>
@@ -93,7 +99,7 @@
         <cercle x="1000" y="700" rayon="20"/>
     </zoneAcces>
     <zoneEvitement>
-      <cercle x="1000" y="1050" rayon="250"/>
+      <cercle x="1000" y="1050" rayon="250"/><
     </zoneEvitement>
   </PointInteret>
 
@@ -107,7 +113,7 @@
     <zoneEvitement>
       <cercle x="2000" y="1050" rayon="250"/>
     </zoneEvitement>
-  </PointInteret>
+  </PointInteret>-->
 
 
 
@@ -118,16 +124,16 @@
       <rectangle x1="450" y1="1543" x2="750" y2="1578"/>
     </forme>
     <zoneAcces angle="90">
-        <cercle x="600" y="1300" rayon="20"/>
+        <cercle x="575" y="1300" rayon="20"/>
     </zoneAcces>
   </PointInteret>
 
   <PointInteret nom="Distributeur Centre orange" type="distributeurCentre" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
-      <rectangle x1="750" y1="1543" x2="1050" y2="1578"/>
+      <rectangle x1="725" y1="1543" x2="1050" y2="1578"/>
     </forme>
     <zoneAcces angle="90">
-        <cercle x="900" y="1300" rayon="20"/>
+        <cercle x="870" y="1300" rayon="20"/>
     </zoneAcces>
   </PointInteret>
 
@@ -140,21 +146,21 @@
     </zoneAcces>
   </PointInteret>
   
-  <PointInteret nom="Distributeur Centre violet" type="distributeurCentre" valeur="0" action="" temp="0"  couleur="violet">
-    <forme>
-      <rectangle x1="1950" y1="1543" x2="2250" y2="1578"/>
-    </forme>
-    <zoneAcces angle="90">
-        <cercle x="2100" y="1300" rayon="20"/>
-    </zoneAcces>
-  </PointInteret>
-
   <PointInteret nom="Distributeur Depart violet" type="distributeurDepart" valeur="0" action="" temp="0"  couleur="violet">
     <forme>
       <rectangle x1="2250" y1="1543" x2="2550" y2="1578"/>
     </forme>
     <zoneAcces angle="90">
-        <cercle x="2400" y="1300" rayon="20"/>
+        <cercle x="2410" y="1300" rayon="20"/>
+    </zoneAcces>
+  </PointInteret>
+
+  <PointInteret nom="Distributeur Centre violet" type="distributeurCentre" valeur="0" action="" temp="0"  couleur="violet">
+    <forme>
+      <rectangle x1="1950" y1="1543" x2="2250" y2="1578"/>
+    </forme>
+    <zoneAcces angle="90">
+        <cercle x="2115" y="1300" rayon="20"/>
     </zoneAcces>
   </PointInteret>
 
@@ -176,7 +182,7 @@
       <rectangle x1="500" y1="0" x2="1250" y2="22"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="1150" y="300" rayon="20"/>
+        <cercle x="1050" y="400" rayon="20"/>
     </zoneAcces>
   </PointInteret>
   
@@ -185,7 +191,7 @@
       <rectangle x1="1750" y1="0" x2="2500" y2="22"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="1850" y="300" rayon="20"/>
+        <cercle x="1950" y="400" rayon="20"/>
     </zoneAcces>
   </PointInteret>
   
@@ -270,7 +276,7 @@
       <rectangle x1="1250" y1="0" x2="1330" y2="22"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="1290" y="300" rayon="20"/>
+        <cercle x="1328" y="300" rayon="20"/>
     </zoneAcces>
   </PointInteret>
   
@@ -279,7 +285,7 @@
       <rectangle x1="1680" y1="0" x2="1750" y2="22"/>
     </forme>
     <zoneAcces angle="-90">
-        <cercle x="1710" y="300" rayon="20"/>
+        <cercle x="1672" y="300" rayon="20"/>
     </zoneAcces>
   </PointInteret>
   
@@ -307,10 +313,10 @@
 
   <PointInteret nom="Balance orange" type="balance" valeur="0" action="" temp="0"  couleur="orange">
     <forme>
-      <rectangle x1="1250" y1="1578" x2="1470" y2="2000"/>
+      <rectangle x1="1200" y1="1578" x2="1470" y2="2000"/>
     </forme>
     <zoneAcces angle="90">
-        <cercle x="1360" y="1300" rayon="20"/>
+        <cercle x="1262" y="1030" rayon="20"/>
     </zoneAcces>
   </PointInteret>
   
@@ -319,7 +325,7 @@
       <rectangle x1="1530" y1="1578" x2="1750" y2="2000"/>
     </forme>
     <zoneAcces angle="90">
-        <cercle x="1640" y="1300" rayon="20"/>
+        <cercle x="1748" y="1030" rayon="20"/>
     </zoneAcces>
   </PointInteret>
   

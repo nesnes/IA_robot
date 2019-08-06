@@ -45,6 +45,17 @@ class MovingBase(Board):
                 return self.setPosition(x, y, angle)
             return True
 
+    def setSpin(self, direction, speed):
+        if self.isConnected():
+            self.sendMessage("spin {:.0f} {:.0f}\r\n".format(direction, speed))
+            echo = ""
+            echo = self.receiveMessage()  # "spin OK"
+            if "spin OK" not in echo: #if ERROR is received, retry
+                time.sleep(0.1)
+                print "retry setSpin("+echo+")"
+                return self.setSpin(direction, speed)
+            return True
+
     def getPositionXY(self):
         if self.isConnected():
             self.sendMessage("pos getXY\r\n")
@@ -54,7 +65,7 @@ class MovingBase(Board):
                 time.sleep(0.1)
                 print "retry getPositionXY("+position+")"
                 return self.getPositionXY()
-            print position
+            #print position
             values = position.split(" ")
             x = float(values[1])
             y = float(values[2])

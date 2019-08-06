@@ -4,50 +4,181 @@
 	<objectif nom="Attente du GO" points="0" temp="5">
         <action methode="attendreDepart"/>
     </objectif>
+    
+    <objectif nom="Start Electron" points="20" temp="1">
+        <action methode="startElectron"/>
+    </objectif>
+    
+    <objectif nom="Start Experience" points="20" temp="1">
+        <action methode="startExperience"/>
+    </objectif>
+    
+    <objectif nom="Add second robot points" points="0" temp="1">
+        <action methode="addPointsSecondRobot"/>
+    </objectif>
 
-	<!--<objectif nom="Funny Action" points="0" temp="0">
+	<objectif nom="Funny Action" points="0" temp="0">
         <action methode="funnyAction"/>
-    </objectif>-->
+    </objectif>
+    
+    <objectif nom="paletsDepart" points="0" temp="5">
+        <action methode="tournerAbsolue" couleur="orange">
+            <param nom="angle" type="int" value="50"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="tournerAbsolue" couleur="violet">
+            <param nom="angle" type="int" value="130"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="avancer">
+            <param nom="distance" type="int" value="400"/>
+            <param nom="vitesse" type="float" value="0.8"/>
+        </action>
+        <action methode="floorGrabPrepare">
+        </action>
+        <action methode="floorGrab">
+        </action>
+        <!--<action methode="retirerElementCarte">
+            <param nom="type" type="string" value="atomeMilieu"/>
+        </action>
+        <action methode="retirerElementCarte">
+            <param nom="type" type="string" value="atomeBas"/>
+        </action>-->
+    </objectif>
 
     <objectif nom="distributeurDepart" points="0" temp="5">
+        <conditions>
+            <variable nom="paletsLeft" condition="notMax"/>
+            <variable nom="paletsMiddle" condition="notMax"/>
+            <variable nom="gold" condition="=" value="0"/>
+            <variable nom="paletsRight" condition="notMax"/>
+        </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="distributeurDepart"/>
-            <param nom="vitesse" type="float" value="0.8"/>
+            <param nom="vitesse" type="float" value="0.4"/>
         </action>
         <action methode="wallGrab">
         </action>
     </objectif>
 
     <objectif nom="distributeurCentre" points="0" temp="5">
+        <conditions>
+            <variable nom="paletsLeft" condition="notMax"/>
+            <variable nom="paletsMiddle" condition="notMax"/>
+            <variable nom="gold" condition="=" value="0"/>
+            <variable nom="paletsRight" condition="notMax"/>
+        </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="distributeurCentre"/>
-            <param nom="vitesse" type="float" value="0.8"/>
+            <param nom="vitesse" type="float" value="0.4"/>
         </action>
         <action methode="wallGrab">
         </action>
     </objectif>
 
-    <objectif nom="deposeAccelerateur" points="0" temp="5">
+    <!--<objectif nom="deposeAccelerateur" points="0" temp="5" repetitions="10">
         <conditions>
             <variable nom="accelerateur" condition="notMax"/>
             <or>
                 <variable nom="paletsLeft" condition="notZero"/>
-                <variable nom="paletsMiddle" condition="notZero"/>
+                <and>
+                    <variable nom="gold" condition="=" value="0"/>
+                    <variable nom="paletsMiddle" condition="notZero"/>
+                </and>
                 <variable nom="paletsRight" condition="notZero"/>
             </or>
         </conditions>
         <action methode="seDeplacerVersUnElement">
             <param nom="type" type="string" value="accelerateur"/>
-            <param nom="vitesse" type="float" value="0.8"/>
+            <param nom="vitesse" type="float" value="0.5"/>
         </action>
-        <action methode="avancer">
-            <param nom="distance" type="int" value="100"/>
-            <param nom="vitesse" type="float" value="0.4"/>
-        </action>
-        <action methode="reculer">
-            <param nom="distance" type="int" value="100"/>
-            <param nom="vitesse" type="float" value="0.4"/>
+        <action methode="depositAccelerator">
         </action>
     </objectif>
 
+    <objectif nom="getAtomeGold" points="20" temp="5">
+        <conditions>
+            <variable nom="paletsMiddle" condition="=" value="0"/>
+            <variable nom="gold" condition="=" value="0"/>
+            <variable nom="accelerateur" condition="notZero"/>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="atomeGold"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="grabGoldPalet">
+        </action>
+    </objectif>
+
+    <objectif nom="getAtomeAccelerateur" points="0" temp="5">
+        <conditions>
+            <variable nom="paletsMiddle" condition="notMax"/>
+        </conditions>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="atomeAccelerateur"/>
+            <param nom="vitesse" type="float" value="0.5"/>
+        </action>
+        <action methode="grabAcceleratorPalet">
+        </action>
+    </objectif>-->
+    
+
+    <objectif nom="deposeBalance" points="0" temp="5">
+        <conditions>
+            <variable nom="balance" condition="notMax"/>
+            <or>
+                <variable nom="paletsLeft" condition="notZero"/>
+                <variable nom="gold" condition="=" value="1"/>
+                <variable nom="paletsMiddle" condition="notZero"/>
+                <variable nom="paletsRight" condition="notZero"/>
+            </or>
+        </conditions>
+        
+        <action methode="tournerAbsolue" couleur="orange">
+            <param nom="angle" type="int" value="180"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="tournerAbsolue" couleur="violet">
+            <param nom="angle" type="int" value="0"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="balance"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="depositBalance">
+        </action>
+    </objectif>
+    
+
+    <objectif nom="deposeDepart" points="0" temp="5" repetitions="10">
+        <conditions>
+            <tempsRestant value="6" condition=">"/>
+            <or>
+                <variable nom="paletsLeft" condition="notZero"/>
+                <and>
+                    <variable nom="gold" condition="=" value="0"/>
+                    <variable nom="paletsMiddle" condition="notZero"/>
+                </and>
+                <variable nom="paletsRight" condition="notZero"/>
+            </or>
+        </conditions>
+        <action methode="tournerAbsolue" couleur="orange">
+            <param nom="angle" type="int" value="180"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="tournerAbsolue" couleur="violet">
+            <param nom="angle" type="int" value="0"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="startDepositDepart">
+        </action>
+        <action methode="seDeplacerVersUnElement">
+            <param nom="type" type="string" value="depart"/>
+            <param nom="vitesse" type="float" value="0.4"/>
+        </action>
+        <action methode="depositDepart">
+        </action>
+    </objectif>
 </listeObjectif>

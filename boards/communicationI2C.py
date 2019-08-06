@@ -1,7 +1,4 @@
-import os
-isRaspberry = "arm" in os.popen("uname -m").read()
-if isRaspberry:
-    from smbus import SMBus
+from smbus import SMBus
 import threading
 import time
 from boards.communication import Communication

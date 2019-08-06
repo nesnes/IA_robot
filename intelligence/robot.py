@@ -169,6 +169,7 @@ class Robot:
                 while (self.controlPanel.getStartSignal()):
                     time.sleep(0.2)
                 while(not self.controlPanel.getStartSignal()):
+                    time.sleep(0.5)
                     self.startTime = time.time()
                     color = self.controlPanel.getColor() #get the color
                     if color is not None:
@@ -195,6 +196,9 @@ class Robot:
 
     def getRunningTime(self):
         return time.time() - self.startTime
+        
+    def getRemainingTime(self):
+        return self.matchDuration - self.getRunningTime()
 
     def attendreMilliseconde(self,duree):
         time.sleep(float(duree)/1000.0)
@@ -221,9 +225,11 @@ class Robot:
     def stopTestTelemeters(self):
         self.testingTelemeters = False
 
-    def telemetreDetectCollision(self, speed=None):
+    def telemetreDetectCollision(self, speed=None, rotationOnly=False):
         #return False
         if self.isSimulated:
+            return False
+        if rotationOnly:
             return False
         if speed is None:
             speed = self.speed
@@ -254,21 +260,31 @@ class Robot:
             if 5 < telemetre.value < 500:
                 #return True
                 #Only test telemeter if the reported value is bellow 500mm
-                containingElements = self.chercher.pointContenuListe(lineTarget.x1, lineTarget.y1, self.listPointInteret)
-                listPointDetection = list(self.listPointInteret)
-                for point in containingElements:
-                    listPointDetection.remove(point)
-                collision = self.chercher.enCollisionCarte(lineTarget, listPointDetection, True)
-                if not collision:
-                    #circle = Cercle(telemetre.nom, line.x2, line.y2, 20, "purple")
-                    #circle.dessiner(self.fenetre)
-                    #lineTarget.dessiner(self.fenetre)
-                    telemetre.color = "purple"
-                    print("/!\\"+telemetre.nom+" detected Unkown object. Position "+str(lineTarget.x2)+","+str(lineTarget.y2)+", angle "+str(lineTarget.getAngle())+ " at distance "+str(telemetre.value))
-                    return [lineTarget.x2, lineTarget.y2]
-                else:
-                    telemetre.color = "blue"
-                    print(telemetre.nom + " detected " + collision.nom)
+                objectInRange=False
+                objectDetectedLine=None
+                for i in range(1, 3):
+                    containingElements = self.chercher.pointContenuListe(lineTarget.x1, lineTarget.y1, self.listPointInteret)
+                    listPointDetection = list(self.listPointInteret)
+                    for point in containingElements:
+                        listPointDetection.remove(point)
+                    
+                    lineTest = Ligne("", lineTarget.x1, lineTarget.y1, lineTarget.x2/i, lineTarget.y2/i, "purple")
+                    collision = self.chercher.enCollisionCarte(lineTest, listPointDetection, False)
+                    if not collision:
+                        #circle = Cercle(telemetre.nom, line.x2, line.y2, 20, "purple")
+                        #circle.dessiner(self.fenetre)
+                        #lineTarget.dessiner(self.fenetre)
+                        telemetre.color = "purple"
+                        objectDetectedLine = lineTest
+                    else:
+                        objectInRange=True
+                        telemetre.color = "blue"
+                        #print(telemetre.nom + " detected " + collision.nom)
+                if objectInRange:
+                    pass
+                elif objectDetectedLine:
+                    print("/!\\"+telemetre.nom+" detected Unkown object. Position "+str(objectDetectedLine.x2)+","+str(objectDetectedLine.y2)+", angle "+str(objectDetectedLine.getAngle())+ " at distance "+str(telemetre.value))
+                    return [objectDetectedLine.x2, objectDetectedLine.y2]
         return False
 
     def executer(self,action):
@@ -285,10 +301,14 @@ class Robot:
         print "Check Pos:", x, y, angle, x1, y1, angle1, erreurPos, erreurAngle
         if( (abs(x-x1) <= erreurPos) and (abs(y-y1) <= erreurPos) and (abs(self.normalizeAngle(angle)-self.normalizeAngle(angle1)) <= erreurAngle)):
             return True
+        elif( (abs(x-x1) <= erreurPos) and (abs(y-y1) <= erreurPos) and (abs(self.normalizeAngle(angle)+self.normalizeAngle(angle1)) <= erreurAngle)):
+            return True
         return False
 
     def distanceAtteinte(self,dist1, angle1, dist2, angle2 , erreurDist, erreurAngle):
         if( (abs(dist1-dist2) <= erreurDist) and (abs(self.normalizeAngle(angle1)-self.normalizeAngle(angle2)) <= erreurAngle) ):
+            return True
+        elif( (abs(dist1-dist2) <= erreurDist) and (abs(self.normalizeAngle(angle1)+self.normalizeAngle(angle2)) <= erreurAngle) ):
             return True
         return False
 
@@ -331,7 +351,7 @@ class Robot:
         self.setPosition(ligne.x2, ligne.y2, nextAngle)
 
 
-    def seDeplacerXY(self, x, y, absoluteAngle, vitesse=1.0, forceStraight=False):
+    def seDeplacerXY(self, x, y, absoluteAngle, vitesse=1.0, forceStraight=False, retry=0):
         self.updatePosition()
         print "\t \t From: x:{:.2f} y:{:.2f} angel:{:.2f}".format(self.x, self.y, self.angle)
         print "\t \t Deplacement: x:{:.2f} y:{:.2f} angel:{:.2f}".format(x, y, absoluteAngle)
@@ -341,16 +361,12 @@ class Robot:
         else:
             chemin = []
             chemin.append(Ligne("",self.x,self.y,x,y))
-        if chemin == None or len(chemin) == 0:
+        if chemin == None:
             print "\t \t Chemin non trouve"
-            #if self.fenetre:
-            #    Ligne("", self.x, self.y, x, y, "red").dessiner(self.fenetre)
             return False
+        print len(chemin)
         for i in range(0,len(chemin)):
             ligne = chemin[i]
-            if self.fenetre:
-                ligne.setCouleur("green")
-                ligne.dessiner(self.fenetre)
             print "\t \t path {}/{} from {:.2f},{:.2f} to {:.2f} {:.2f} at angle {:.2f}".format(i+1, len(chemin), ligne.x1, ligne.y1, ligne.x2, ligne.y2, ligne.getAngle())
             result = False
             if self.movingBase and not self.movingBase.isXYSupported:
@@ -364,13 +380,13 @@ class Robot:
                 if abs(dirLine.getAngle() - self.angle) > 90:
                     direction = -1
                 #print "Direction", direction
-                if not self.telemetreDetectCollision(direction):
+                if not self.telemetreDetectCollision(direction, self.x==x and self.y==y): 
                     if not self.isSimulated:
                         nextAngle = absoluteAngle
                         if i < len(chemin)-1:
                             nextAngle = chemin[i+1].getAngle()
                         self.movingBase.startMovementXY(ligne.x2, ligne.y2, nextAngle, vitesse)
-                        result = self.__waitForMovementFinished(True)
+                        result = self.__waitForMovementFinished(True, self.x==x and self.y==y, False, direction)
                     else:
                         #if self.fenetre:
                         #    dirLine.dessiner(self.fenetre)
@@ -384,16 +400,21 @@ class Robot:
                     result = False
             if not result:
                 print "\t \t DeplacementXY failed"
-                return False
+                if retry>0:
+                    return self.seDeplacerXY(x, y, absoluteAngle, vitesse, forceStraight, retry-1)
+                else:
+                    return False
         if not self.isSimulated:
             res = self.positionAtteinte(x, y, absoluteAngle, self.x, self.y, self.angle, 50, 5)
             if not res:
                 print "\t \t Position non atteinte"
+                if retry>0:
+                    return self.seDeplacerXY(x, y, absoluteAngle, vitesse, forceStraight, retry-1)
             return res
         else:
             return True
 
-    def seDeplacerDistanceAngle(self,distance,angle,vitesse=1.0, retry=1, forceLine=False):
+    def seDeplacerDistanceAngle(self,distance,angle,vitesse=1.0, retry=0, forceLine=False):
         print "\t \tDeplacement: distance:", str(distance), " angle:", str(angle)
 
         if self.movingBase.isXYSupported:
@@ -420,7 +441,7 @@ class Robot:
         else:
             return False
 
-    def __waitForMovementFinished(self, xyMove, rotationOnly=False, doNotAvoid=False):
+    def __waitForMovementFinished(self, xyMove, rotationOnly=False, doNotAvoid=False, direction=None):
         errorObstacle = False
         errorStuck = False
         errorOutOfTime = False
@@ -432,7 +453,7 @@ class Robot:
             self.updatePosition()
             status = self.movingBase.getMovementStatus()
             if not rotationOnly:
-                collision = self.telemetreDetectCollision()
+                collision = self.telemetreDetectCollision(direction)
                 if type(collision) != bool:
                     collisionX, collisionY = collision
                     print "\t \t Obstacle, stopping robot"
@@ -605,17 +626,25 @@ class Robot:
         newx = self.x + distance * math.cos(self.angle * 0.0174532925)  # rad
         newy = self.y + distance * math.sin(self.angle * 0.0174532925)  # rad
         return self.seDeplacerXY(newx, newy, self.angle, vitesse, True)
+        #lineTarget = Ligne("", self.x, self.y, self.x*2, self.y*2, "purple")
+        #lineTarget.resize(distance)
+        #lineTarget.rotate(self.angle)
+        #return self.seDeplacerXY(lineTarget.x2, lineTarget.y2,self.angle, vitesse, True)
 
     def reculer(self,distance,vitesse=0.5):
         #return self.seDeplacerDistanceAngle(-distance,0, vitesse, 1, True)
         newx = self.x + -distance * math.cos(self.angle * 0.0174532925)  # rad
         newy = self.y + -distance * math.sin(self.angle * 0.0174532925)  # rad
         return self.seDeplacerXY(newx, newy, self.angle, vitesse, True)
+        #lineTarget = Ligne("", self.x, self.y, self.x*2, self.y*2, "purple")
+        #lineTarget.resize(distance)
+        #lineTarget.rotate(self.angle)
+        #return self.seDeplacerXY(lineTarget.x2, lineTarget.y2,self.angle, vitesse, True)
 
     def tournerAbsolue(self,angle,vitesse=0.5):
         return self.seDeplacerXY(self.x, self.y, angle, vitesse)
 
-    def recaler(self, distance, axe, coordinate, angle, vitesse=0.2, coordinate2=None):
+    def recaler(self, distance, axe, coordinate, angle, vitesse=0.2, coordinate2=None, ignoreStuckCondition=False):
         success = True
         if not self.isSimulated:
             self.movingBase.startRepositioningMovement(distance, vitesse)
@@ -623,7 +652,7 @@ class Robot:
             if distance < 0:
                 direction = -1
             result = self.__waitForMovementFinished(False,direction,True)
-            if result:
+            if result and not ignoreStuckCondition:
                 print("ERROR: Movement wasn't stuck during the repositioning movement, the known angle should have a big error.")
                 success = False
         if axe == "X":
@@ -635,6 +664,9 @@ class Robot:
             self.y = coordinate2
         self.angle = angle
         self.setPosition(self.x, self.y, self.angle) # update interface
+        if self.movingBase and self.movingBase.isConnected() and self.movingBase.isXYSupported():
+            self.movingBase.setPosition(self.x, self.y, self.angle)
+        
         return success
 
     def incrementerVariable(self, variable):

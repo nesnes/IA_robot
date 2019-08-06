@@ -1,12 +1,4 @@
-#define MODE_I2C
-#ifndef MODE_I2C
-  #define MODE_SERIAL
-#endif
-
-
-#include <SoftwareServo.h>
-//#include <Servo.h> //cause issues with I2C (timer things)
-#include <Wire.h>
+#include <Servo.h>
 #include "APDS9960.h"
 APDS9960 colorSensorLeft = APDS9960();
 APDS9960 colorSensorRight = APDS9960();
@@ -40,8 +32,8 @@ struct PresureSensor{
   }
 };
 
-PresureSensor pressureSensorL(A6,1);
-PresureSensor pressureSensorM(A6,0);
+PresureSensor pressureSensorL(A6,A4);
+PresureSensor pressureSensorM(A6,A5);
 PresureSensor pressureSensorR(A6,A7);
 
 bool enableAutoFloorGrab = false;
@@ -60,7 +52,7 @@ int stockM[3] = {EMPTY, EMPTY, EMPTY};
 
 const int NB_SERVO_ARM_R = 3;
 const int pinNumberServo_R[NB_SERVO_ARM_R] = {7,8,9};
-SoftwareServo servos_R[NB_SERVO_ARM_R];
+Servo servos_R[NB_SERVO_ARM_R];
 const int pinNumberPump_R = 11;
 int positionServo_R_Default[NB_SERVO_ARM_R] = {130,0,110};
 int positionServo_R_WallGrab[NB_SERVO_ARM_R] = {175,50,150};
@@ -74,7 +66,7 @@ int positionServo_R_Stock_Prepare[NB_SERVO_ARM_R] = {100,30,60};
 
 const int NB_SERVO_ARM_L = 3;
 const int pinNumberServo_L[NB_SERVO_ARM_L] = {13,3,2};
-SoftwareServo servos_L[NB_SERVO_ARM_L];
+Servo servos_L[NB_SERVO_ARM_L];
 const int pinNumberPump_L = 10;
 int positionServo_L_Default[NB_SERVO_ARM_L] = {130,0,110};
 int positionServo_L_WallGrab[NB_SERVO_ARM_L] = {175,50,150};
@@ -88,11 +80,11 @@ int positionServo_L_Stock_Prepare[NB_SERVO_ARM_L] = {100,30,60};
 
 const int NB_SERVO_ARM_M = 3;
 const int pinNumberServo_M[NB_SERVO_ARM_M] = {4,5,6};
-SoftwareServo servos_M[NB_SERVO_ARM_M];
+Servo servos_M[NB_SERVO_ARM_M];
 const int pinNumberPump_M = 10;
 int positionServo_M_Default[NB_SERVO_ARM_M] = {30,175,100};
 int positionServo_M_WallGrab[NB_SERVO_ARM_M] = {123,95,40};
-int positionServo_M_WallGrab_Lift[NB_SERVO_ARM_M] = {50,150,40};
+int positionServo_M_WallGrab_Lift[NB_SERVO_ARM_M] = {90,110,40};
 int positionServo_M_Stock_1[NB_SERVO_ARM_M] = {125,155,50};
 int positionServo_M_Stock_2[NB_SERVO_ARM_M] = {103,180,50};
 int positionServo_M_Stock_3[NB_SERVO_ARM_M] = {80,180,90};
@@ -102,84 +94,13 @@ int positionServo_M_Stock_Prepare[NB_SERVO_ARM_M] = {80,180,90};
 const int MIN_PULSE = 500;//550
 const int MAX_PULSE = 2500;//2450
 
-/* I2C communication */
-#ifdef MODE_I2C
-  #define I2C_BUFFER_IN_SIZE 40
-  #define I2C_BUFFER_OUT_SIZE 30
-  
-  volatile char i2cInBuffer[I2C_BUFFER_IN_SIZE];
-  volatile char i2cOutBuffer[I2C_BUFFER_OUT_SIZE];
-  volatile boolean i2cReceiveFlag = false;
-  volatile boolean i2cSendFlag = false;
-  void i2cReceiveEvent(int howMany) {
-    if(howMany>1){
-      Wire.read();//ignore first byte
-      Wire.readBytes((char*)i2cInBuffer, howMany-1);
-      i2cInBuffer[howMany-1]='\0';
-      i2cReceiveFlag = true;
-    }
-    else if(howMany==1)
-      Wire.read();
-  }
-  
-  void i2cRequestEvent() {
-    if(i2cSendFlag){
-      Wire.write((char*)i2cOutBuffer);
-      memset(i2cOutBuffer, '\0', I2C_BUFFER_OUT_SIZE);
-      i2cSendFlag = false;
-    }
-    else
-      Wire.write("");
-  }
-#endif
-
-/* Serial communication */
-#ifdef MODE_SERIAL
-  #define SERIAL_BUFFER_IN_SIZE 32
-  #define SERIAL_BUFFER_OUT_SIZE 32
-  volatile char serialInBuffer[SERIAL_BUFFER_IN_SIZE];
-  volatile char serialOutBuffer[SERIAL_BUFFER_OUT_SIZE];
-  volatile boolean serialReadFlag = false;
-  volatile boolean serialSendFlag = false;
-  
-  void readSerial() {
-    int i=0;
-    while (Serial.available()) {
-      delay(3);
-      char inChar = (char)Serial.read();
-      if (inChar == '\r' || inChar == '\n' || i>SERIAL_BUFFER_IN_SIZE-2) {
-        break;
-      }
-      serialInBuffer[i++] = inChar;
-    }
-    serialInBuffer[i+1] = '\0';
-    serialReadFlag = i > 0;
-  }
-  
-  void sendSerial(){
-    if(serialSendFlag){
-      Serial.print((char*)serialOutBuffer);
-      serialSendFlag=false;
-    }
-  }
-#endif
 
 void setup() {
-  #ifdef MODE_I2C
-    Wire.begin(6);                //i2c address
-    Wire.onRequest(i2cRequestEvent);
-    Wire.onReceive(i2cReceiveEvent);
-  #endif
-
-  #ifdef MODE_SERIAL               
-    Serial.begin(115200);
-  #endif
+  Serial.begin(115200);
 
   // Setup Arm R
   for(int i=0; i<NB_SERVO_ARM_R; i++){
-    servos_R[i].attach(pinNumberServo_R[i]);
-    servos_R[i].setMinimumPulse(MIN_PULSE);
-    servos_R[i].setMaximumPulse(MAX_PULSE);
+    servos_R[i].attach(pinNumberServo_R[i], MIN_PULSE, MAX_PULSE);
   }
   setServoRecordedPosition(positionServo_R_Default, servos_R, NB_SERVO_ARM_R, 0);
   pinMode(pinNumberPump_R, OUTPUT); 
@@ -187,9 +108,7 @@ void setup() {
 
   // Setup Arm L
   for(int i=0; i<NB_SERVO_ARM_L; i++){
-    servos_L[i].attach(pinNumberServo_L[i]);
-    servos_L[i].setMinimumPulse(MIN_PULSE);
-    servos_L[i].setMaximumPulse(MAX_PULSE);
+    servos_L[i].attach(pinNumberServo_L[i], MIN_PULSE, MAX_PULSE);
   }
   setServoRecordedPosition(positionServo_L_Default, servos_L, NB_SERVO_ARM_R, 0);
 
@@ -198,9 +117,7 @@ void setup() {
 
   // Setup Arm M
   for(int i=0; i<NB_SERVO_ARM_M; i++){
-    servos_M[i].attach(pinNumberServo_M[i]);
-    servos_M[i].setMinimumPulse(MIN_PULSE);
-    servos_M[i].setMaximumPulse(MAX_PULSE);
+    servos_M[i].attach(pinNumberServo_M[i], MIN_PULSE, MAX_PULSE);
   }
   setServoRecordedPosition(positionServo_M_Default, servos_M, NB_SERVO_ARM_M, 0);
   pinMode(pinNumberPump_M, OUTPUT); 
@@ -229,6 +146,8 @@ void setup() {
 int getPresure(PresureSensor* sensor)
 {
   char line[50];
+  sprintf(line, "Pressure clk %i data %i ", sensor->clkPin, sensor->dataPin);
+  Serial.print(line);
   digitalWrite(sensor->clkPin, LOW);
   delayMicroseconds(1);
   // wait for the chip to become ready:
@@ -244,6 +163,7 @@ int getPresure(PresureSensor* sensor)
   delayMicroseconds(1);
   digitalWrite(sensor->clkPin, LOW);
   delayMicroseconds(1);
+  Serial.println(value);
   if(value == 8388608)
     return PRESSURE_VACCUM;
   return PRESSURE_UNKNOWN; // todos 1 = 1677215
@@ -258,6 +178,10 @@ int getColor(APDS9960* sensor){
       sensor->readGreenLight(green_light) &&
       sensor->readBlueLight(blue_light) &&
       sensor->readProximity(prox)) {
+       /*Serial.println(red_light);
+       Serial.println(green_light);
+       Serial.println(blue_light);
+       Serial.println(prox);*/
       if(prox<155)
         return EMPTY;
       if(red_light>green_light*1.5f && red_light > blue_light*1.5f && red_light > 50)
@@ -270,7 +194,25 @@ int getColor(APDS9960* sensor){
   return OTHER;
 }
 
-void setServoRecordedPosition(int* positions, SoftwareServo* servos, int servoCount, int duration){
+#define INPUT_STR_SIZE 100
+char inputString[INPUT_STR_SIZE];
+boolean stringReady = false;
+
+void readSerial() {
+  int i=0;
+  while (Serial.available()) {
+    delay(3);
+    char inChar = (char)Serial.read();
+    if (inChar == '\r' || inChar == '\n' || i>INPUT_STR_SIZE-2) {
+      break;
+    }
+    inputString[i++] = inChar;
+  }
+  inputString[i+1] = '\0';
+  stringReady = i > 0;
+}
+
+void setServoRecordedPosition(int* positions, Servo* servos, int servoCount, int duration){
   unsigned long startTime = millis();
   //Save start position
   int startPosition[servoCount];
@@ -283,15 +225,12 @@ void setServoRecordedPosition(int* positions, SoftwareServo* servos, int servoCo
     for(int i=0; i<servoCount;i++){
       servos[i].write(startPosition[i]+(positions[i]-startPosition[i])*stepRatio);
     }
-    SoftwareServo::refresh();
     delay(1);
   }while(millis() - startTime < duration);
   //Set final position
   for(int i=0; i<servoCount;i++){
     servos[i].write(positions[i]);
   }
-  
-  SoftwareServo::refresh();
 }
 
 void setPump(const int pumpPin, bool isOn){
@@ -356,6 +295,11 @@ void runAutoFloorGrab(int side){//async
   else
     return;
 
+  
+  /*char line[75];
+  sprintf(line,"side %i, state %i, timeout %i, color %i", side, *autoFloorGrabState, *autoFloorGrabActionTimeout, getColor(colorSensor)); 
+  Serial.println(line);*/
+  
   if(*autoFloorGrabState !=0){
     if(*autoFloorGrabActionStartTime > 0 && *autoFloorGrabActionTimeout > 0){
       //handle timer
@@ -421,92 +365,86 @@ void runAutoFloorGrab(int side){//async
     }
   }
 }
-void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolean &writeReady, char* writeBuffer, int readBufferSize){
-  if(readReady){
-    if(readBuffer[0] == '#' && readBuffer[1] != '\0'){
-      //ignore
+
+void loop() {
+  //getPresure(&pressureSensorL);
+  //getPresure(&pressureSensorM);
+  //getPresure(&pressureSensorR);
+  runAutoFloorGrab(SIDE_LEFT);//async
+  runAutoFloorGrab(SIDE_RIGHT);//async
+  readSerial();
+  if(stringReady){
+    if(inputString[0] == '#' && inputString[1] != '\0'){ 
+      //message starting with #, ignored
     }
-    else if(strstr(readBuffer, "id")){
-      sprintf(writeBuffer, "BrasRobotTheo\r\n"); //max 32 bit (with \r\n)
-      writeReady = true;
-    }
-    else if(strstr(readBuffer, "setArmServo")){
+    else if(!strcmp(inputString, "id")){
+      char line[25];
+      sprintf(line, "BrasRobotTheo\r\n");
+      Serial.print(line);
+    }       
+    else if(strstr(inputString, "setArmServo")){
       char side;
       int servo=50, angle=50;
-      sscanf(readBuffer, "setArmServo %c %i %i", &side, &servo, &angle);
+      sscanf(inputString, "setArmServo %c %i %i", &side, &servo, &angle);
       if(servo >=0 && servo < NB_SERVO_ARM_R && side=='R')
         servos_R[servo].write(angle);
       if(servo >=0 && servo < NB_SERVO_ARM_L && side=='L')
         servos_L[servo].write(angle);
       if(servo >=0 && servo < NB_SERVO_ARM_M && side=='M')
         servos_M[servo].write(angle);
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     } 
-    else if(strstr(readBuffer, "getServos")){
-      char strServos[28];
+    else if(!strcmp(inputString, "getServos")){
+      char strServos[100];
       strcpy(strServos, "");
-      char strTemp[5], side;
+      char strTemp[5];
       int value;
-      sscanf(readBuffer, "getServos %c", &side);
-      if(side=='R'){
-        strcat(strServos, "R ");
-        for(int i=0; i< NB_SERVO_ARM_R; i++){
-          value = servos_R[i].read();                
-          itoa(value, strTemp, 10);
-          strcat(strTemp, " ");
-          strcat(strServos, strTemp);
-        }
+      strcat(strServos, "R:");
+      for(int i=0; i< NB_SERVO_ARM_R; i++){
+        value = servos_R[i].read();                
+        itoa(value, strTemp, 10);
+        strcat(strTemp, ", ");
+        strcat(strServos, strTemp);
       }
-      else if(side=='M'){
-        strcat(strServos, "M ");
-        for(int i=0; i< NB_SERVO_ARM_M; i++){
-          value = servos_M[i].read();                
-          itoa(value, strTemp, 10);
-          strcat(strTemp, " ");
-          strcat(strServos, strTemp);
-        }
+      strcat(strServos, "L:");
+      for(int i=0; i< NB_SERVO_ARM_L; i++){
+        value = servos_L[i].read();                
+        itoa(value, strTemp, 10);
+        strcat(strTemp, ", ");
+        strcat(strServos, strTemp);
       }
-      else if(side=='L'){
-        strcat(strServos, "L ");
-        for(int i=0; i< NB_SERVO_ARM_L; i++){
-          value = servos_L[i].read();                
-          itoa(value, strTemp, 10);
-          strcat(strTemp, " ");
-          strcat(strServos, strTemp);
-        }
+      strcat(strServos, " M:");
+      for(int i=0; i< NB_SERVO_ARM_M; i++){
+        value = servos_M[i].read();                
+        itoa(value, strTemp, 10);
+        strcat(strTemp, ", ");
+        strcat(strServos, strTemp);
       }
-      else{
-        strcat(strServos, "No side selected");
-      }
-      sprintf(writeBuffer, "%s\r\n", strServos);
-      writeReady = true;
+      Serial.println(strServos);
     }      
-    else if(strstr(readBuffer, "pump on")){
+    else if(strstr(inputString, "pump on")){
       char side;
-      sscanf(readBuffer, "pump on %c", &side);
+      sscanf(inputString, "pump on %c", &side);
       if(side=='R' || side=='A')
         setPump(pinNumberPump_R, 1);
       if(side=='L' || side=='A')
         setPump(pinNumberPump_L, 1);
       if(side=='M' || side=='A')
         setPump(pinNumberPump_M, 1);
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }      
-    else if(strstr(readBuffer, "pump off")){
+    else if(strstr(inputString, "pump off")){
       char side;
-      sscanf(readBuffer, "pump off %c", &side);
+      sscanf(inputString, "pump off %c", &side);
       if(side=='R' || side=='A')
         setPump(pinNumberPump_R, 0);
       if(side=='L' || side=='A')
         setPump(pinNumberPump_L, 0);
       if(side=='M' || side=='A')
         setPump(pinNumberPump_M, 0);
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }
-    else if(strstr(readBuffer, "arm enableAutoGrab")){
+    else if(strstr(inputString, "arm enableAutoGrab")){
       enableAutoFloorGrab = true;
       autoFloorGrabStateLeft = 1;
       autoFloorGrabStateRight = 1;
@@ -518,19 +456,17 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
       autoFloorGrabActionTimeoutRight = 0;
       setServoRecordedPosition(positionServo_L_Default, servos_L, NB_SERVO_ARM_L, 250);
       setServoRecordedPosition(positionServo_R_Default, servos_R, NB_SERVO_ARM_R, 250);
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }  
-    else if(strstr(readBuffer, "arm disableAutoGrab")){
+    else if(strstr(inputString, "arm disableAutoGrab")){
       enableAutoFloorGrab = false;
       setServoRecordedPosition(positionServo_L_Default, servos_L, NB_SERVO_ARM_L, 250);
       setServoRecordedPosition(positionServo_R_Default, servos_R, NB_SERVO_ARM_R, 250);
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     } 
-    else if(strstr(readBuffer, "arm default")){
+    else if(strstr(inputString, "arm default")){
       char side;
-      sscanf(readBuffer, "arm default %c", &side);
+      sscanf(inputString, "arm default %c", &side);
       if(side=='R')
         setServoRecordedPosition(positionServo_R_Default, servos_R, NB_SERVO_ARM_R, 500);
       if(side=='L')
@@ -542,12 +478,11 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_L_Default, servos_L, NB_SERVO_ARM_L, 0);
         setServoRecordedPosition(positionServo_M_Default, servos_M, NB_SERVO_ARM_M, 0);
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }   
-    else if(strstr(readBuffer, "arm wallGrab")){
+    else if(strstr(inputString, "arm wallGrab")){
       char side;
-      sscanf(readBuffer, "arm wallGrab %c", &side);
+      sscanf(inputString, "arm wallGrab %c", &side);
       if(side=='R')
         setServoRecordedPosition(positionServo_R_WallGrab, servos_R, NB_SERVO_ARM_R, 500);
       if(side=='L')
@@ -559,12 +494,11 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_L_WallGrab, servos_L, NB_SERVO_ARM_L, 0);
         setServoRecordedPosition(positionServo_M_WallGrab, servos_M, NB_SERVO_ARM_M, 0);
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }    
-    else if(strstr(readBuffer, "arm floorGrabPrepare")){
+    else if(strstr(inputString, "arm floorGrabPrepare")){
       char side;
-      sscanf(readBuffer, "arm floorGrabPrepare %c", &side);
+      sscanf(inputString, "arm floorGrabPrepare %c", &side);
       if(side=='R'){
         setServoRecordedPosition(positionServo_R_FloorGrab_Prepare, servos_R, NB_SERVO_ARM_R, 500);
       }
@@ -575,12 +509,11 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_R_FloorGrab_Prepare, servos_R, NB_SERVO_ARM_R, 0);
         setServoRecordedPosition(positionServo_L_FloorGrab_Prepare, servos_L, NB_SERVO_ARM_L, 0);   
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }  
-    else if(strstr(readBuffer, "arm floorGrab")){
+    else if(strstr(inputString, "arm floorGrab")){
       char side;
-      sscanf(readBuffer, "arm floorGrab %c", &side);
+      sscanf(inputString, "arm floorGrab %c", &side);
       if(side=='R'){
         setServoRecordedPosition(positionServo_R_FloorGrab, servos_R, NB_SERVO_ARM_R, 150);
       }
@@ -591,12 +524,11 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_R_FloorGrab, servos_R, NB_SERVO_ARM_R, 0);
         setServoRecordedPosition(positionServo_L_FloorGrab, servos_L, NB_SERVO_ARM_L, 0);      
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }  
-    else if(strstr(readBuffer, "arm stockPrepare")){
+    else if(strstr(inputString, "arm stockPrepare")){
       char side;
-      sscanf(readBuffer, "arm stockPrepare %c", &side);
+      sscanf(inputString, "arm stockPrepare %c", &side);
       if(side=='R')
         setServoRecordedPosition(positionServo_R_Stock_Prepare, servos_R, NB_SERVO_ARM_R, 500);
       if(side=='L')
@@ -608,12 +540,11 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_L_Stock_Prepare, servos_L, NB_SERVO_ARM_L, 0);
         setServoRecordedPosition(positionServo_M_Stock_Prepare, servos_M, NB_SERVO_ARM_M, 0);
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     } 
-    else if(strstr(readBuffer, "arm stockDepositPrepare")){
+    else if(strstr(inputString, "arm stockDepositPrepare")){
       char side;
-      sscanf(readBuffer, "arm stockDepositPrepare %c", &side);
+      sscanf(inputString, "arm stockDepositPrepare %c", &side);
       if(side=='R')
         setServoRecordedPosition(positionServo_R_Stock_Prepare_Deposit, servos_R, NB_SERVO_ARM_R, 500);
       if(side=='L')
@@ -628,12 +559,11 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_M_WallGrab_Lift, servos_M, NB_SERVO_ARM_M, 300);
         setServoRecordedPosition(positionServo_M_Stock_Prepare_Deposit, servos_M, NB_SERVO_ARM_M, 0);
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     } 
-    else if(strstr(readBuffer, "arm stock1")){
+    else if(strstr(inputString, "arm stock1")){
       char side;
-      sscanf(readBuffer, "arm stock1 %c", &side);
+      sscanf(inputString, "arm stock1 %c", &side);
       if(side=='R')
         setServoRecordedPosition(positionServo_R_Stock_1, servos_R, NB_SERVO_ARM_R, 500);
       if(side=='L')
@@ -645,12 +575,11 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_L_Stock_1, servos_L, NB_SERVO_ARM_L, 0);
         setServoRecordedPosition(positionServo_M_Stock_1, servos_M, NB_SERVO_ARM_M, 0);
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }   
-    else if(strstr(readBuffer, "arm stock2")){
+    else if(strstr(inputString, "arm stock2")){
       char side;
-      sscanf(readBuffer, "arm stock2 %c", &side);
+      sscanf(inputString, "arm stock2 %c", &side);
       if(side=='R')
         setServoRecordedPosition(positionServo_R_Stock_2, servos_R, NB_SERVO_ARM_R, 500);
       if(side=='L')
@@ -662,15 +591,14 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_L_Stock_2, servos_L, NB_SERVO_ARM_L, 0);
         setServoRecordedPosition(positionServo_M_Stock_2, servos_M, NB_SERVO_ARM_M, 0);
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     }   
-    else if(strstr(readBuffer, "arm stock3")){
+    else if(strstr(inputString, "arm stock3")){
       char side;
-      sscanf(readBuffer, "arm stock3 %c", &side);
+      sscanf(inputString, "arm stock3 %c", &side);
       if(side=='R')
         setServoRecordedPosition(positionServo_R_Stock_3, servos_R, NB_SERVO_ARM_R, 500);
-      if(side=='L')
+      if(side=='R')
         setServoRecordedPosition(positionServo_L_Stock_3, servos_L, NB_SERVO_ARM_L, 500);
       if(side=='M')
         setServoRecordedPosition(positionServo_M_Stock_3, servos_M, NB_SERVO_ARM_M, 500);
@@ -679,34 +607,13 @@ void executeOrder(volatile boolean &readReady, char* readBuffer, volatile boolea
         setServoRecordedPosition(positionServo_L_Stock_3, servos_L, NB_SERVO_ARM_L, 0);
         setServoRecordedPosition(positionServo_M_Stock_3, servos_M, NB_SERVO_ARM_M, 0);
       }
-      sprintf(writeBuffer, "OK\r\n");
-      writeReady = true;
+      Serial.print("OK\r\n");
     } 
     else{
-      sprintf(writeBuffer, "ERROR\r\n");
-      writeReady = true;
+      Serial.print("ERROR\r\n");
     }
-    memset(readBuffer, '\0', readBufferSize);
-    readReady=false;
+    memset(inputString, '\0', INPUT_STR_SIZE);
+    stringReady = false;
   }
-}
-
-void loop() {
-  //getPresure(&pressureSensorL);
-  //getPresure(&pressureSensorM);
-  //getPresure(&pressureSensorR);
-  runAutoFloorGrab(SIDE_LEFT);//async
-  runAutoFloorGrab(SIDE_RIGHT);//async
-  #ifdef MODE_I2C
-    executeOrder(i2cReceiveFlag, i2cInBuffer, i2cSendFlag, i2cOutBuffer, I2C_BUFFER_IN_SIZE);
-  #endif
-  
-  #ifdef MODE_SERIAL
-    readSerial();
-    executeOrder(serialReadFlag, serialInBuffer, serialSendFlag, serialOutBuffer, SERIAL_BUFFER_IN_SIZE);
-    sendSerial();
-  #endif
-
-  delay(5);
-  SoftwareServo::refresh();
+  delay(1);
 }

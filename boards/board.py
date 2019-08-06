@@ -55,7 +55,9 @@ class Board:
         return self.connection.disconnect()
 
     def isConnected(self):
-        return self.connection.isConnected()
+        if self.connection:
+            return self.connection.isConnected()
+        return False
 
     def sendMessage(self, message):
         result = self.connection.sendMessage(message)
