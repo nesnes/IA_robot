@@ -76,9 +76,9 @@ class Ligne(Forme):
 
     def resize(self,size):
         #x1 and y1 should not change, only x2 and y2
-        angle = self.getAngle()
-        self.x2 = self.x1+size*math.cos(angle)
-        self.y2 = self.y1+size*math.sin(angle)
+        radangle = self.getAngle() * 0.0174532925  # degree vers radian
+        self.x2 = self.x1+size*math.cos(radangle)
+        self.y2 = self.y1+size*math.sin(radangle)
 
     def toJson(self):
         str = u'{'

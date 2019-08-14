@@ -9,6 +9,10 @@ class Cercle(Forme):
         self.y = y
         self.rayon = rayon
         self.couleur = couleur
+        self.lineList = []
+
+    def resetLineList(self):
+        self.lineList = []
 
     def setCouleur(self,newCouleur):
         couleur = newCouleur

@@ -78,25 +78,30 @@ class Collision:
 
     def collisionCercleLigne(self,cercle,ligne):
         listeLigne = []
-        nbrect = 8
-        x = cercle.x + cercle.rayon *1.*math.sin(0)
-        y = cercle.y + cercle.rayon *1. *math.cos(0)
-        for i in numpy.arange(0,math.pi*2,math.pi/(nbrect+1)*2):
-            x1 = cercle.x + cercle.rayon *1.*math.sin(i)
-            y1 = cercle.y + cercle.rayon *1. *math.cos(i)
-            ligne1 = Ligne("", x, y, x1, y1, "red")
-            listeLigne.append(ligne1)
-            x = x1
-            y = y1
+        if len(cercle.lineList)==0:
+            nbrect = 8
+            x = cercle.x + cercle.rayon *1.*math.sin(0)
+            y = cercle.y + cercle.rayon *1. *math.cos(0)
+            for i in numpy.arange(0,math.pi*2,math.pi/(nbrect+1)*2):
+                x1 = cercle.x + cercle.rayon *1.*math.sin(i)
+                y1 = cercle.y + cercle.rayon *1. *math.cos(i)
+                ligne1 = Ligne("", x, y, x1, y1, "red")
+                listeLigne.append(ligne1)
+                x = x1
+                y = y1
 
-        x1 = cercle.x + cercle.rayon *1.*math.sin(0)
-        y1 = cercle.y + cercle.rayon *1. *math.cos(0)
-        listeLigne.append(Ligne("", x, y, x1, y1, "red"))
+            x1 = cercle.x + cercle.rayon *1.*math.sin(0)
+            y1 = cercle.y + cercle.rayon *1. *math.cos(0)
+            listeLigne.append(Ligne("", x, y, x1, y1, "red"))
+            cercle.lineList = listeLigne
+            """if self.fenetre != None:
+                for ligne1 in listeLigne:
+                    ligne1.setCouleur("blue")
+                    ligne1.dessiner(self.fenetre)"""
+        else:
+            listeLigne = cercle.lineList
 
         for ligne1 in listeLigne:
-            """if self.fenetre != None:
-                ligne.setCouleur("blue")
-                ligne.dessiner(self.fenetre)"""
             if self.collisionEntre(ligne1,ligne):
                 return True
         return False

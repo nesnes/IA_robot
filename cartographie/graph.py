@@ -4,10 +4,12 @@ class Graph:
 
     def __init__(self):
         self.listeNoeud = {}
+        self.step = 1
 
     def serialize(self, hash):
         serialization = "<graph"
         serialization += " hash='" + hash + "'"
+        serialization += " step='" + str(self.step) + "'"
         serialization += " >\r\n"
         for key, noeud in self.listeNoeud.iteritems():
             serialization += noeud.serialize() + "\r\n"
@@ -15,6 +17,8 @@ class Graph:
         return serialization
 
     def initFromSerialization(self, serialization, listePointInteret):
+        if serialization.get("step"):
+            self.step = int(serialization.get("step"))
         listVoisin = {}
         listColision = {}
         for node in serialization:
@@ -46,10 +50,10 @@ class Graph:
                 currentNode.colisionObject.append(mapPointInteret[idObject])
 
     def addNoeud(self, noeud):
-        self.listeNoeud[str(noeud.x)+","+str(noeud.y)] = noeud
+        self.listeNoeud[''.join([str(noeud.x),","+str(noeud.y)])] = noeud
 
     def getKey(self, x, y):
-        return str(x) + "," + str(y)
+        return ''.join([str(x),","+str(y)])
 
     def getNoeud(self, x, y):
         return self.listeNoeud[self.getKey(x, y)]
@@ -68,14 +72,21 @@ class Graph:
                     noeud.addVoisin(self.getNoeud(x+position[0]*step, y+position[1]*step))
 
     def trouverPointProche(self, x, y):
-        nearest = None
+        testx = int(self.step * round(float(x)/self.step))
+        testy = int(self.step * round(float(y)/self.step))
+        if self.getKey(testx, testy) in self.listeNoeud:
+            return self.listeNoeud[self.getKey(testx, testy)]
+        return None
+        """nearest = None
         minDist = 999999
         for key, noeud in self.listeNoeud.iteritems():
+            if abs(x-noeud.x)>100 or abs(y-noeud.y)>100:
+                continue
             dist = noeud.distanceAvecXY(x,y)
             if minDist > dist:
                 nearest = noeud
                 minDist = dist
-        return nearest
+        return nearest"""
 
     def marquer(self, noeud):
         noeud.visite = True

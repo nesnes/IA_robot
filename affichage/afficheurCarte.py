@@ -11,7 +11,10 @@ class AfficheurCarte:
 
     def afficherCarte(self):
         if self.fond != "":
-            self.fenetre.drawImage(self.fond)
+            if self.carte.fichier.startswith("../"): #Allow pathfinding debug
+                self.fenetre.drawImage("../"+self.fond)
+            else:
+                self.fenetre.drawImage(self.fond)
         for p in self.listePointInteret:
             if p.zoneEvitement != None:
                 p.zoneEvitement.dessiner(self.fenetre)
