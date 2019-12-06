@@ -42,13 +42,14 @@ class Board:
 
     def getId(self):
         if self.isConnected():
-            self.sendMessage("id\r\n")
+            self.sendMessage("id")
             echo = ""
             echo = self.receiveMessage()
             if "ERROR" in echo:  # if ERROR is received, retry
                 time.sleep(0.1)
                 print "retry getId("+echo+")"
                 return self.getId()
+            print echo
             return echo
 
     def disconnect(self):

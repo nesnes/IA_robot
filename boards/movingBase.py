@@ -14,7 +14,7 @@ class MovingBase(Board):
 
     def enableMovements(self):
         if self.isConnected():
-            self.sendMessage("move enable\r\n")
+            self.sendMessage("move enable")
             echo = ""
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo: #if ERROR is received, retry
@@ -25,7 +25,7 @@ class MovingBase(Board):
 
     def disableMovements(self):
         if self.isConnected():
-            self.sendMessage("move disable\r\n")
+            self.sendMessage("move disable")
             echo = ""
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo: #if ERROR is received, retry
@@ -36,7 +36,7 @@ class MovingBase(Board):
 
     def setPosition(self, x, y, angle):
         if self.isConnected():
-            self.sendMessage("pos set {:.0f} {:.0f} {:.0f}\r\n".format(x, y, angle))
+            self.sendMessage("pos set {:.0f} {:.0f} {:.0f}".format(x, y, angle))
             echo = ""
             echo = self.receiveMessage()  # "position OK"
             if "pos OK" not in echo: #if ERROR is received, retry
@@ -47,7 +47,7 @@ class MovingBase(Board):
 
     def setSpin(self, direction, speed):
         if self.isConnected():
-            self.sendMessage("spin {:.0f} {:.0f}\r\n".format(direction, speed))
+            self.sendMessage("spin {:.0f} {:.0f}".format(direction, speed))
             echo = ""
             echo = self.receiveMessage()  # "spin OK"
             if "spin OK" not in echo: #if ERROR is received, retry
@@ -58,7 +58,7 @@ class MovingBase(Board):
 
     def getPositionXY(self):
         if self.isConnected():
-            self.sendMessage("pos getXY\r\n")
+            self.sendMessage("pos getXY")
             position = ""
             position = self.receiveMessage()  # "position x;y;angle;speed"
             if "pos" not in position: #if ERROR is received, retry
@@ -75,7 +75,7 @@ class MovingBase(Board):
 
     def getPositionDistanceAngle(self):
         if self.isConnected():
-            self.sendMessage("pos getDA\r\n")
+            self.sendMessage("pos getDA")
             position = ""
             position = self.receiveMessage()  # "position distance;angle;speed"
             if "pos" not in position: #if ERROR is received, retry
@@ -91,7 +91,7 @@ class MovingBase(Board):
     def startMovementXY(self, x, y, angle, speed):
         if self.isConnected():
             if self.isXYSupported():
-                self.sendMessage("move XY {:.0f} {:.0f} {:.0f} {:.0f}\r\n".format(x,y,angle,speed*10.0))
+                self.sendMessage("move XY {:.0f} {:.0f} {:.0f} {:.0f}".format(x,y,angle,speed*10.0))
                 echo = ""
                 echo = self.receiveMessage()  # "move OK"
                 if "move OK" not in echo:  # if ERROR is received, retry
@@ -105,7 +105,7 @@ class MovingBase(Board):
 
     def startMovementDistanceAngle(self, distance, angle, speed):
         if self.isConnected():
-            self.sendMessage("move DA {:.0f} {:.0f} {:.0f}\r\n".format(distance,angle,speed*10.0))
+            self.sendMessage("move DA {:.0f} {:.0f} {:.0f}".format(distance,angle,speed*10.0))
             echo = ""
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo:  # if ERROR is received, retry
@@ -116,7 +116,7 @@ class MovingBase(Board):
 
     def getMovementStatus(self):
         if self.isConnected():
-            self.sendMessage("move status\r\n")
+            self.sendMessage("move status")
             status = ""
             status = self.receiveMessage()  # "move running" "move stuck" "move finished"
             if "move" not in status:  # if ERROR is received, retry
@@ -127,7 +127,7 @@ class MovingBase(Board):
 
     def getSpeed(self):
         if self.isConnected():
-            self.sendMessage("speed get\r\n")
+            self.sendMessage("speed get")
             speed = ""
             speed = self.receiveMessage()  # "speed 0.3"
             if "speed" not in speed:  # if ERROR is received, retry
@@ -139,7 +139,7 @@ class MovingBase(Board):
 
     def emergencyBreak(self):
         if self.isConnected():
-            self.sendMessage("move break\r\n")
+            self.sendMessage("move break")
             echo = ""
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo:  # if ERROR is received, retry
@@ -150,7 +150,7 @@ class MovingBase(Board):
 
     def startRepositioningMovement(self, distance, speed=0.2):  # recallage. Movement where the robot is expected to be stuck
         if self.isConnected():
-            self.sendMessage("move RM {:.0f} {:.0f}\r\n".format(distance,speed*10))
+            self.sendMessage("move RM {:.0f} {:.0f}".format(distance,speed*10))
             echo = ""
             echo = self.receiveMessage()  # "move OK"
             if "move OK" not in echo:  # if ERROR is received, retry
@@ -162,7 +162,7 @@ class MovingBase(Board):
     def isXYSupported(self):
         if self._isXYSupported is None and self.isConnected():
             self._isXYSupported = False
-            self.sendMessage("support XY\r\n")
+            self.sendMessage("support XY")
             support = ""
             support = self.receiveMessage()  # "support 0" or "support 1"
             if "support" not in support:  # if ERROR is received, retry
@@ -176,7 +176,7 @@ class MovingBase(Board):
     def isPathSupported(self):
         if self._isPathSupported is None and self.isConnected():
             self._isPathSupported = False
-            self.sendMessage("support Path\r\n")
+            self.sendMessage("support Path")
             support = ""
             support = self.receiveMessage()  # "support 0" or "support 1"
             if "support" not in support:  # if ERROR is received, retry
@@ -193,7 +193,7 @@ class MovingBase(Board):
                 command = "move setPath {}|".format(len(pathArray))
                 for move in pathArray:
                     command += "{};{};{};{}|".format(move.x,move.y,move.angle, move.speed)
-                self.sendMessage(command + "\r\n")
+                self.sendMessage(command)
                 echo = ""
                 echo = self.receiveMessage()  # "move OK"
                 if "move OK" not in echo:  # if ERROR is received, retry

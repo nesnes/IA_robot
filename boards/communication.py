@@ -25,6 +25,8 @@ class Communication:
         message = ""
         if self.isMessageAvailable():
             message = self.__getFirstPendingMessage()
+        else:
+            message="ERROR"
         return message
 
     def isConnected(self):
