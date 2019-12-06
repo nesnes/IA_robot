@@ -20,8 +20,8 @@ class Communication:
     def receiveMessage(self, maxTime):
         timeout = 0
         while not self.isMessageAvailable() and timeout < maxTime:
-            timeout += 0.02
-            time.sleep(0.02)
+            timeout += 0.001
+            time.sleep(0.001)
         message = ""
         if self.isMessageAvailable():
             message = self.__getFirstPendingMessage()
