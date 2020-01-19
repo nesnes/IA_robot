@@ -116,6 +116,7 @@ class Robot:
                 lineTarget.couleur = telemetre.color
                 telemetre.forme = lineTarget
                 webInterface.instance.addDynamicElement(telemetre)
+        return True
 
 
     def closeConnections(self):
@@ -161,7 +162,10 @@ class Robot:
             self.displayScore(0)
             if webInterface.instance and webInterface.instance.runningState == RunningState.MANUAL:
                 self.startTime = time.time()
-                color = self.controlPanel.getColor()  # get the color
+                if self.controlPanel:
+                    color = self.controlPanel.getColor()  # get the color
+                else:
+                    color = 0
                 if color is not None:
                     print "Color", self.listPosition[color].couleur, "(", color, ")", "at X", self.listPosition[
                         color].x, " Y", self.listPosition[color].y, " A:", self.listPosition[color].angle
@@ -182,14 +186,16 @@ class Robot:
             if self.movingBase and self.movingBase.isXYSupported():
                 self.movingBase.setPosition(self.x, self.y, self.angle)
             print("Le robot est " + self.couleur)
-            self.controlPanel.displayMessage("Color: " + self.couleur)
+            if self.controlPanel:
+                self.controlPanel.displayMessage("Color: " + self.couleur)
             oldColor = color
             time.sleep(0.2)
 
             #Set the initial positions
             print("Le robot est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
             self.startTime = time.time()
-            self.controlPanel.displayMessage("Start")
+            if self.controlPanel:
+                self.controlPanel.displayMessage("Start")
             if self.movingBase:
                 self.movingBase.enableMovements() #authorize the robot to move
             return True
@@ -227,7 +233,7 @@ class Robot:
 
     def telemetreDetectCollision(self, speed=None, rotationOnly=False):
         #return False
-        if self.isSimulated:
+        if self.isSimulated or not self.collisionDetector:
             return False
         if rotationOnly:
             return False

@@ -96,7 +96,7 @@ class CommunicationI2C(Communication):
     def __receiveLoop(self):
         errorDetected = False
         while self.bus is not None and self.connected and not self.stopThread:
-            time.sleep(0.005)
+            time.sleep(0.015)
             message = ""
             self.rwMutex.acquire()
             corruptDetected = False
@@ -104,14 +104,14 @@ class CommunicationI2C(Communication):
                 message = self.bus.read_i2c_block_data(self.address, 0, 30)
                 time.sleep(0.001)
                 message = "".join(map(chr, message))
-                #print("message: {} > {}".format(message, map(ord, message)))
+                payload = message
                 #if not message.endswith(self.endByte):
                 #    message = ""
                 newMessage = ""
                 foundStart = False
                 foundEnd = False
                 for c in message:
-                    if c == self.startByte:
+                    if not foundStart and c == self.startByte:
                         foundStart = True
                         continue
                     if c == self.endByte and foundStart:
@@ -126,17 +126,21 @@ class CommunicationI2C(Communication):
                     #print("Start:{} End:{} Checksum:{} Msg:{}".format(foundStart, foundEnd, self.getChecksum(newMessage) == checksum, message))
                 message = newMessage
                 #message = message.replace(self.endByte(), '')
-                #message = message.replace(chr(255), '')
-                #message = message.replace(chr(0), '')
+                message = message.replace(chr(255), '')
+                message = message.replace(chr(0), '')
             except Exception as e:
                 errorDetected = True
                 print e
             self.rwMutex.release()
-            if not corruptDetected and message and len(message)>0:
-                self.addPendingMessage(message)
-                #print self.name, "<", message
-            if corruptDetected:
-                self.addPendingMessage("ERROR")
+            if message and len(message)>0:
+                if corruptDetected:
+                    #print("{} Corrupt Start:{} End:{} Checksum:{}/{} Msg:{}".format(self.name, foundStart, foundEnd, self.getChecksum(newMessage), checksum, message))
+                    #print("corrupt message: {} > {}".format(payload, map(ord, payload)))
+                    self.addPendingMessage("ERROR")
+                else:
+                    #print("valid message: {} > {}".format(payload, map(ord, payload)))
+                    self.addPendingMessage(message)
+                    print self.name, "<", message
 
         if errorDetected and not self.stopThread:
             print "recv reconnecting ", self.address

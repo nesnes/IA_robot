@@ -91,7 +91,7 @@ def startIA():
     # creation du pathfinding
     print "Initializing pathfinding"
     chercher = ChercheurChemin(carte.getTaille(), carte.getHash(), listePointInteret, fenetre)
-    if drawGraph:
+    if fenetre and drawGraph:
         chercher.graph.dessiner(fenetre)
 
     if fenetre:
