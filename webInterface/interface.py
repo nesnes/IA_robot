@@ -23,7 +23,11 @@ class StdOutIntercepter:
     def getLineCount(self):
         return len(self.content)
 
-
+def functionUI(json):
+   def wrapper(func):
+       setattr(func, 'functionUI', json)
+       return func
+   return wrapper
 
 class MapElement(object):
     def __init__(self):
@@ -166,7 +170,13 @@ class Interface():
                     str += u'"' + argList[a] + u'"'
                     if a < len(argList) - 1:
                         str += u','
-                str += u']}'
+                str += u']'
+                if hasattr(getattr(self.callableElementList[e],functions[i]), "functionUI"):
+                    #print "{} {}:".format(self.callableElementList[e].__class__.__name__,functions[i])
+                    #print getattr(getattr(self.callableElementList[e],functions[i]), "functionUI")
+                    str += u',"functionUI":'
+                    str += getattr(getattr(self.callableElementList[e],functions[i]), "functionUI")
+                str += u'}'
                 if i < len(functions) - 1:
                     str += u','
             str += u']'
@@ -287,12 +297,17 @@ class Interface():
         if "getFileList" in message:
             fileList = []
             fileList += glob.glob("robots/*.py")
+            fileList += glob.glob("robots/*.xml")
             fileList += glob.glob("intelligence/*.py")
             fileList += glob.glob("cartographie/*.py")
             fileList += glob.glob("boards/*.py")
             fileList += glob.glob("cartes/*.xml")
             fileList += glob.glob("objectifs/*.xml")
             fileList += glob.glob("objectifs/*/*.xml")
+            #fileList += glob.glob("webInterface/*.py")
+            fileList += glob.glob("webInterface/*.html")
+            fileList += glob.glob("webInterface/css/*.css")
+            fileList += glob.glob("webInterface/js/*.js")
             msg = self.createMessage("getFileList", self.stringify(fileList))
             client.sendMessage(msg)
 

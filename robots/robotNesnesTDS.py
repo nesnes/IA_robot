@@ -1,5 +1,6 @@
 from intelligence.robot import Robot
 from webInterface.interface import RunningState
+from webInterface.interface import functionUI
 import webInterface
 import time
 from threading import Thread
@@ -286,7 +287,20 @@ class RobotNesnesTDS(Robot):
             return -1
         else:
             return count+1
-    
+            
+    @functionUI(u'{"controls":['
+    '{"arg":"a0","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a1","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a2","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a3","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a4","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a5","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"duration","type":"range","min":0,"max":999,"val":0}'
+    ']}')
+    def armTestUI(self, a0, a1, a2, a3, a4, a5, duration=0):
+        print("got", a0, a1, a2, a3, a4, a5, duration)
+        return True
+        
     def getDepositPosition(self, variable):
         count = self.getVariable(variable).get();
         return count

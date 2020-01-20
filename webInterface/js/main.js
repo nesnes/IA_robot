@@ -5,6 +5,7 @@ var editor = new Editor();
 var runningState = "STOP"
 
 function wsConnect() {
+   console.log("connecting...");
     websocket = new WebSocket(wsAddress);
     websocket.onopen = function(evt) { onOpen(evt) };
     websocket.onclose = function(evt) { onClose(evt) };
@@ -18,6 +19,7 @@ function onOpen(evt) {
 
 function onClose(evt){
     console.log("disconnected\n");
+    setTimeout(function(){wsConnect();},1000);
 }
 
 function onMessage(evt){
@@ -94,7 +96,7 @@ function displayMapElements(elements){
         map.removeMapElement(diff[i])
     }
     map.drawMapElement()
-    setTimeout(requestMapElements,1000)
+    setTimeout(requestMapElements,3000)
 }
 
 function displayDynamicElements(elements){
@@ -115,20 +117,47 @@ function getCallableElementId(objectName, functionName){
     return str
 }
 
-function sendCallableFunctionCall(object, func){
+var funcCallTimeout=null;
+var funcCallTime=0;
+function sendCallableFunctionCall(object, func, debounce=false){
     request = {'object':object,
                 'function':func,
                 'arguments':[]}
+    if(debounce){
+        if(funcCallTimeout){
+            clearTimeout(funcCallTimeout);
+            funcCallTimeout=null;
+	}
+        if(funcCallTime+1000>new Date().getTime()){
+            funcCallTimeout=setTimeout(function(){sendCallableFunctionCall(object, func)},1000);
+            return;
+        }
+        funcCallTime = new Date().getTime();
+        console.log(funcCallTime, new Date().getTime())
+    }
     var funcId = getCallableElementId(object, func)
-    var arguments = $("#"+funcId+" input[type='text']");
+    var arguments = $("#"+funcId+" input.callableArgumentInput");
     for(var a=0;a<arguments.length;a++){
         request.arguments.push($("#"+arguments[a].id).val())
     }
+    console.log(request)
     doSend("callObjectFunction "+JSON.stringify(request))
 }
 
+function debounce(callback, delay){
+    var timer;
+    return function(){
+        var args = arguments;
+        var context = this;
+        clearTimeout(timer);
+        timer = setTimeout(function(){
+            callback.apply(context, args);
+        }, delay)
+    }
+}
+
 function displayCallableElements(elements){
-    console.log(elements)
+    //console.log(elements)
     for(var i=0;i<elements.length;i++){
         var elem = elements[i]
         var objId = "callableObject_" + elem.object
@@ -144,25 +173,53 @@ function displayCallableElements(elements){
             str += "<button class='callableFunctionButton' onclick='sendCallableFunctionCall(\""+elem.object+"\",\""+func.name+"\")'>Send</button>"
             str += "</div>"
             $("#"+objId).append(str)
-            for(var a=0;a<func.arguments.length;a++){
-                var arg = func.arguments[a]
-                var argId = funcId+arg
-                str = "<div class='callableArgument'>"
-                str += "<input class='callableArgumentInput' type='text' id='"+argId+"' required>"
-                str += "<label class='callableArgumentLabel' for='"+argId+"'>"+arg+"</label>"
-                str += "</div>"
-                $("#"+funcId).append(str)
+            if(!("functionUI" in func)){ 
+                for(var a=0;a<func.arguments.length;a++){
+                    var arg = func.arguments[a]
+                    var argId = funcId+arg
+                    str = "<div class='callableArgument'>"
+                    str += "<input class='callableArgumentInput' type='text' id='"+argId+"' required>"
+                    str += "<label class='callableArgumentLabel' for='"+argId+"'>"+arg+"</label>"
+                    str += "</div>"
+                    $("#"+funcId).append(str)
+                }
+            }
+            else{
+                if(!("controls" in func.functionUI)){
+                    console.log("Not controls in UI", func)
+                    continue;
+                }
+                for(var a=0;a<func.functionUI.controls.length;a++){
+                    var control = func.functionUI.controls[a]
+                    var argId = funcId+control.arg
+                    var type = ("type" in control)?control.type:"text";
+                    var min = ("min" in control)?control.min:0;
+                    var max = ("max" in control)?control.max:100;
+                    var val = ("val" in control)?control.val:0;
+                    str = "<div class='callableArgument'>"
+                    str += "<input class='callableArgumentInput' type='"+type+"' id='"+argId+"' "
+                    if(type=="range"){
+                        str += "min='"+min+"' max='"+max+"' value='"+val+"' "
+                        str += "oninput='"+argId+"_out.value = "+argId+".value;sendCallableFunctionCall(\""+elem.object+"\",\""+func.name+"\", true)' "
+                    }
+                    str += " required>"
+                    str += "<label class='callableArgumentLabel' for='"+argId+"'>"+control.arg+"</label>"
+                    if(type=="range")
+                        str += "<output class='callableArgumentLabel' id='"+argId+"_out'></output>"
+                    str += "</div>"
+                    $("#"+funcId).append(str)
+                }
             }
         }
     }
-    setTimeout(requestCallableElements,1000)
+    setTimeout(requestCallableElements,3200)
 }
 
 function displayMapBackground(path){
     if(path != ""){
         map.background = path
     }
-    setTimeout(requestMapBackground,2000)
+    //setTimeout(requestMapBackground,2000)
 }
 
 function requestMapElements(){
@@ -256,13 +313,14 @@ function onPlayButtonClicked(){
         $("#AIPlayButton").css("background-color", "#e84118");
         $("#ManualPlayButton").css("background-color", "#718093");
         sendRunningParameters()
+	setTimeout(requestMapBackground, 3000);
     }
     else if(runningState == "PLAY"){
         runningState = "STOP"
         $("#ManualPlayButton").removeAttr('disabled');
         $("#AIPlayButton").css("background-color", "#4cd137");
         $("#ManualPlayButton").css("background-color", "#4cd137");
-        setPlayButtonText()
+        setPlayButtonText();
     }
     doSend("setRunningState "+runningState)
 }
@@ -281,6 +339,7 @@ function onManualPlayButtonClicked(){
         $("#ManualPlayButton").css("background-color", "#e84118");
         $("#AIPlayButton").css("background-color", "#718093");
         sendRunningParameters()
+	setTimeout(requestMapBackground, 3000);
     }
     else if(runningState == "MANUAL"){
         runningState = "STOP"

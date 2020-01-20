@@ -42,6 +42,12 @@ var Editor = class {
             editor.session.setMode("ace/mode/xml");
         if(path.includes(".py"))
             editor.session.setMode("ace/mode/python");
+        if(path.includes(".html"))
+            editor.session.setMode("ace/mode/html");
+        if(path.includes(".js"))
+            editor.session.setMode("ace/mode/javascript");
+        if(path.includes(".css"))
+            editor.session.setMode("ace/mode/css");
         editor.setValue(content, -1)
         this.updateFileSelectionTabs(this.fileEditors.length-1)
         this.showFileTab(this.fileEditors.length-1)
