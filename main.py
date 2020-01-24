@@ -117,6 +117,9 @@ def startIA():
         print "Running IA"
         IA.executerObjectifs()  # execution de l'IA
     elif webInterface.instance and webInterface.instance.runningState == RunningState.MANUAL:
+        IA = ExecuteurObjectif(robot, fichierObjectif, fichierCarte, chercher, fenetre)  # creation de l'IA
+        #if webInterface.instance:
+        #    webInterface.instance.addCallableObject(IA)
         print "Running MANUAL mode"
         robot.matchDuration = 999999
         robot.attendreDepart()

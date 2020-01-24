@@ -2,6 +2,8 @@ from intelligence.robot import Robot
 from webInterface.interface import RunningState
 from webInterface.interface import functionUI
 import webInterface
+from boards.board import RetryException
+from boards.board import retry
 import time
 from threading import Thread
 
@@ -287,7 +289,8 @@ class RobotNesnesTDS(Robot):
             return -1
         else:
             return count+1
-            
+
+    @retry()
     @functionUI(u'{"controls":['
     '{"arg":"a0","type":"range","min":0,"max":180,"val":90},'
     '{"arg":"a1","type":"range","min":0,"max":180,"val":90},'

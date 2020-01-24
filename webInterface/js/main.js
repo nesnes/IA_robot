@@ -205,7 +205,7 @@ function displayCallableElements(elements){
                     str += " required>"
                     str += "<label class='callableArgumentLabel' for='"+argId+"'>"+control.arg+"</label>"
                     if(type=="range")
-                        str += "<output class='callableArgumentLabel' id='"+argId+"_out'></output>"
+                        str += "<output class='callableArgumentLabel' id='"+argId+"_out'>"+val+"</output>"
                     str += "</div>"
                     $("#"+funcId).append(str)
                 }

@@ -89,35 +89,44 @@ class ExecuteurObjectif:
                 time.sleep(1)
                 continue
             print "\n------- {} ------- {:.2f}s".format(objectif.nom, self.robot.getRunningTime())
-            objectifFinished = False
-            while not objectifFinished and self.robot.getRunningTime() < self.matchDuration: #tant que les actions de l'objectif n'ont pas ete faites
-                if webInterface.instance and webInterface.instance.runningState != RunningState.PLAY:
-                    print "Stop requested"
-                    return
-                self.robot.objectifEnCours = objectif
-                objectifFinished = False
-                succes = objectif.executerActionSuivante(self.robot)    #executer l'action suivante
-                time.sleep(0.05)
-                if(self.fenetre != None):
-                    self.fenetre.win.redraw()
-                if not succes: #en cas d'echec, on repousse l'objectif
-                    print "\t!!!warning: action impossible pour le moment, arret de l'objectif"
-                    #objectif.enPause()
+            success=self.executerSingleObjectif(objectif)
+            if webInterface.instance and webInterface.instance.runningState == RunningState.STOP:
+                print "Stop requested"
+                return
+            if not success:  # en cas d'echec, on repousse l'objectif
+                print "\t!!!warning: action impossible pour le moment, arret de l'objectif"
+                # objectif.enPause()
+                objectif.reset()
+                listeObjectifEchoue.append(objectif)
+                listeObjectifs.remove(objectif)
+                break
+            if success and objectif.isFini():
+                self.score += objectif.getPoints()
+                if self.robot:
+                    self.robot.displayScore(self.score)
+                if objectif.repetitions > 0:
+                    objectif.repetitions -= 1
                     objectif.reset()
-                    listeObjectifEchoue.append(objectif)
-                    listeObjectifs.remove(objectif)
-                    break
-                if succes and objectif.isFini():
-                    objectifFinished = True
-                    self.score += objectif.getPoints()
-                    if self.robot:
-                        self.robot.displayScore(self.score)
-                    if objectif.repetitions > 0:
-                        objectif.repetitions -= 1
-                        objectif.reset()
-                    else:
-                        listeObjectifs.remove(objectif) #on retire l'objectif reussi
+                else:
+                    listeObjectifs.remove(objectif)  # on retire l'objectif reussi
         print "Fin du match"
+
+    def executerSingleObjectif(self, objectif):
+        while self.robot.getRunningTime() < self.matchDuration:  # tant que les actions de l'objectif n'ont pas ete faites
+            if webInterface.instance and webInterface.instance.runningState == RunningState.STOP:
+                print "Stop requested"
+                return
+            self.robot.objectifEnCours = objectif
+            success = objectif.executerActionSuivante(self.robot)  # executer l'action suivante
+            time.sleep(0.05)
+            if (self.fenetre != None):
+                self.fenetre.win.redraw()
+            if not success:
+                return False
+            if success and objectif.isFini():
+                return True
+        return False
+
 
     def afficherObjectifs(self, listeObjectifs=None):
         if(listeObjectifs == None):
