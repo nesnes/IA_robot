@@ -1,9 +1,37 @@
 import time
 import serial.tools.list_ports
-from boards.communicationSerial import CommunicationSerial
-from boards.communicationI2C import CommunicationI2C
 from webInterface.interface import RunningState
 import webInterface
+from functools import wraps
+import time
+if webInterface.instance and webInterface.instance.runningParameters.robotConnected:
+    from boards.communicationSerial import CommunicationSerial
+    from boards.communicationI2C import CommunicationI2C
+
+
+class RetryException(Exception):
+    pass
+
+
+def retry(tries=3, delay=0.5):
+    """Retry calling the decorated function using an exponential backoff.
+    :param tries: number of times to try (not retry) before giving up
+    :param delay: initial delay between retries in seconds
+    """
+    def deco_retry(f):
+        @wraps(f)
+        def f_retry(*args, **kwargs):
+            mtries, mdelay = tries, delay
+            while mtries > 1:
+                try:
+                    return f(*args, **kwargs)
+                except RetryException, e:
+                    print "%s, retry %d/%d in %d seconds..." % (f.__name__, tries-mtries, tries, mdelay)
+                    time.sleep(mdelay)
+                    mtries -= 1
+            return f(*args, **kwargs)
+        return f_retry  # true decorator
+    return deco_retry
 
 
 class Board:
@@ -19,12 +47,13 @@ class Board:
         self.connection = None
         self.param1 = param1
         self.param2 = param2
-        if communication == "serial":
-            Board.baudrate = param1
-            self.connection = CommunicationSerial(self.param1)
-        if communication == "i2c":
-            Board.adresse = param1
-            self.connection = CommunicationI2C(self.nom, self.param1)
+        if webInterface.instance and webInterface.instance.runningParameters.robotConnected:
+            if communication == "serial":
+                Board.baudrate = param1
+                self.connection = CommunicationSerial(self.param1)
+            if communication == "i2c":
+                Board.adresse = param1
+                self.connection = CommunicationI2C(self.nom, self.param1)
 
     def connect(self):
         if self.communication == "serial":
