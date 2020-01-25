@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<listeObjectif>
+    <objectif nom="CarreDeplacement" points="0" temp="5">
+        <action methode="setPosition">
+            <param nom="x" type="int" value="500"/>
+            <param nom="y" type="int" value="500"/>
+            <param nom="angle" type="int" value="0"/>
+        </action>
+        <action methode="seDeplacerXY">
+            <param nom="x" type="int" value="800"/>
+            <param nom="y" type="int" value="500"/>
+            <param nom="absoluteAngle" type="int" value="90"/>
+            <param nom="vitesse" type="float" value="3"/>
+            <param nom="forceStraight" type="bool" value="True"/>
+        </action>
+        <action methode="seDeplacerXY">
+            <param nom="x" type="int" value="800"/>
+            <param nom="y" type="int" value="800"/>
+            <param nom="absoluteAngle" type="int" value="180"/>
+            <param nom="vitesse" type="float" value="3"/>
+            <param nom="forceStraight" type="bool" value="True"/>
+        </action>
+        <action methode="seDeplacerXY">
+            <param nom="x" type="int" value="500"/>
+            <param nom="y" type="int" value="800"/>
+            <param nom="absoluteAngle" type="int" value="-90"/>
+            <param nom="vitesse" type="float" value="3"/>
+            <param nom="forceStraight" type="bool" value="True"/>
+        </action>
+        <action methode="seDeplacerXY">
+            <param nom="x" type="int" value="500"/>
+            <param nom="y" type="int" value="500"/>
+            <param nom="absoluteAngle" type="int" value="0"/>
+            <param nom="vitesse" type="float" value="3"/>
+            <param nom="forceStraight" type="bool" value="True"/>
+        </action>
+        <action methode="seDeplacerXY">
+            <param nom="x" type="int" value="1000"/>
+            <param nom="y" type="int" value="500"/>
+            <param nom="absoluteAngle" type="int" value="0"/>
+            <param nom="vitesse" type="float" value="3"/>
+            <param nom="forceStraight" type="bool" value="True"/>
+        </action>
+        <action methode="seDeplacerXY">
+            <param nom="x" type="int" value="500"/>
+            <param nom="y" type="int" value="500"/>
+            <param nom="absoluteAngle" type="int" value="0"/>
+            <param nom="vitesse" type="float" value="3"/>
+            <param nom="forceStraight" type="bool" value="True"/>
+        </action>
+    </objectif>
+</listeObjectif>

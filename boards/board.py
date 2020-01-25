@@ -26,7 +26,7 @@ def retry(tries=3, delay=0.5):
                 try:
                     return f(*args, **kwargs)
                 except RetryException, e:
-                    print "%s, retry %d/%d in %d seconds..." % (f.__name__, tries-mtries, tries, mdelay)
+                    print("{}, retry {}/{} in {} seconds...".format(f.__name__, tries-mtries+1, tries, mdelay))
                     time.sleep(mdelay)
                     mtries -= 1
             return f(*args, **kwargs)

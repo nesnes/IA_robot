@@ -38,13 +38,13 @@ class BrasRobotTheo(Board):
     '{"arg":"a2","type":"range","min":0,"max":180,"val":90},'
     '{"arg":"a3","type":"range","min":0,"max":180,"val":90},'
     '{"arg":"a4","type":"range","min":0,"max":180,"val":90},'
-    '{"arg":"a5","type":"range","min":0,"max":180,"val":90},'
     '{"arg":"duration","type":"range","min":0,"max":999,"val":0}'
     ']}')
-    def armSetPose(self, a0, a1, a2, a3, a4, a5, duration=0):
+    def armSetPose(self, a0, a1, a2, a3, a4, duration=0):
         if self.isConnected():
-            self.sendMessage("Z {} {} {} {} {} {} {}".format(a0, a1, a2, a3, a4, a5, duration))
+            self.sendMessage("Z {} {} {} {} {} {}".format(a0, a1, a2, a3, a4, duration))
             ack = self.receiveMessage(1.5)
+            #time.sleep(duration/1000)
             if "OK" not in ack:  # if ERROR is received, retry
                 raise RetryException
             return True
