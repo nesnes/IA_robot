@@ -32,18 +32,15 @@ class BrasRobotTheo(Board):
         return False
         
     @functionUI(u'{"controls":['
-    '{"arg":"a0","type":"slider","min":0,"max":180,"val":90},'
-    '{"arg":"a1","type":"slider","min":0,"max":180,"val":90},'
-    '{"arg":"a2","type":"slider","min":0,"max":180,"val":90},'
-    '{"arg":"a3","type":"slider","min":0,"max":180,"val":90},'
-    '{"arg":"a4","type":"slider","min":0,"max":180,"val":90},'
-    '{"arg":"a5","type":"slider","min":0,"max":180,"val":90},'
-    '{"arg":"duration","type":"slider","min":0,"max":999,"val":0}'
+    '{"arg":"a0","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a1","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a2","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a3","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a4","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"a5","type":"range","min":0,"max":180,"val":90},'
+    '{"arg":"duration","type":"range","min":0,"max":999,"val":0}'
     ']}')
     def armSetPose(self, a0, a1, a2, a3, a4, a5, duration=0):
-        if len(angles) != 6:
-            print "bad arm pose provided: {}".format(angles)
-            return False
         if self.isConnected():
             self.sendMessage("Z {} {} {} {} {} {} {}".format(a0, a1, a2, a3, a4, a5, duration))
             ack = self.receiveMessage(1.5)
@@ -54,14 +51,14 @@ class BrasRobotTheo(Board):
             return True
         return False
 
-    def pumpOn(self, side):
+    def pumpOn(self):
         if self.isConnected():
             self.sendMessage("pump on")
             ack = self.receiveMessage()
             if "OK" not in ack:  # if ERROR is received, retry
                 time.sleep(0.1)
                 print "retry pumpOn("+ack+")"
-                return self.pumpOn(side)
+                return self.pumpOn()
             return True
         return False
 

@@ -250,7 +250,7 @@ class RobotNesnesTDS(Robot):
         if simulate != self.isSimulated:
             self.isSimulated = True
             return self.isSimulated
-        """if not self.isSimulated:
+        if not self.isSimulated:
             for board in self.listBoard:
                 if board.nom == "BrasRobotTheo":
                     self.brasRobotTheo = board
@@ -260,7 +260,7 @@ class RobotNesnesTDS(Robot):
             print("ERROR: No brasRobotTheo found")
             self.isSimulated = True
         elif webInterface.instance and self.brasRobotTheo:
-            webInterface.instance.addCallableObject(self.brasRobotTheo)"""
+            webInterface.instance.addCallableObject(self.brasRobotTheo)
 
         #print "init cube detection"
         #self.cubeDetector = CubeDetector()
