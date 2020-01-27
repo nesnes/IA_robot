@@ -7,8 +7,10 @@
 #endif
 #include "comunication.h"
 
-const float wheelPerimeter = 247;//mm
-const float wheelDistance = 155;//mm
+const float wheelPerimeter = 188.495559215;//mm
+const float wheelDistanceA = 120;//mm
+const float wheelDistanceB = 125;//mm
+const float wheelDistanceC = 123;//mm
 
 BrushlessMotor motorA(0, wheelPerimeter, true);//9,10,11
 BrushlessMotor motorB(1, wheelPerimeter, true);//5,3,2
@@ -18,6 +20,12 @@ const double motorA_angle = -60;//°
 const double motorB_angle = 180;//°
 const double motorC_angle =  60;//°
 
+//--FRONT-
+//-A-----C
+//---\-/--
+//----|---
+//----B---
+//--BACK--
 
 void setup()
 {
@@ -56,8 +64,11 @@ void updatePosition(){
   xPos += (xA+xB+xC);
   yPos += (yA+yB+yC);
 
-  double angleDone = ((distA+distB+distC)*360)/(2.0d*PI*(wheelDistance/1000.0d));
-  anglePos += angleDone/3.0d;
+  double angleDoneA = (distA*360)/(2.0d*PI*(wheelDistanceA/1000.0d));
+  double angleDoneB = (distB*360)/(2.0d*PI*(wheelDistanceB/1000.0d));
+  double angleDoneC = (distC*360)/(2.0d*PI*(wheelDistanceC/1000.0d));
+
+  anglePos += (angleDoneA+angleDoneB+angleDoneC)/3.0d;
   if(anglePos>180.0d) anglePos += -360.0d;
   if(anglePos<-180.0d) anglePos += 360.0d;
 }
@@ -175,14 +186,18 @@ void control(){
   double speedC = targetSpeed_mps * sin((targetMovmentAngle-motorC_angle)*DEG_TO_RAD);
 
   //Compute Rotation
-  double arcLength = 2.0d*PI*(wheelDistance/1000.d)*(targetAngleSpeed_dps/360.0d); // arcLength in meters.
-  double speedAngle = arcLength; 
+  double arcLengthA = 2.0d*PI*(wheelDistanceA/1000.d)*(targetAngleSpeed_dps/360.0d); // arcLength in meters.
+  double arcLengthB = 2.0d*PI*(wheelDistanceB/1000.d)*(targetAngleSpeed_dps/360.0d); // arcLength in meters.
+  double arcLengthC = 2.0d*PI*(wheelDistanceC/1000.d)*(targetAngleSpeed_dps/360.0d); // arcLength in meters.
+  double speedAngleA = arcLengthA; 
+  double speedAngleB = arcLengthB;
+  double speedAngleC = arcLengthC;
   
   //Serial.print(speedA*1000.0d);Serial.print("\t");Serial.print(arcLength*1000.0d);Serial.print("\n");
   
-  speedA += speedAngle;
-  speedB += speedAngle;
-  speedC += speedAngle;
+  speedA += speedAngleA;
+  speedB += speedAngleB;
+  speedC += speedAngleC;
 
 
   //Serial.print(speedA*1000000.f);Serial.print("\t");Serial.print(speedB*1000000.f);Serial.print("\t");Serial.print(speedC*1000000.f);Serial.print("\n");
@@ -250,7 +265,7 @@ void executeOrder(){
       yTarget = (float)(i_y_pos)/1000.0f;
       angleTarget = (float)(i_angle);
       speedTarget = (float)(i_speed_pos)/10.0f;
-      angleSpeedTarget = speedTarget * 40;
+      angleSpeedTarget = speedTarget * 90;
       emergencyStop = false;
       targetReached = false;
       sprintf(comunication_OutBuffer,"move OK");
@@ -342,5 +357,5 @@ void loop()
   //Spin motors
   motorA.spin();
   motorB.spin();
-  motorC.spin();
+  @motorC.spin();
 }
