@@ -9,8 +9,9 @@
 
     <!--<board nom="MovingBaseAlexandreV4" fonction="movingBase" communication="i2c" adresse="0x07"/>--> <!--Baudrate must be shared for board discovery-->
     <!--<board nom="ControlPanelAlexV1" fonction="controlPanel" communication="i2c" adresse="0x05"/>-->
-    <board nom="CollisionLidar" fonction="collisionDetector" communication="lidarX2" port="/dev/cu.SLAB_USBtoUART" />-->
-    <!--<board nom="BrasRobotTheo" fonction="other" communication="i2c" adresse="0x06"/>-->
+    <!--<board nom="CollisionLidar" fonction="collisionDetector" communication="lidarX2" port="/dev/cu.SLAB_USBtoUART" />-->
+    <!--<board nom="CollisionLidar" fonction="collisionDetector" communication="lidarX2" port="/dev/ydlidarx2" />-->
+    <board nom="BrasRobotTheo" fonction="other" communication="i2c" adresse="0x06"/>
     <!--<board nom="BallGatherAlex" fonction="other" communication="serial" baudrate="115200" />-->
 
     <equipement nom="paletsLeft"   type="variable" valeur="0" max="3"/>
