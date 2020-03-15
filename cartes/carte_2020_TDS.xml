@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<carte largeur="3000" hauteur="2000" fond="cartes/fond2020.gif">
+
+  <!--=============================BORDS DE LA TABLE======================-->
+  <PointInteret nom="BordHaut" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="3022" y2="0"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordBas" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="2000" x2="3022" y2="2022"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordGauche" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="-22" y1="-22" x2="0" y2="2022"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="BordDroit" type="bord" valeur="0" action="" temp=""  couleur="red">
+    <forme>
+      <rectangle x1="3000" y1="-22" x2="3022" y2="2022"/>
+    </forme>
+  </PointInteret>
+
+
+
+
+
+    <!--======================Zone de depart========================-->
+
+  <PointInteret nom="Depart bleu" type="depart" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="0" y1="500" x2="400" y2="1100"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Depart jaune" type="depart" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="2600" y1="500" x2="3000" y2="1100"/>
+    </forme>
+    <!--<zoneAcces angle="0">
+        <cercle x="2700" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+   <!--======================Zone arrivee========================-->
+
+  <PointInteret nom="Arrivee Nord bleu" type="arriveeNord" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="0" y1="100" x2="50" y2="500"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Arrivee Sud bleu" type="arriveeSud" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="0" y1="1100" x2="50" y2="1500"/>
+    </forme>
+    <!--<zoneAcces angle="0">
+        <cercle x="2700" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Arrivee Nord jaune" type="arriveeNord" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="2950" y1="100" x2="3000" y2="500"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Arrivee Sud jaune" type="arriveeSud" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="2950" y1="1100" x2="3000" y2="1500"/>
+    </forme>
+    <!--<zoneAcces angle="0">
+        <cercle x="2700" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+
+
+    <!--======================Port bas========================-->
+
+  <PointInteret nom="Port Bas bleu" type="port bas" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="1650" y1="1700" x2="1950" y2="2000"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Port Bas jaune" type="port bas" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="1050" y1="1700" x2="1350" y2="2000"/>
+    </forme>
+    <!--<zoneAcces angle="0">
+        <cercle x="2700" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+
+
+  <!--======================Bordure Port========================-->
+
+  <PointInteret nom="Bordure Port Bas jaune" type="" valeur="0" action="" temp="0"  couleur="red">
+    <forme>
+      <rectangle x1="889" y1="1850" x2="911" y2="2000"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Bordure Port Bas centre" type="" valeur="0" action="" temp="0"  couleur="red">
+    <forme>
+      <rectangle x1="1489" y1="1700" x2="1511" y2="2000"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Bordure Port Bas bleu" type="" valeur="0" action="" temp="0"  couleur="red">
+    <forme>
+      <rectangle x1="2089" y1="1850" x2="2111" y2="2000"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+
+
+    <!--======================Manche a air========================-->
+
+  <PointInteret nom="Manche a air bleu 1" type="manche1" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="200" y1="2000" x2="260" y2="2060"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Manche a air bleu 2" type="manche2" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="605" y1="2000" x2="665" y2="2060"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Manche a air jaune 1" type="manche1" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="2740" y1="2000" x2="2800" y2="2060"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Manche a air jaune 2" type="manche2" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="2335" y1="2000" x2="2395" y2="2060"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+      <!--======================Roue de selection========================-->
+
+  <PointInteret nom="Manche a air bleu 1" type="roue" valeur="0" action="" temp="0"  couleur="gray">
+    <forme>
+      <rectangle x1="1350" y1="0" x2="1650" y2="30"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+        <!--======================Eceuil========================-->
+
+  <PointInteret nom="Eceuil haut bleu" type="eceuil" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="640" y1="-134" x2="1060" y2="0"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Eceuil haut jaune" type="eceuil" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="1940" y1="-134" x2="2360" y2="0"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+    <PointInteret nom="Eceuil bas bleu" type="eceuil" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="-134" y1="1390" x2="0" y2="1810"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Eceuil bas jaune" type="eceuil" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="3000" y1="1390" x2="3134" y2="1810"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+        <!--======================Phare========================-->
+
+  <PointInteret nom="Phare bleu" type="phare" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <rectangle x1="0" y1="-222" x2="450" y2="0"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+
+  <PointInteret nom="Phare jaune" type="phare" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <rectangle x1="2550" y1="-222" x2="3000" y2="0"/>
+    </forme>
+    <!--<zoneAcces angle="180">
+        <cercle x="300" y="950" rayon="20"/>
+    </zoneAcces>-->
+  </PointInteret>
+  
+    <!--======================Bouee Nord Sud========================-->
+
+  <PointInteret nom="Bouee Nord H bleu" type="boueeNordH" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <cercle x="300" y="400" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Nord B bleu" type="boueeNordB" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <cercle x="450" y="510" rayon="36"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Bouee Sud H bleu" type="boueeSudH" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <cercle x="450" y="1080" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Sud B bleu" type="boueeSudB" valeur="0" action="" temp="0"  couleur="blue">
+    <forme>
+      <cercle x="300" y="1200" rayon="36"/>
+    </forme>
+  </PointInteret>
+
+   <PointInteret nom="Bouee Nord H jaune" type="boueeNordH" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <cercle x="2700" y="400" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Nord B jaune" type="boueeNordB" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <cercle x="2550" y="510" rayon="36"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Bouee Sud H jaune" type="boueeSudH" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <cercle x="2550" y="1080" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Sud B jaune" type="boueeSudB" valeur="0" action="" temp="0"  couleur="yellow">
+    <forme>
+      <cercle x="2700" y="1200" rayon="36"/>
+    </forme>
+  </PointInteret>
+
+
+
+</carte>

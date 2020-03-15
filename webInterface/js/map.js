@@ -86,6 +86,8 @@ var Map = class {
     drawDynamicElement(){
         for(var i=0;i<this.dynamicElementList.length;i++)
             if(this.dynamicElementList[i].shape){
+                var stokeWidth = -1;
+                var opacity = 0.6;
                 if(this.dynamicElementList[i].shape.name == "robot"){
                     var x1 = this.dynamicElementList[i].shape.x1
                     var x2 = this.dynamicElementList[i].shape.x2
@@ -101,8 +103,10 @@ var Map = class {
                     ,"radius":size
                     ,"color":"white"
                     }, "circle_"+this.dynamicElementList[i].id)
+                    stokeWidth = 100;
+                    opacity=1;
                 }
-                this.drawShape(this.dynamicElementList[i].shape, "shape_"+this.dynamicElementList[i].id)
+                this.drawShape(this.dynamicElementList[i].shape, "shape_"+this.dynamicElementList[i].id, opacity, stokeWidth)
             }
     }
 
@@ -119,7 +123,7 @@ var Map = class {
         $("#liveMap").prepend(svg)
     }
 
-    drawShape(shape, id, opacity=1){
+    drawShape(shape, id, opacity=1, strokeWidth=-1){
         var id = "mapElem_"+id
         var svg = null
         if(shape.type == "circle"){
@@ -128,7 +132,8 @@ var Map = class {
             svg.setAttribute('cy', shape.y);
             svg.setAttribute('r', shape.radius);
             svg.setAttribute('opacity', opacity);
-            svg.setAttribute('style', "stroke-width:2; stroke:#000000; fill:"+shape.color+";");
+            if(strokeWidth==-1) strokeWidth = 2;
+            svg.setAttribute('style', "stroke-width:"+strokeWidth+"; stroke:#000000; fill:"+shape.color+";");
         }
         if(shape.type == "rect"){
             svg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -137,7 +142,8 @@ var Map = class {
             svg.setAttribute('width', shape.width);
             svg.setAttribute('height', shape.height);
             svg.setAttribute('opacity', opacity);
-            svg.setAttribute('style', "stroke-width:2; stroke:#000000; fill:"+shape.color+";");
+            if(strokeWidth==-1) strokeWidth = 2;
+            svg.setAttribute('style', "stroke-width:"+strokeWidth+"; stroke:#000000; fill:"+shape.color+";");
         }
         if(shape.type == "line"){
             svg = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -146,7 +152,8 @@ var Map = class {
             svg.setAttribute('x2', shape.x2);
             svg.setAttribute('y2', shape.y2);
             svg.setAttribute('opacity', opacity);
-            svg.setAttribute('style', "stroke-width:10; stroke:"+shape.color+";");
+            if(strokeWidth==-1) strokeWidth = 10;
+            svg.setAttribute('style', "stroke-width:"+strokeWidth+"; stroke:"+shape.color+";");
         }
         if(shape.type == "poly"){
             svg = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
@@ -158,7 +165,8 @@ var Map = class {
             }
             svg.setAttribute('points', str);
             svg.setAttribute('opacity', opacity);
-            svg.setAttribute('style', "stroke-width:2; stroke:#000000; fill:"+shape.color+";");
+            if(strokeWidth==-1) strokeWidth = 2;
+            svg.setAttribute('style', "stroke-width:"+strokeWidth+"; stroke:#000000; fill:"+shape.color+";");
         }
         if(svg){
             svg.id = id;

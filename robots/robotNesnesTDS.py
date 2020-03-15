@@ -258,9 +258,9 @@ class RobotNesnesTDS(Robot):
                     self.brasRobotTheo = board
             #elif board.nom == "BallGatherAlex":
             #    self.ballGatherAlex = board
-        if not self.brasRobotTheo or not self.brasRobotTheo.isConnected():
-            print("ERROR: No brasRobotTheo found")
-            self.isSimulated = True
+        #if not self.brasRobotTheo or not self.brasRobotTheo.isConnected():
+        #    print("ERROR: No brasRobotTheo found")
+        #    self.isSimulated = True
         elif webInterface.instance and self.brasRobotTheo:
             webInterface.instance.addCallableObject(self.brasRobotTheo)
 
@@ -389,8 +389,8 @@ class RobotNesnesTDS(Robot):
             return False
         self.reculer(100, 0.4) #ignore fails as palet is probably OK
         while self.getRemainingTime()>0 and (not self.getVariable("accelerateur").isMax()) and (self.getVariable("paletsLeft").get()>0 or self.getVariable("paletsMiddle").get()>0 or self.getVariable("paletsRight").get()>0) :
-            
-            self.brasRobotTheo.armDepositPrepare("A");
+            if self.brasRobotTheo:
+                self.brasRobotTheo.armDepositPrepare("A");
             time.sleep(0.8)
             if self.getVariable("accelerateur").get() == 0:
                 if self.objectifEnCours is not None:
@@ -495,12 +495,13 @@ class RobotNesnesTDS(Robot):
             time.sleep(4)
             print("--->recaler")
             self.recaler(250, "Y", 1433, 90, 0.6, None, True)
-            if self.couleur == "orange":
-                self.brasRobotTheo.armWallDepositLow("R");
-                self.brasRobotTheo.armWallDepositLow("M");
-            elif self.couleur == "violet":
-                self.brasRobotTheo.armWallDepositLow("L");
-                self.brasRobotTheo.armWallDepositLow("M");
+            if self.brasRobotTheo:
+                if self.couleur == "orange":
+                    self.brasRobotTheo.armWallDepositLow("R");
+                    self.brasRobotTheo.armWallDepositLow("M");
+                elif self.couleur == "violet":
+                    self.brasRobotTheo.armWallDepositLow("L");
+                    self.brasRobotTheo.armWallDepositLow("M");
             if self.brasRobotTheo:
                 self.brasRobotTheo.pumpOff("A");
                 time.sleep(0.6)

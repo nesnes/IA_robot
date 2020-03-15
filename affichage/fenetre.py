@@ -18,6 +18,11 @@ class Fenetre:
     def enableRedraw(self):
         self.win.autoflush=True
 
+    def clear(self):
+        for item in self.win.items[:]:
+            item.undraw()
+        self.win.items = []
+
     def drawCircle(self,nom,x,y,rayon,color):
         x +=  self.offset
         y +=  self.offset

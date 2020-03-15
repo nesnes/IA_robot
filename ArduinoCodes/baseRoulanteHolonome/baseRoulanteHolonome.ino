@@ -357,5 +357,5 @@ void loop()
   //Spin motors
   motorA.spin();
   motorB.spin();
-  @motorC.spin();
+  motorC.spin();
 }

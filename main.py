@@ -130,6 +130,8 @@ def startIA():
     print("End of the match, waiting")
     while True:
         if webInterface.instance and webInterface.instance.runningState != RunningState.PLAY:
+            if robot:
+                robot.closeConnections()
             return
         time.sleep(1)
     # Don't close connexions to keep score displayed

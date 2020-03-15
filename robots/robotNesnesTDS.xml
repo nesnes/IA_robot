@@ -7,10 +7,10 @@
     <position nom="PositionDepartA" couleur="orange" x="305" y="745" angle="0"/>
     <position nom="PositionDepartB" couleur="violet" x="2695" y="745" angle="180"/>
 
-    <board nom="MovingBaseAlexandreV4" fonction="movingBase" communication="i2c" adresse="0x07"/> <!--Baudrate must be shared for board discovery-->
+    <!--<board nom="MovingBaseAlexandreV4" fonction="movingBase" communication="i2c" adresse="0x07"/>--> <!--Baudrate must be shared for board discovery-->
     <!--<board nom="ControlPanelAlexV1" fonction="controlPanel" communication="i2c" adresse="0x05"/>-->
-    <!--<board nom="CollisionDetectionTheo" fonction="collisionDetector" communication="i2c" adresse="0x08"/>-->
-    <board nom="BrasRobotTheo" fonction="other" communication="i2c" adresse="0x06"/>
+    <board nom="CollisionLidar" fonction="collisionDetector" communication="lidarX2" port="/dev/cu.SLAB_USBtoUART" />-->
+    <!--<board nom="BrasRobotTheo" fonction="other" communication="i2c" adresse="0x06"/>-->
     <!--<board nom="BallGatherAlex" fonction="other" communication="serial" baudrate="115200" />-->
 
     <equipement nom="paletsLeft"   type="variable" valeur="0" max="3"/>
@@ -20,10 +20,6 @@
     <equipement nom="gold"  type="variable" valeur="0" max="1"/>
     <equipement nom="balance"  type="variable" valeur="0" max="6"/>
 
-    <equipement nom="telemetreArriereCubes"  type="telemetre" id="1" x="150"  y="-30" angle="180" min="0"  max="250"/>
-    <equipement nom="telemetreArriereBalles" type="telemetre" id="4" x="-150" y="-45" angle="180" min="0"  max="250"/>
-    <equipement nom="telemetreAvant"         type="telemetre" id="3" x="0"   y="30"  angle="0"   min="0" max="250"/>
-    <equipement nom="telemetreAvantBalles"   type="telemetre" id="2" x="-150" y="15"  angle="0" min="0"  max="250"/>
-    <equipement nom="telemetreAvantCubes"    type="telemetre" id="0" x="150"  y="0"   angle="0"   min="0" max="250"/>
+    <equipement nom="lidar"  type="lidar" x="0"  y="0" angle="180" angleFrom="0" angleTo="360" angleStep="5" min="0"  max="500"/>
 
 </robot>

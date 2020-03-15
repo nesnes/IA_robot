@@ -1,5 +1,6 @@
 import math
 import time
+from threading import Thread
 
 from cartographie.cercle import Cercle
 from cartographie.ligne import Ligne
@@ -29,6 +30,9 @@ class Robot:
         self.y = 0
         self.angle = 0
         self.speed = 0
+        self.last_x = 0
+        self.last_y = 0
+        self.last_angle = 0
         self.movingDA = False
         self.movingDALastDist = 0
         self.movingDALastAngle = 0
@@ -40,6 +44,14 @@ class Robot:
         self.simulationSpeed = 0.002
         if webInterface.instance:
             webInterface.instance.addMapElement(self)
+        self.collisionThread = None
+        self.stopCollisionThread = False
+        self.collisionDetected = False
+        self.collisionSpeedModifier = 1
+
+        self.movementDirectionObj = lambda: None
+        self.movementDirectionObj.id = "MovementDirection"
+        self.movementDirectionObj.forme = None
 
     def __del__(self):
         self.closeConnections()
@@ -70,9 +82,13 @@ class Robot:
                     self.controlPanel = board
                 elif board.fonction == "collisionDetector":
                     self.collisionDetector = board
-        if not self.controlPanel and any(board.fonction == "controlPanel" for board in self.listBoard):
-            print("ERROR: No controlPanel found")
-            self.isSimulated = True
+                    self.stopCollisionThread = False
+                    self.collisionThread = Thread(target=Robot.__collisionThread, args=(self,))
+                    self.collisionThread.setDaemon(True)
+                    self.collisionThread.start()
+            if not self.controlPanel and any(board.fonction == "controlPanel" for board in self.listBoard):
+                print("ERROR: No controlPanel found")
+                self.isSimulated = True
         elif webInterface.instance and self.controlPanel:
                 webInterface.instance.addCallableObject(self.controlPanel)
         if not self.movingBase and any(board.fonction == "movingBase" for board in self.listBoard):
@@ -99,30 +115,56 @@ class Robot:
             self.movingBase._isXYSupported = True
         return self.isSimulated
 
-    def setPosition(self, x, y, angle):
+    def __collisionThread(self):
+        while not self.stopCollisionThread:
+            self.collisionDetected = self.telemetreDetectCollision()
+            #Display telemeters and robot
+            if webInterface and webInterface.instance:
+                self.forme = Ligne("robot", self.x, self.y, self.x + self.largeur, self.y, "violet")
+                self.forme.rotate(self.angle)
+                webInterface.instance.addDynamicElement(self)
+                for telemetre in self.listTelemetre:
+                    line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
+                    line.rotate(line.getAngle() + self.angle - 90)
+                    lineTarget = Ligne("", line.x2, line.y2, line.x2 * 2, line.y2 * 2, "green")
+                    lineTarget.resize(
+                        telemetre.value * 1.25)  # extending the line by 1.25, see telemetreDetectCollision()
+                    lineTarget.rotate(self.angle + telemetre.angle)
+                    lineTarget.couleur = telemetre.color
+                    telemetre.forme = lineTarget
+                    webInterface.instance.addDynamicElement(telemetre)
+            if webInterface and webInterface.instance:
+                line = Ligne("direction", self.x, self.y, self.x + self.largeur*2, self.y, "green")
+                line.rotate(self.getMovmentAngle())
+                self.movementDirectionObj.forme = line
+                webInterface.instance.addDynamicElement(self.movementDirectionObj)
+            time.sleep(0.1)
+
+    def getMovmentAngle(self):
+        line = Ligne("", self.last_x, self.last_y, self.x, self.y)
+        return line.getAngle()
+
+    def setPosition(self, x, y, angle, speed=None):
+        if self.last_x != self.x or self.last_y != self.y or self.last_angle != self.angle:
+            self.last_x = self.x
+            self.last_y = self.y
+            self.last_angle = self.angle
         self.x = x
         self.y = y
         self.angle = angle
-        if webInterface.instance:
-            self.forme = Ligne("robot", self.x, self.y, self.x+self.largeur, self.y, "violet")
-            self.forme.rotate(self.angle)
-            webInterface.instance.addDynamicElement(self)
-            for telemetre in self.listTelemetre:
-                line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
-                line.rotate(line.getAngle() + self.angle - 90)
-                lineTarget = Ligne("", line.x2, line.y2, line.x2 * 2, line.y2 * 2, "green")
-                lineTarget.resize(telemetre.value * 1.25) # extending the line by 1.25, see telemetreDetectCollision()
-                lineTarget.rotate(self.angle + telemetre.angle)
-                lineTarget.couleur = telemetre.color
-                telemetre.forme = lineTarget
-                webInterface.instance.addDynamicElement(telemetre)
+        if speed is not None:
+            self.speed = speed
         return True
 
 
     def closeConnections(self):
+        self.stopCollisionThread = True
         for board in self.listBoard:
             if board:
                 board.disconnect()
+        if self.collisionThread:
+            self.collisionThread.join()
+            self.collisionThread = None
 
     def dessiner(self):
         from cartographie.cercle import Cercle
@@ -138,7 +180,7 @@ class Robot:
             circle = Cercle("", line.x2, line.y2, 10, "green")
             circle.dessiner(self.fenetre)
             lineTarget = Ligne("", line.x2, line.y2, line.x2*2, line.y2*2, "orange")
-            lineTarget.resize(75);
+            lineTarget.resize(75)
             lineTarget.rotate(self.angle+telemetre.angle)
             lineTarget.dessiner(self.fenetre)
 
@@ -152,7 +194,7 @@ class Robot:
                 elif self.couleur == self.listPosition[1].couleur:
                     defaultValues = self.listPosition[1]
             self.couleur = defaultValues.couleur
-            self.setPosition(defaultValues.x, defaultValues.y, defaultValues.angle) #0 degres =3 heures
+            self.setPosition(defaultValues.x, defaultValues.y, defaultValues.angle, 0) #0 degres =3 heures
             if self.fenetre != None:
                 self.dessiner()
             print("Le robot virtuel est " + self.couleur + " a la position x:" + str(self.x) + " y:" + str(self.y) + " angle:" + str(self.angle))
@@ -182,7 +224,7 @@ class Robot:
                     #    print board.nom, board.getId()
 
             self.couleur = self.listPosition[color].couleur
-            self.setPosition(self.listPosition[color].x, self.listPosition[color].y, self.listPosition[color].angle)
+            self.setPosition(self.listPosition[color].x, self.listPosition[color].y, self.listPosition[color].angle, 0)
             if self.movingBase and self.movingBase.isXYSupported():
                 self.movingBase.setPosition(self.x, self.y, self.angle)
             print("Le robot est " + self.couleur)
@@ -231,7 +273,7 @@ class Robot:
     def stopTestTelemeters(self):
         self.testingTelemeters = False
 
-    def telemetreDetectCollision(self, speed=None, rotationOnly=False):
+    def telemetreDetectCollision(self, speed=None, rotationOnly=False, movementAngle=None):
         #return False
         if self.isSimulated or not self.collisionDetector:
             return False
@@ -240,18 +282,43 @@ class Robot:
         if speed is None:
             speed = self.speed
         self.collisionDetector.updateTelemetre(self.listTelemetre)
+        if movementAngle is None:
+            movementAngle = self.getMovmentAngle()
+        movementAngle -= 360 if movementAngle >= 360 else 0
+        movementAngle += 360 if movementAngle < 0 else 0
         for telemetre in self.listTelemetre:
             telemetre.color = "black"
-            if speed < 0:
-                if -80 < telemetre.angle < 80:
-                    telemetre.color = "grey"
-                    continue
-            elif speed > 0 and not -80 < telemetre.angle < 80:
+
+            #Reject invalid telemeter (too far, too close measures)
+            if not telemetre.isValid():
+                telemetre.color = "transparent"
+                continue
+
+            if speed == 0:
+                continue
+
+            #Reject telemeters away from movement direction
+            minAngle = movementAngle - 60
+            minAngle -= 360 if minAngle>=360 else 0
+            minAngle += 360 if minAngle<0 else 0
+            maxAngle = movementAngle + 60
+            maxAngle -= 360 if maxAngle>=360 else 0
+            maxAngle += 360 if maxAngle<0 else 0
+            line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
+            line.rotate(line.getAngle() + self.angle - 90)
+            telemetreAngle = telemetre.angle + self.angle
+            telemetreAngle -= 360 if telemetreAngle>=360 else 0
+            telemetreAngle += 360 if telemetreAngle<0 else 0
+            inRange = False
+            if maxAngle > minAngle:
+                inRange = minAngle <= telemetreAngle and telemetreAngle <= maxAngle
+            else:
+                inRange = (minAngle <= telemetreAngle and telemetreAngle <= 360) or (0 <= telemetreAngle and telemetreAngle <= maxAngle)
+            if not inRange:
                 telemetre.color = "grey"
                 continue
-            if not telemetre.isValid():
-                telemetre.color = "black"
-                continue
+
+            telemetre.color = "blue"
             #print telemetre.nom, telemetre.value
             line = Ligne("", self.x, self.y, self.x - telemetre.x, self.y + telemetre.y, "green")
             line.rotate(line.getAngle()+self.angle-90)
@@ -260,37 +327,47 @@ class Robot:
             #extending the line by 1.25 makes more sure it detects colliding objects (not reported as unknown object)
             lineTarget.rotate(self.angle+telemetre.angle)
             if not 0 < lineTarget.x2 < self.chercher.largeur or not 0 < lineTarget.y2 < self.chercher.longueur:
-                telemetre.color = "blue"
+                telemetre.color = "white"
                 continue # Rejecting detections out of the map
             #lineTarget.dessiner(self.fenetre)
-            if 5 < telemetre.value < 500:
-                #return True
-                #Only test telemeter if the reported value is bellow 500mm
-                objectInRange=False
-                objectDetectedLine=None
-                for i in range(1, 3):
-                    containingElements = self.chercher.pointContenuListe(lineTarget.x1, lineTarget.y1, self.listPointInteret)
-                    listPointDetection = list(self.listPointInteret)
-                    for point in containingElements:
-                        listPointDetection.remove(point)
-                    
-                    lineTest = Ligne("", lineTarget.x1, lineTarget.y1, lineTarget.x2/i, lineTarget.y2/i, "purple")
-                    collision = self.chercher.enCollisionCarte(lineTest, listPointDetection, False)
-                    if not collision:
-                        #circle = Cercle(telemetre.nom, line.x2, line.y2, 20, "purple")
-                        #circle.dessiner(self.fenetre)
-                        #lineTarget.dessiner(self.fenetre)
-                        telemetre.color = "purple"
-                        objectDetectedLine = lineTest
-                    else:
-                        objectInRange=True
-                        telemetre.color = "blue"
-                        #print(telemetre.nom + " detected " + collision.nom)
-                if objectInRange:
-                    pass
-                elif objectDetectedLine:
+            #return True
+            objectInRange=False
+            objectDetectedLine=None
+            for i in range(1, 3):
+                containingElements = self.chercher.pointContenuListe(lineTarget.x1, lineTarget.y1, self.listPointInteret)
+                listPointDetection = list(self.listPointInteret)
+                for point in containingElements:
+                    listPointDetection.remove(point)
+
+                lineTest = Ligne("", lineTarget.x1, lineTarget.y1, lineTarget.x2/i, lineTarget.y2/i, "purple")
+                collision = self.chercher.enCollisionCarte(lineTest, listPointDetection, False)
+                if not collision:
+                    #circle = Cercle(telemetre.nom, line.x2, line.y2, 20, "purple")
+                    #circle.dessiner(self.fenetre)
+                    #lineTarget.dessiner(self.fenetre)
+                    telemetre.color = "purple"
+                    objectDetectedLine = lineTest
+                else:
+                    objectInRange=True
+                    telemetre.color = "blue"
+                    #print(telemetre.nom + " detected " + collision.nom)
+            if objectInRange:
+                pass
+            elif objectDetectedLine:
+                #Collision detected
+                valueRange = telemetre.maxValue - telemetre.minValue
+                rangePercent = 100/valueRange*telemetre.value
+                if rangePercent>40:
+                    #Slow down
+                    if self.collisionSpeedModifier > rangePercent/100:
+                        self.collisionSpeedModifier = rangePercent/100
+                    telemetre.color = "purple"
+                else:
+                    #Stop
+                    telemetre.color = "red"
                     print("/!\\"+telemetre.nom+" detected Unkown object. Position "+str(objectDetectedLine.x2)+","+str(objectDetectedLine.y2)+", angle "+str(objectDetectedLine.getAngle())+ " at distance "+str(telemetre.value))
                     return [objectDetectedLine.x2, objectDetectedLine.y2]
+        self.collisionSpeedModifier = 1
         return False
 
     def executer(self,action):
@@ -337,7 +414,7 @@ class Robot:
             self.y = y
         if angle != -1:
             self.angle = angle
-        self.setPosition(self.x, self.y, self.angle) #update interface
+        self.setPosition(self.x, self.y, self.angle, 0) #update interface
         if not self.isSimulated and self.movingBase and self.movingBase.isXYSupported():
             self.movingBase.setPosition(self.x, self.y, self.angle)
         print "\t \t New rectified position: x:", self.x, " y:", self.y, " angle:", self.angle
@@ -347,14 +424,27 @@ class Robot:
         ligne = Ligne("", self.x, self.y, x, y, "purple")
         # simulate movement
         movingAngle = self.normalizeAngle(ligne.getAngle() + (180 if direction < 0 else 0))
+        x=0
+        y=0
         for p in range(0, (int)(ligne.getlongeur())):
             ratio = (1.0 / ligne.getlongeur()) * p
             ratioDest = 1 - ratio
-            self.setPosition(ligne.x1 * ratioDest + ligne.x2 * ratio, ligne.y1 * ratioDest + ligne.y2 * ratio, movingAngle)
+            x = ligne.x1 * ratioDest + ligne.x2 * ratio
+            y = ligne.y1 * ratioDest + ligne.y2 * ratio
+            self.setPosition(x, y, movingAngle, direction)
             if webInterface.instance and webInterface.instance.runningState == RunningState.STOP:
                 return False
+            if type(self.collisionDetected) != bool:
+                collisionX, collisionY = self.collisionDetected
+                print "\t \t Obstacle, stopping robot"
+                errorObstacle = True
+                break
+            elif self.collisionDetected:
+                print "\t \t Obstacle, stopping robot"
+                errorObstacle = True
+                break
             time.sleep(self.simulationSpeed)
-        self.setPosition(ligne.x2, ligne.y2, nextAngle)
+        self.setPosition(x, y, nextAngle, 0)
 
 
     def seDeplacerXY(self, x, y, absoluteAngle, vitesse=1.0, forceStraight=False, retry=0):
@@ -400,7 +490,7 @@ class Robot:
                         if i < len(chemin) - 1:
                             nextAngle = chemin[i + 1].getAngle()
                         self.simulateMovement(ligne.x2, ligne.y2, nextAngle, direction)
-                        self.setPosition(ligne.x2, ligne.y2, nextAngle)
+                        self.setPosition(ligne.x2, ligne.y2, nextAngle, 0)
                         result = True
                 else:
                     result = False
@@ -448,6 +538,7 @@ class Robot:
             return False
 
     def __waitForMovementFinished(self, xyMove, rotationOnly=False, doNotAvoid=False, direction=None):
+        self.collisionDetected = False
         errorObstacle = False
         errorStuck = False
         errorOutOfTime = False
@@ -459,14 +550,13 @@ class Robot:
             self.updatePosition()
             status = self.movingBase.getMovementStatus()
             if not rotationOnly:
-                collision = self.telemetreDetectCollision(direction)
-                if type(collision) != bool:
-                    collisionX, collisionY = collision
+                if type(self.collisionDetected) != bool:
+                    collisionX, collisionY = self.collisionDetected
                     print "\t \t Obstacle, stopping robot"
                     self.movingBase.emergencyBreak()
                     errorObstacle = True
                     break
-                elif collision:
+                elif self.collisionDetected:
                     print "\t \t Obstacle, stopping robot"
                     self.movingBase.emergencyBreak()
                     errorObstacle = True
@@ -486,7 +576,7 @@ class Robot:
             self.movingBase.emergencyBreak()
         if xyMove:
             newX, newY, newAngle, speed = self.movingBase.getPositionXY()
-            self.setPosition(newX, newY, newAngle)
+            self.setPosition(newX, newY, newAngle, speed)
         else:
             distanceDone, angleDone, currentSpeed = self.movingBase.getPositionDistanceAngle()
             self.updatePositionRelative(distanceDone, angleDone)
@@ -570,12 +660,11 @@ class Robot:
         self.setPosition(self.x, self.y, self.angle) #update interface
 
     def updatePosition(self):
-        if self.isSimulated:
+        if self.isSimulated or not self.movingBase:
             return
         if self.movingBase.isXYSupported:
             newX, newY, newAngle, speed = self.movingBase.getPositionXY()
-            self.setPosition(newX, newY, newAngle)
-            self.speed = speed
+            self.setPosition(newX, newY, newAngle, speed)
         elif self.movingDA:
             distance, angle, speed = self.movingBase.getPositionDistanceAngle()
             self.speed = speed
@@ -669,7 +758,7 @@ class Robot:
             self.x = coordinate
             self.y = coordinate2
         self.angle = angle
-        self.setPosition(self.x, self.y, self.angle) # update interface
+        self.setPosition(self.x, self.y, self.angle, 0) # update interface
         if self.movingBase and self.movingBase.isConnected() and self.movingBase.isXYSupported():
             self.movingBase.setPosition(self.x, self.y, self.angle)
         

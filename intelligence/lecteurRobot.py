@@ -74,6 +74,21 @@ class LecteurRobot:
                 max = float(equipement.get("max"))
             telemetre = Telemetre(nom, id, x, y, angle, min, max)
             self.robot.listTelemetre.append(telemetre)
+        if type == "lidar":
+            x = float(equipement.get("x"))
+            y = float(equipement.get("y"))
+            angle = float(equipement.get("angle"))
+            angleFrom = int(equipement.get("angleFrom"))
+            angleTo = int(equipement.get("angleTo"))
+            angleStep = int(equipement.get("angleStep"))
+            min = float(equipement.get("min")) if equipement.get("min") is not None else 0
+            max = float(equipement.get("max")) if equipement.get("max") is not None else 0
+            for a in range(angleFrom, angleTo, angleStep):
+                angleTelem = a+angle
+                angleTelem -= 360 if angleTelem>=360 else 0
+                angleTelem += 360 if angleTelem<0 else 0
+                telemetre = Telemetre(nom+"_"+str(angleTelem), a, x, y, angleTelem, min, max)
+                self.robot.listTelemetre.append(telemetre)
 
     def __getPosition(self, position):
         nom = position.get("nom")
@@ -90,12 +105,16 @@ class LecteurRobot:
         communication = board.get("communication")
         baudrate = 115200
         adresse = 0x00
+        port = ""
         if "serial" in communication:
             if board.get("baudrate"):
                 baudrate = board.get("baudrate")
         elif "i2c" in communication:
             if board.get("adresse"):
                 adresse = board.get("adresse")
+        elif "lidarX2" in communication:
+            if board.get("port"):
+                port = board.get("port")
 
         newBoard = None
 
@@ -111,6 +130,8 @@ class LecteurRobot:
             newBoard = boardClass(nom, fonction, communication, baudrate)
         elif "i2c" in communication:
             newBoard = boardClass(nom, fonction, communication, adresse)
+        elif "lidarX2" in communication:
+            newBoard = boardClass(nom, fonction, communication, port)
         else:
             newBoard = boardClass(nom, fonction, communication)
         self.robot.listBoard.append(newBoard)

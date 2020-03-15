@@ -4,9 +4,6 @@ from webInterface.interface import RunningState
 import webInterface
 from functools import wraps
 import time
-if webInterface.instance and webInterface.instance.runningParameters.robotConnected:
-    from boards.communicationSerial import CommunicationSerial
-    from boards.communicationI2C import CommunicationI2C
 
 
 class RetryException(Exception):
@@ -49,11 +46,16 @@ class Board:
         self.param2 = param2
         if webInterface.instance and webInterface.instance.runningParameters.robotConnected:
             if communication == "serial":
+                from boards.communicationSerial import CommunicationSerial
                 Board.baudrate = param1
                 self.connection = CommunicationSerial(self.param1)
             if communication == "i2c":
+                from boards.communicationI2C import CommunicationI2C
                 Board.adresse = param1
                 self.connection = CommunicationI2C(self.nom, self.param1)
+            if communication == "lidarX2":
+                from boards.lidarX2 import LidarX2
+                self.connection = LidarX2(self.param1)
 
     def connect(self):
         if self.communication == "serial":
@@ -66,6 +68,8 @@ class Board:
                     print(self.nom + " connected")
                     return True
         if self.communication == "i2c":
+            return self.connection.connect()
+        if self.communication == "lidarX2":
             return self.connection.connect()
         return False
 
@@ -82,7 +86,9 @@ class Board:
             return echo
 
     def disconnect(self):
-        return self.connection.disconnect()
+        if self.connection:
+            return self.connection.disconnect()
+        return True
 
     def isConnected(self):
         if self.connection:
@@ -90,17 +96,23 @@ class Board:
         return False
 
     def sendMessage(self, message):
-        result = self.connection.sendMessage(message)
+        result = False
+        if self.connection:
+            result = self.connection.sendMessage(message)
         #print "\t \t ----> ("+self.nom+") " + message
         return result
 
 
     def isMessageAvailable(self):
-        return self.connection.isMessageAvailable()
+        if self.connection:
+            return self.connection.isMessageAvailable()
+        return False
 
     def receiveMessage(self, timeout=1):
-        msg = self.connection.receiveMessage(timeout)
-        #print "\t \t <---- " + msg + "("+self.nom+")"
+        msg = ""
+        if self.connection:
+            msg = self.connection.receiveMessage(timeout)
+            #print "\t \t <---- " + msg + "("+self.nom+")"
         return msg
 
     @staticmethod
