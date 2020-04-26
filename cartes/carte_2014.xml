@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <carte largeur="3000" hauteur="2000">
     <!--Torche1-->
-  <PointInteret nom="Torche1" valeur="3" action="CapturerTorche" temp="7"  couleur="red">
-    <zoneAcces>
+  <PointInteret nom="Torche1" valeur="3" action="CapturerTorche" temp="7"  type=""  couleur="red">
+    <zoneAcces angle="0">
       <cercle x="900" y="1100" rayon="130"/>
     </zoneAcces>
     <forme>
@@ -13,8 +13,8 @@
     </zoneEvitement>
   </PointInteret>
     <!--Torche2-->
-  <PointInteret nom="Torche2" valeur="3" action="CapturerTorche" temp="7"  couleur="yellow">
-    <zoneAcces>
+  <PointInteret nom="Torche2" valeur="3" action="CapturerTorche" temp="7" type="" couleur="yellow">
+    <zoneAcces angle="0">
       <cercle x="2100" y="1100" rayon="130"/>
     </zoneAcces>
     <forme>
@@ -25,8 +25,8 @@
     </zoneEvitement>
   </PointInteret>
     <!--FeuHG-->
-  <PointInteret nom="FeuHG" valeur="3" action="CapturerFeu" temp="7"  couleur="red">
-    <zoneAcces>
+  <PointInteret nom="FeuHG" valeur="3" action="CapturerFeu" temp="7" type="" couleur="red">
+    <zoneAcces angle="0">
       <rectangle x1="800" y1="530" x2="1000" y2="670"/>
     </zoneAcces>
     <forme>
@@ -37,8 +37,8 @@
     </zoneEvitement>
   </PointInteret>
     <!--FeuBG-->
-  <PointInteret nom="FeuBG" valeur="3" action="CapturerFeu" temp="7"  couleur="red">
-    <zoneAcces>
+  <PointInteret nom="FeuBG" valeur="3" action="CapturerFeu" temp="7" type="" couleur="red">
+    <zoneAcces angle="0">
       <rectangle x1="800" y1="1530" x2="1000" y2="1670"/>
     </zoneAcces>
     <forme>
@@ -49,8 +49,8 @@
     </zoneEvitement>
   </PointInteret>
     <!--FeuMG-->
-  <PointInteret nom="FeuMG" valeur="3" action="CapturerFeu" temp="7"  couleur="red">
-    <zoneAcces>
+  <PointInteret nom="FeuMG" valeur="3" action="CapturerFeu" temp="7" type="" couleur="red">
+    <zoneAcces angle="0">
       <rectangle x1="330" y1="1000" x2="470" y2="1200"/>
     </zoneAcces>
     <forme>
@@ -61,8 +61,8 @@
     </zoneEvitement>
   </PointInteret>
     <!--FeuHD-->
-  <PointInteret nom="FeuHD" valeur="3" action="CapturerFeu" temp="7"  couleur="yellow">
-    <zoneAcces>
+  <PointInteret nom="FeuHD" valeur="3" action="CapturerFeu" temp="7" type="" couleur="yellow">
+    <zoneAcces angle="0">
       <rectangle x1="2000" y1="530" x2="2200" y2="670"/>
     </zoneAcces>
     <forme>
@@ -73,8 +73,8 @@
     </zoneEvitement>
   </PointInteret>
     <!--FeuBD-->
-  <PointInteret nom="FeuBD" valeur="3" action="CapturerFeu" temp="7"  couleur="yellow">
-    <zoneAcces>
+  <PointInteret nom="FeuBD" valeur="3" action="CapturerFeu" temp="7" type="" couleur="yellow">
+    <zoneAcces angle="0">
       <rectangle x1="2000" y1="1530" x2="2200" y2="1670"/>
     </zoneAcces>
     <forme>
@@ -85,8 +85,8 @@
     </zoneEvitement>
   </PointInteret>
     <!--FeuMD-->
-  <PointInteret nom="FeuMD" valeur="3" action="CapturerFeu" temp="7"  couleur="yellow">
-    <zoneAcces>
+  <PointInteret nom="FeuMD" valeur="3" action="CapturerFeu" temp="7" type="" couleur="yellow">
+    <zoneAcces angle="0">
       <rectangle x1="2530" y1="1000" x2="2670" y2="1200"/>
     </zoneAcces>
     <forme>

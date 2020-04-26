@@ -1,4 +1,4 @@
-from cartographie.zone import Zone
+from zone import Zone
 
 class ZoneEvitement(Zone):
 

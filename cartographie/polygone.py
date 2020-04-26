@@ -1,12 +1,13 @@
-from cartographie.forme import *
+from forme import *
 
 class Polygone(Forme):
-    def __init__(self, nom, couleur="black"):
+    def __init__(self, nom, couleur="black", couleur_ui=""):
         self.nom = nom
         self.x = 0.0
         self.y = 0.0
         self.pointList = []
         self.couleur = couleur
+        self.couleur_ui = couleur_ui if couleur_ui != "" else couleur
 
     def addPoint(self, x, y):
         self.pointList.append({"x": x, "y": y})
@@ -18,7 +19,7 @@ class Polygone(Forme):
 
     def dessiner(self, fenetre):
         if len(self.pointList) > 1 :
-            fenetre.drawPoly(self.nom, self.pointList, self.couleur)
+            fenetre.drawPoly(self.nom, self.pointList, self.couleur_ui)
 
     def toJson(self):
         str = u'{'
@@ -33,6 +34,6 @@ class Polygone(Forme):
             if i < len(self.pointList)-1:
                 str += u','
         str += u'],'
-        str += u'"color":"{}"'.format(self.couleur)
+        str += u'"color":"{}"'.format(self.couleur_ui)
         str += u'}'
         return str

@@ -1,13 +1,13 @@
 import math
+from forme import *
 
-from cartographie.forme import *
 from math import atan2, degrees, pi
 
 #from rectangle import Rectangle
 #from cercle import Cercle
 
 class Ligne(Forme):
-    def __init__(self, nom, x1=0, y1=0, x2=0, y2=0, couleur="black"):
+    def __init__(self, nom, x1=0, y1=0, x2=0, y2=0, couleur="black", couleur_ui=""):
         self.nom = nom
         self.x1 = x1
         self.y1 = y1
@@ -16,12 +16,13 @@ class Ligne(Forme):
         self.x = (x1+x2)/2
         self.y = (y1+y2)/2
         self.couleur = couleur
+        self.couleur_ui = couleur_ui if couleur_ui != "" else couleur
 
     def setCouleur(self, newCouleur):
         self.couleur = newCouleur
 
     def dessiner(self, fenetre):
-        fenetre.drawLine(self.nom, self.x1, self.y1, self.x2, self.y2, self.couleur)
+        fenetre.drawLine(self.nom, self.x1, self.y1, self.x2, self.y2, self.couleur_ui)
 
     def getlongeur(self):
         x=max(self.x1,self.x2)-min(self.x1,self.x2)
@@ -81,13 +82,13 @@ class Ligne(Forme):
         self.y2 = self.y1+size*math.sin(radangle)
 
     def toJson(self):
-        str = u'{'
-        str += u'"type":"line",'
-        str += u'"name":"{}",'.format(self.nom)
-        str += u'"x1":{},'.format(self.x1)
-        str += u'"y1":{},'.format(self.y1)
-        str += u'"x2":{},'.format(self.x2)
-        str += u'"y2":{},'.format(self.y2)
-        str += u'"color":"{}"'.format(self.couleur)
-        str += u'}'
+        str = u''.join([u'{',
+            u'"type":"line",',
+            u'"name":"{}",'.format(self.nom),
+            u'"x1":{},'.format(self.x1),
+            u'"y1":{},'.format(self.y1),
+            u'"x2":{},'.format(self.x2),
+            u'"y2":{},'.format(self.y2),
+            u'"color":"{}"'.format(self.couleur_ui),
+            u'}'])
         return str

@@ -9,6 +9,7 @@ class PointInteret:
         self.forme = forme
         self.zoneAcces = zoneAcces
         self.zoneEvitement = zoneEvitement
+        self.collisionList = []
         self.valeur = valeur
         self.action = action
         self.id = ""
@@ -21,11 +22,11 @@ class PointInteret:
 
     def getID(self):
         if self.id == "":
-            id = str(self.forme.x)
-            id += "_" + str(self.forme.y)
-            id += "_" + self.nom
-            id += "_" + self.couleur
-            id += "_" + self.type
-            id += "_" + str(self.valeur)
+            id = ''.join([str(self.forme.x),
+                "_" + str(self.forme.y),
+                "_" + self.nom,
+                "_" + self.couleur,
+                "_" + self.type,
+                "_" + str(self.valeur)])
             self.id = hashlib.md5(id).hexdigest()[0:6]
         return self.id
