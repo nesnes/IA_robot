@@ -21,7 +21,7 @@ class ChercheurChemin:
         self.listePointInteret = listePointInteret
         self.graph = Graph()
         self.fenetre = fenetre
-        self.step = 40
+        self.step = 80
         self.graphFile = "preComputedMap.graph"
         self.collider = Collision(fenetre)
         self.callCount = {}

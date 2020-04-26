@@ -20,6 +20,7 @@ class Ligne(Forme):
 
     def setCouleur(self, newCouleur):
         self.couleur = newCouleur
+        self.couleur_ui = self.couleur
 
     def dessiner(self, fenetre):
         fenetre.drawLine(self.nom, self.x1, self.y1, self.x2, self.y2, self.couleur_ui)

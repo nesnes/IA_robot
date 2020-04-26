@@ -180,7 +180,7 @@ def testPathfinding():
     
     screen = True
     robotConnected = False
-    drawGraph = True and screen
+    drawGraph = False and screen
     fenetre = None
     largeurRobot = 100
     print "Reading map file"
@@ -198,10 +198,8 @@ def testPathfinding():
     print "Initializing pathfinding"
     chercher = ChercheurChemin(carte.getTaille(), carte.getHash(), listePointInteret, fenetre)
     chercherLigne = ChercheurCheminLigne(carte.getTaille(), carte.getHash(), listePointInteret, fenetre)
-    #if drawGraph:
-    #    chercher.graph.dessiner(fenetre)
 
-    if fenetre:
+    if fenetre and drawGraph:
         chercher.graph.dessiner(fenetre)
         fenetre.win.redraw()
 
@@ -227,7 +225,7 @@ def testPathfinding():
             fenetre.win.redraw()
 
             #chercheur ligne
-            """startTime = time.time()
+            startTime = time.time()
             listMouvement = chercherLigne.trouverChemin(x1, y1, x2, y2, listePointInteret)
             print("Pathfinding Time {}ms\r\n".format( (time.time()-startTime)*1000) )
             if listMouvement is None or len(listMouvement) == 0:
@@ -236,7 +234,7 @@ def testPathfinding():
                 for ligne in listMouvement:
                     ligne.setCouleur("green")
                     ligne.dessiner(fenetre)
-            fenetre.win.redraw()"""
+            fenetre.win.redraw()
     
 if __name__ == "__main__":
     main()
