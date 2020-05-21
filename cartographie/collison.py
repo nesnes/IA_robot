@@ -1,10 +1,9 @@
 import math
 
 import numpy
-
-from cartographie.ligne import Ligne
-from cartographie.cercle import Cercle
-from cartographie.rectangle import Rectangle
+from ligne import Ligne
+from cercle import Cercle
+from rectangle import Rectangle
 
 
 class Collision:
@@ -158,21 +157,21 @@ class Collision:
     def collisionLignePolygone(self, ligne, polygone):
         return self.collisionPolygoneLigne(polygone, ligne)
 
-    def collisionPolygonePolygone(self, polgone1, polygone2):
+    def collisionPolygonePolygone(self, polygone1, polygone2):
         count = 0
-        firstPoint = polgone1.pointList[0]
-        lastPoint = polgone1.pointList[0]
-        for point in polgone1.pointList:
+        firstPoint = polygone1.pointList[0]
+        lastPoint = polygone1.pointList[0]
+        for point in polygone1.pointList:
             count += 1
             if count == 1:
                 continue
             currentLine = Ligne("", float(point["x"]), float(point["y"]), float(lastPoint["x"]), float(lastPoint["y"]))
-            if self.collisionPolgoneLigne(polygone2, currentLine):
+            if self.collisionPolygoneLigne(polygone2, currentLine):
                 return True
             lastPoint = point
         currentLine = Ligne("", float(firstPoint["x"]), float(firstPoint["y"]), float(lastPoint["x"]),
                             float(lastPoint["y"]))
-        if self.collisionPolgoneLigne(polygone2, currentLine):
+        if self.collisionPolygoneLigne(polygone2, currentLine):
             return True
         return False
 

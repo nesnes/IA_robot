@@ -1,4 +1,5 @@
 from cartographie.noeud import Noeud
+import math
 
 class Graph:
 
@@ -76,7 +77,13 @@ class Graph:
         testy = int(self.step * round(float(y)/self.step))
         if self.getKey(testx, testy) in self.listeNoeud:
             return self.listeNoeud[self.getKey(testx, testy)]
-        return None
+        minDist = 99999
+        closeNode = None
+        for key, noeud in self.listeNoeud.iteritems():
+            dist = math.sqrt(math.pow(x-noeud.x,2)+math.pow(y-noeud.y,2))
+            if dist < minDist:
+                closeNode = noeud
+        return closeNode
         """nearest = None
         minDist = 999999
         for key, noeud in self.listeNoeud.iteritems():

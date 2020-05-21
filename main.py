@@ -137,25 +137,7 @@ def startIA():
     # Don't close connexions to keep score displayed
     # robot.closeConnections()
 
-    # Pour tester le pathfinding, cliquez a deux endroits sur la carte
-    """if screen:
-        while True:
-            click1 = fenetre.win.getMouse()
-            click2 = fenetre.win.getMouse()
-            x1 = click1.getX() / fenetre.ratio - fenetre.offset
-            y1 = click1.getY() / fenetre.ratio - fenetre.offset
-            x2 = click2.getX() / fenetre.ratio - fenetre.offset
-            y2 = click2.getY() / fenetre.ratio - fenetre.offset
-            print "({} {}) ({}, {})".format(x1, y1, x2, y2)
-            listMouvement = chercher.trouverChemin(x1, y1, x2, y2, listePointInteret)
-            if listMouvement is None or len(listMouvement) == 0:
-                print "WARNING Path Not Found"
-            else:
-                for ligne in listMouvement:
-                    ligne.setCouleur("green")
-                    ligne.dessiner(fenetre)
-            fenetre.win.redraw()
-    """
+    
     time.sleep(5)
 
 
@@ -170,6 +152,7 @@ def signal_handler(signal, frame):
 import traceback
 def main():
     signal.signal(signal.SIGINT, signal_handler)
+    #testPathfinding()
     # create web interface
     interface = Interface()
     if webInterface.instance:
@@ -184,6 +167,74 @@ def main():
             webInterface.instance.runningState = RunningState.STOP
             webInterface.instance.clearCallableObjectList()
 
+def testPathfinding():
+    import time
+    import os
+    from cartographie.lecteurCarte import LecteurCarte
+    #from cartographie.chercheurChemin import ChercheurChemin
+    from cartographie.chercheurCheminObjet import ChercheurChemin
+    from cartographie.chercheurCheminLigne import ChercheurChemin as ChercheurCheminLigne
 
+    # Pour tester le pathfinding, cliquez a deux endroits sur la carte
+    fichierCarte = "cartes/carte_2020_TDS.xml"
+    
+    screen = True
+    robotConnected = False
+    drawGraph = False and screen
+    fenetre = None
+    largeurRobot = 100
+    print "Reading map file"
+    carte = LecteurCarte(fichierCarte, largeurRobot)
+    listePointInteret = carte.lire()
+
+    # creation de l'afficihage de la carte
+    if screen:
+        print "Creating map view"
+        from affichage.afficheurCarte import AfficheurCarte
+        affichage = AfficheurCarte(fichierCarte, listePointInteret, 0.25, largeurRobot)
+        fenetre = affichage.fenetre
+        affichage.afficherCarte()  # affichage de la carte
+
+    print "Initializing pathfinding"
+    chercher = ChercheurChemin(carte.getTaille(), carte.getHash(), listePointInteret, fenetre)
+    chercherLigne = ChercheurCheminLigne(carte.getTaille(), carte.getHash(), listePointInteret, fenetre)
+
+    if fenetre and drawGraph:
+        chercher.graph.dessiner(fenetre)
+        fenetre.win.redraw()
+
+    if screen:
+        while True:
+            click1 = fenetre.win.getMouse()
+            click2 = fenetre.win.getMouse()
+            x1 = click1.getX() / fenetre.ratio - fenetre.offset
+            y1 = click1.getY() / fenetre.ratio - fenetre.offset
+            x2 = click2.getX() / fenetre.ratio - fenetre.offset
+            y2 = click2.getY() / fenetre.ratio - fenetre.offset
+            print "({} {}) ({}, {})".format(x1, y1, x2, y2)
+            #chercheur graph
+            startTime = time.time()
+            listMouvement = chercher.trouverChemin(x1, y1, x2, y2, listePointInteret)
+            print("Pathfinding Time {}ms\r\n".format( (time.time()-startTime)*1000) )
+            if listMouvement is None or len(listMouvement) == 0:
+                print "WARNING Path Not Found"
+            else:
+                for ligne in listMouvement:
+                    ligne.setCouleur("green")
+                    ligne.dessiner(fenetre)
+            fenetre.win.redraw()
+
+            #chercheur ligne
+            startTime = time.time()
+            listMouvement = chercherLigne.trouverChemin(x1, y1, x2, y2, listePointInteret)
+            print("Pathfinding Time {}ms\r\n".format( (time.time()-startTime)*1000) )
+            if listMouvement is None or len(listMouvement) == 0:
+                print "WARNING Path Not Found"
+            else:
+                for ligne in listMouvement:
+                    ligne.setCouleur("green")
+                    ligne.dessiner(fenetre)
+            fenetre.win.redraw()
+    
 if __name__ == "__main__":
     main()

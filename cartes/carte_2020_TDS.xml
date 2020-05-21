@@ -250,49 +250,151 @@
     </zoneAcces>-->
   </PointInteret>
   
-    <!--======================Bouee Nord Sud========================-->
+  <!--======================Bouee Nord Sud Bleu========================-->
 
-  <PointInteret nom="Bouee Nord H bleu" type="boueeNordH" valeur="0" action="" temp="0"  couleur="blue">
+  <PointInteret nom="Bouee Nord bleu" type="boueeNord" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
     <forme>
       <cercle x="300" y="400" rayon="36"/>
     </forme>
   </PointInteret>
-  <PointInteret nom="Bouee Nord B bleu" type="boueeNordB" valeur="0" action="" temp="0"  couleur="blue">
+  <PointInteret nom="Bouee Chenal Nord bleu" type="boueeChenalNord" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
     <forme>
       <cercle x="450" y="510" rayon="36"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Bouee Sud H bleu" type="boueeSudH" valeur="0" action="" temp="0"  couleur="blue">
+  <PointInteret nom="Bouee Chenal Sud bleu" type="boueeChenalSud" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
     <forme>
       <cercle x="450" y="1080" rayon="36"/>
     </forme>
   </PointInteret>
-  <PointInteret nom="Bouee Sud B bleu" type="boueeSudB" valeur="0" action="" temp="0"  couleur="blue">
+  <PointInteret nom="Bouee Sud bleu" type="boueeSud" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
     <forme>
       <cercle x="300" y="1200" rayon="36"/>
     </forme>
   </PointInteret>
 
-   <PointInteret nom="Bouee Nord H jaune" type="boueeNordH" valeur="0" action="" temp="0"  couleur="yellow">
+  <!--======================Bouee Nord Sud Jaune========================-->
+
+  <PointInteret nom="Bouee Nord jaune" type="boueeNord" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="green">
     <forme>
       <cercle x="2700" y="400" rayon="36"/>
     </forme>
   </PointInteret>
-  <PointInteret nom="Bouee Nord B jaune" type="boueeNordB" valeur="0" action="" temp="0"  couleur="yellow">
+  <PointInteret nom="Bouee Chenal Nord jaune" type="boueeChenalNord" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="red">
     <forme>
       <cercle x="2550" y="510" rayon="36"/>
     </forme>
   </PointInteret>
 
-  <PointInteret nom="Bouee Sud H jaune" type="boueeSudH" valeur="0" action="" temp="0"  couleur="yellow">
+  <PointInteret nom="Bouee Chenal Sud jaune" type="boueeSud" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="green">
     <forme>
       <cercle x="2550" y="1080" rayon="36"/>
     </forme>
   </PointInteret>
-  <PointInteret nom="Bouee Sud B jaune" type="boueeSudB" valeur="0" action="" temp="0"  couleur="yellow">
+  <PointInteret nom="Bouee Sud jaune" type="boueeSud" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="red">
     <forme>
       <cercle x="2700" y="1200" rayon="36"/>
+    </forme>
+  </PointInteret>
+  
+  <!--======================Bouee Petit Port jaune========================-->
+
+  <PointInteret nom="Bouee L Petit Port jaune" type="boueeLPort" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="red">
+    <forme>
+      <cercle x="1005" y="1955" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee L Petit Port Chenal jaune" type="boueeLPortChenal" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="green">
+    <forme>
+      <cercle x="1065" y="1650" rayon="36"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Bouee R Petit Port jaune" type="boueeRPort" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="green">
+    <forme>
+      <cercle x="1395" y="1955" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee R Petit Port Chenal jaune" type="boueeRPortChenal" valeur="0" action="" temp="0"  couleur="yellow" couleur_ui="red">
+    <forme>
+      <cercle x="1335" y="1650" rayon="36"/>
+    </forme>
+  </PointInteret>
+  
+  <!--======================Bouee Petit Port Bleu========================-->
+
+  <PointInteret nom="Bouee L Petit Port bleu" type="boueeLPort" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
+    <forme>
+      <cercle x="1605" y="1955" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee L Petit Port Chenal bleu" type="boueeLPortChenal" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
+    <forme>
+      <cercle x="1665" y="1650" rayon="36"/>
+    </forme>
+  </PointInteret>
+
+  <PointInteret nom="Bouee R Petit Port bleu" type="boueeRPort" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
+    <forme>
+      <cercle x="1995" y="1955" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee R Petit Port Chenal bleu" type="boueeRPortChenal" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
+    <forme>
+      <cercle x="1935" y="1650" rayon="36"/>
+    </forme>
+  </PointInteret>
+  
+  <!--======================Bouee Centre Haut========================-->
+
+  <PointInteret nom="Bouee Centre Haut bleu" type="boueeCentreHaut" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
+    <forme>
+      <cercle x="670" y="100" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Centre Haut jaune" type="boueeCentreHaut" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
+    <forme>
+      <cercle x="2330" y="100" rayon="36"/>
+    </forme>
+  </PointInteret>
+  
+  <!--======================Bouee Centre MidHaut========================-->
+
+  <PointInteret nom="Bouee Centre Mid Haut bleu" type="boueeCentreMidHaut" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
+    <forme>
+      <cercle x="950" y="400" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Centre Mid Haut jaune" type="boueeCentreMidHaut" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
+    <forme>
+      <cercle x="2050" y="400" rayon="36"/>
+    </forme>
+  </PointInteret>
+  
+  <!--======================Bouee Centre MidBas========================-->
+
+  <PointInteret nom="Bouee Centre Mid Bas bleu" type="boueeCentreMidBas" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
+    <forme>
+      <cercle x="1100" y="800" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Centre Mid Bas jaune" type="boueeCentreMidBAs" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
+    <forme>
+      <cercle x="1900" y="800" rayon="36"/>
+    </forme>
+  </PointInteret>
+  
+  <!--======================Bouee Centre MidBas========================-->
+
+  <PointInteret nom="Bouee Centre Bas bleu" type="boueeCentreBas" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="green">
+    <forme>
+      <cercle x="1270" y="1200" rayon="36"/>
+    </forme>
+  </PointInteret>
+  <PointInteret nom="Bouee Centre Bas jaune" type="boueeCentreBas" valeur="0" action="" temp="0"  couleur="blue" couleur_ui="red">
+    <forme>
+      <cercle x="1730" y="1200" rayon="36"/>
     </forme>
   </PointInteret>
 

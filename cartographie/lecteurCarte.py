@@ -1,11 +1,11 @@
 import xml.etree.ElementTree as ET
 import math
-from cartographie.cercle import Cercle
-from cartographie.polygone import Polygone
-from cartographie.rectangle import Rectangle
+from cercle import Cercle
+from polygone import Polygone
+from rectangle import Rectangle
 from zoneAcces import ZoneAcces
-from cartographie.zoneEvitement import ZoneEvitement
-from cartographie.pointInteret import PointInteret
+from zoneEvitement import ZoneEvitement
+from pointInteret import PointInteret
 import hashlib
 
 class LecteurCarte:
@@ -62,6 +62,9 @@ class LecteurCarte:
         nom = pointInteret.get("nom")
         type = pointInteret.get("type")
         couleur = pointInteret.get("couleur")
+        couleur_ui = pointInteret.get("couleur_ui")
+        if couleur_ui is None:
+            couleur_ui = couleur 
         valeur = pointInteret.get("valeur")
         action = pointInteret.get("action")
         forme = None
@@ -70,7 +73,7 @@ class LecteurCarte:
         for noeud in pointInteret:
             if noeud.tag == "forme":
                 for _forme in noeud:
-                    forme = self.getForme(nom,_forme,couleur)
+                    forme = self.getForme(nom,_forme,couleur,couleur_ui)
             elif noeud.tag == "zoneAcces":
                 for _zoneAcces in noeud:
                     zoneAcces = ZoneAcces(self.getForme("",_zoneAcces,"white"),float(noeud.get("angle")))
@@ -82,20 +85,22 @@ class LecteurCarte:
         return PointInteret(nom,forme,zoneAcces,zoneEvitement,valeur,action,type,couleur)
 
 
-    def getForme(self,nom,forme,couleur):
+    def getForme(self,nom,forme,couleur, couleur_ui=""):
+        if couleur_ui == "":
+            couleur_ui = couleur
         if forme.tag == "cercle":
             x=int(forme.get("x"))
             y=int(forme.get("y"))
             rayon=int(forme.get("rayon"))
-            return Cercle(nom,x,y,rayon,couleur)
+            return Cercle(nom,x,y,rayon,couleur,couleur_ui)
         elif forme.tag == "rectangle":
             x1=int(forme.get("x1"))
             y1=int(forme.get("y1"))
             x2=int(forme.get("x2"))
             y2=int(forme.get("y2"))
-            return Rectangle(nom,x1,y1,x2,y2,couleur)
+            return Rectangle(nom,x1,y1,x2,y2,couleur,couleur_ui)
         elif forme.tag == "polygone":
-            polygone = Polygone(nom, couleur)
+            polygone = Polygone(nom, couleur,couleur_ui)
             for point in forme:
                 polygone.addPoint(float(point.get("x")), float(point.get("y")))
             return polygone

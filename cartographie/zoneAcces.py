@@ -1,5 +1,5 @@
-from cartographie.zone import Zone
-from cartographie.ligne import Ligne
+from zone import Zone
+from ligne import Ligne
 class ZoneAcces(Zone):
 
     def __init__(self,forme, angle):
@@ -17,13 +17,13 @@ class ZoneAcces(Zone):
     def toJson(self):
         line = Ligne("", self.x, self.y, self.x + 100, self.y, "blue")
         line.rotate(self.angle)
-        str = u'{'
-        str += u'"type":"line",'
-        str += u'"name":"{}",'.format("")
-        str += u'"x1":{},'.format(self.x)
-        str += u'"y1":{},'.format(self.y)
-        str += u'"x2":{},'.format(line.x2)
-        str += u'"y2":{},'.format(line.y2)
-        str += u'"color":"{}"'.format("blue")
-        str += u'}'
+        str = u''.join([u'{',
+            u'"type":"line",',
+            u'"name":"{}",'.format(""),
+            u'"x1":{},'.format(self.x),
+            u'"y1":{},'.format(self.y),
+            u'"x2":{},'.format(line.x2),
+            u'"y2":{},'.format(line.y2),
+            u'"color":"{}"'.format("blue"),
+            u'}'])
         return str

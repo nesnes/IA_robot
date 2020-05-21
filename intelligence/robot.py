@@ -82,15 +82,21 @@ class Robot:
                     self.controlPanel = board
                 elif board.fonction == "collisionDetector":
                     self.collisionDetector = board
-                    self.stopCollisionThread = False
-                    self.collisionThread = Thread(target=Robot.__collisionThread, args=(self,))
-                    self.collisionThread.setDaemon(True)
-                    self.collisionThread.start()
+                """self.stopCollisionThread = False
+                self.collisionThread = Thread(target=Robot.__collisionThread, args=(self,))
+                self.collisionThread.setDaemon(True)
+                self.collisionThread.start()"""
             if not self.controlPanel and any(board.fonction == "controlPanel" for board in self.listBoard):
                 print("ERROR: No controlPanel found")
                 self.isSimulated = True
         elif webInterface.instance and self.controlPanel:
-                webInterface.instance.addCallableObject(self.controlPanel)
+            webInterface.instance.addCallableObject(self.controlPanel)
+            
+        self.stopCollisionThread = False
+        self.collisionThread = Thread(target=Robot.__collisionThread, args=(self,))
+        self.collisionThread.setDaemon(True)
+        self.collisionThread.start()
+        
         if not self.movingBase and any(board.fonction == "movingBase" for board in self.listBoard):
             print("ERROR: No movingBase found")
             self.isSimulated = True

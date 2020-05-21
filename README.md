@@ -1,6 +1,8 @@
 # IA_robot
 Intelligence artificielle pour robot destiné à participer à la Coupe De France de Robotique
 
+**This project is now being replaced by its version 2 implemented in nodejs: https://github.com/nesnes/Eurobot-AI**
+
 ![alt text](apercu.png)
 
 # Installation
