@@ -3,7 +3,7 @@
 #define MODE_I2C
 #ifndef MODE_I2C
   #define MODE_SERIAL
-  #define SERIAL_DEBUG
+  //#define SERIAL_DEBUG
 #endif
 #include "comunication.h"
 
@@ -13,6 +13,10 @@ enum  {
   SIDE_MIDDLE
 } SIDE;
 
+
+const int SERVO_LEFT=8;
+const int SERVO_RIGHT=7;
+Servo servoLeft, servoRight;
 
 const int NB_SERVO_ARM_M = 5;
 const int pinNumberServo_M[NB_SERVO_ARM_M] = {2,3,4,5,6};
@@ -29,6 +33,11 @@ const int MAX_PULSE = 2500;//2450
 void setup() {
   //Init communication
   comunication_begin(6);//I2C address 6
+
+  servoLeft.attach(SERVO_LEFT, MIN_PULSE, MAX_PULSE);
+  servoLeft.write(90);
+  servoRight.attach(SERVO_RIGHT, MIN_PULSE, MAX_PULSE);
+  servoRight.write(90);
 
   // Setup Arm M
   for(int i=0; i<NB_SERVO_ARM_M; i++){
@@ -123,6 +132,20 @@ void executeOrder(){
       setPump(pinNumberPump_M, 0);
       sprintf(comunication_OutBuffer, "OK");//max 29 Bytes
       comunication_write();//async
+    }
+    else if(strstr(comunication_InBuffer, "setLeft")){
+      sprintf(comunication_OutBuffer, "OK");//max 29 Bytes
+      comunication_write();//async
+      int angle=90;
+      sscanf(comunication_InBuffer, "setLeft %i", &angle);
+      servoLeft.write(angle);
+    }
+    else if(strstr(comunication_InBuffer, "setRight")){
+      sprintf(comunication_OutBuffer, "OK");//max 29 Bytes
+      comunication_write();//async
+      int angle=90;
+      sscanf(comunication_InBuffer, "setRight %i", &angle);
+      servoRight.write(180-angle);
     }
 
     
