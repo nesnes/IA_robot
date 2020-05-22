@@ -173,7 +173,7 @@ void control(){
    *  targetSpeed_mps
    *  targetAngleSpeed_dps
    */
-   if(!manualMode)
+  if(!manualMode)
     updateAsserv();
   #ifdef SERIAL_DEBUG
     printCharts();
@@ -216,7 +216,7 @@ void control(){
   }
 }
 
-int controlFrequency = 30; //Hz
+int controlFrequency = 60; //Hz
 
 void executeOrder(){
   comunication_read();
@@ -230,6 +230,7 @@ void executeOrder(){
     }
     else if(strstr(comunication_InBuffer, "move enable")){
       movementEnabled = true;
+      emergencyStop = false;
       sprintf(comunication_OutBuffer, "move OK");//max 29 Bytes
       comunication_write();//async
     }
@@ -239,6 +240,8 @@ void executeOrder(){
       comunication_write();//async
     }
     else if(strstr(comunication_InBuffer, "pos set ")){
+      sprintf(comunication_OutBuffer, "pos OK");//max 29 Bytes
+      comunication_write();//async
       int x_pos=0, y_pos=0, angle_pos=0;
       int res = sscanf(comunication_InBuffer, "pos set %i %i %i", &y_pos, &x_pos, &angle_pos);
       xPos = (float)(x_pos)/1000.0f;
@@ -247,8 +250,6 @@ void executeOrder(){
       xTarget = xPos;
       yTarget = yPos;
       angleTarget = anglePos;
-      sprintf(comunication_OutBuffer, "pos OK");//max 29 Bytes
-      comunication_write();//async
     }
     else if(strstr(comunication_InBuffer, "pos getXY")){
       sprintf(comunication_OutBuffer,"pos %i %i %i %i",(int)(yPos*1000.0f), (int)(xPos*1000.0f), (int)(anglePos), (int)(targetSpeed_mps*10));
@@ -259,6 +260,8 @@ void executeOrder(){
       comunication_write();//async
     }
     else if(strstr(comunication_InBuffer, "move XY ")){
+      sprintf(comunication_OutBuffer,"move OK");
+      comunication_write();//async
       int i_x_pos=0, i_y_pos=0, i_angle=0, i_speed_pos=1;
       sscanf(comunication_InBuffer, "move XY %i %i %i %i", &i_y_pos, &i_x_pos, &i_angle, &i_speed_pos);
       xTarget = (float)(i_x_pos)/1000.0f;
@@ -268,8 +271,6 @@ void executeOrder(){
       angleSpeedTarget = speedTarget * 90;
       emergencyStop = false;
       targetReached = false;
-      sprintf(comunication_OutBuffer,"move OK");
-      comunication_write();//async
     }
     else if(strstr(comunication_InBuffer, "move DA")){
       sprintf(comunication_OutBuffer, "ERROR");//max 29 Bytes
@@ -311,6 +312,8 @@ void executeOrder(){
       comunication_write();//async
     }
     else if(strstr(comunication_InBuffer, "manual disable")){
+      sprintf(comunication_OutBuffer,"manual OK");
+      comunication_write();//async
       manualMode=false;
       targetMovmentAngle = 0;
       targetSpeed_mps = 0;
@@ -318,18 +321,16 @@ void executeOrder(){
       xTarget = xPos;
       yTarget = yPos;
       angleTarget = anglePos;
-      sprintf(comunication_OutBuffer,"manual OK");
-      comunication_write();//async
     }
     else if(strstr(comunication_InBuffer, "manual set ")){
+      sprintf(comunication_OutBuffer,"manual OK");
+      comunication_write();//async
       int i_move_angle=0, i_move_speed=0, i_angle_speed=0;
       sscanf(comunication_InBuffer, "manual set %i %i %i", &i_move_angle, &i_move_speed, &i_angle_speed);
       targetMovmentAngle = i_move_angle;
       targetSpeed_mps = (float)(i_move_speed)/10.0f;
       targetAngleSpeed_dps = i_angle_speed;
       emergencyStop = false;
-      sprintf(comunication_OutBuffer,"manual OK");
-      comunication_write();//async
     }
     else{
       sprintf(comunication_OutBuffer,"ERROR");
